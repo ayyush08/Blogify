@@ -21,7 +21,7 @@ const uploadBlog = asyncHandler(async(req,res)=>{
     if(!user){
         throw new ApiError(404,'User not found')
     }
-    const blogpost = await Blog.create({
+    const blogpost = await Blogs.create({
         owner:userId,
         title,
         content
