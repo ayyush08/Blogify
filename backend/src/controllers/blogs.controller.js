@@ -61,11 +61,29 @@ const updateBlogContent = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(200,updatedBlog,'Blog updated successfully'))
 })
 
+const deleteBlog  = asyncHandler(async(req,res)=>{
+    const {blogId} = req.params;
+    if(!isValidObjectId(blogId)){
+        throw new ApiError(400,'Invalid blog id')
+    }
+    const blog = await Blogs.findById(blogId);
+    if(blog?.owner.toString()!==req.user?._id.toString()){
+        throw new ApiError(403,"You are not authorized to delete this blog")
+    }
+    const deletedBlog = await Blogs.findByIdAndDelete(blogId);
+    if(!deletedBlog){
+        throw new ApiError(500,'Error deleting blog')
+    }
+    return res
+    .status(200)
+    .json(new ApiResponse(200,deletedBlog,'Blog deleted successfully'))
+})
 
 
 
 
 export {
     uploadBlog,
-    updateBlogContent
+    updateBlogContent,
+    deleteBlog
 }
