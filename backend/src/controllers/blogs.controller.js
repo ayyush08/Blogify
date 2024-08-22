@@ -1,9 +1,9 @@
-import { Blogs } from "../models/blogs.model";
-import { User } from "../models/user.model";
-import { asyncHandler } from "../utils/asyncHandler";
-import { ApiResponse } from "../utils/ApiResponse";
-import { ApiError } from "../utils/ApiError";
-import { isValidObjectId } from "mongoose";
+import { Blogs } from "../models/blogs.model.js";
+import { User } from "../models/user.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
+import mongoose ,{ isValidObjectId } from "mongoose";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const uploadBlog = asyncHandler(async(req,res)=>{

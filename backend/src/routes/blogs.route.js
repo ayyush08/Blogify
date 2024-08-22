@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { uploadBlog,updateBlogContent,deleteBlog,getUserBlogs } from "../controllers/blogs.controller";
-
+import { uploadBlog,updateBlogContent,deleteBlog,getUserBlogs } from "../controllers/blogs.controller.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 
