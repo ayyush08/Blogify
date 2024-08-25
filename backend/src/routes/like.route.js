@@ -11,5 +11,5 @@ router.use(verifyJWT);
 
 
 
-router.route("/like/:blogId").post(toggleBlogLike);
-router.route("/like/:commentId").post(toggleCommentLike);
+router.route("/likes/:blogId").post(toggleBlogLike);
+router.route("/likes/:commentId").post(toggleCommentLike);

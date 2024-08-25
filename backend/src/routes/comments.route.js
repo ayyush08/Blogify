@@ -6,5 +6,5 @@ const router = Router();
 
 router.use(verifyJWT);
 
-router.route("/:blogId").post(addComment).get(getBlogComments);
-router.route("/:commentId").delete(deleteComment);
+router.route("/comments/:blogId").post(addComment).get(getBlogComments);
+router.route("/comments/:commentId").delete(deleteComment);
