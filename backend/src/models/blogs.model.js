@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const blogsSchema = new Schema({
     owner:{
@@ -26,5 +26,8 @@ const blogsSchema = new Schema({
 },{
     timestamps:true
 }) 
+
+
+blogsSchema.plugin(mongooseAggregatePaginate)
 
 export const Blogs = mongoose.model('Blogs',blogsSchema)

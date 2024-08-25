@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import mongoose ,{ isValidObjectId } from "mongoose";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const uploadBlog = asyncHandler(async(req,res)=>{
     const {userId} = req.params;
@@ -85,6 +86,7 @@ const deleteBlog  = asyncHandler(async(req,res)=>{
 
 const getUserBlogs = asyncHandler(async(req,res)=>{
     const {userId} = req.params;
+    const {page,limit} = req.query;
     if(!isValidObjectId(userId)){
         throw new ApiError(400,'Invalid user id')
     }
@@ -121,9 +123,17 @@ const getUserBlogs = asyncHandler(async(req,res)=>{
         }
     ]);
     
+    if(!blogs){
+        throw new ApiError(404,'User blogs not found')
+    }
+    const options = {
+        page:parseInt(page,10) || 1,
+        limit:parseInt(limit,10) || 10
+    }
+    const userBlogs = await blogs.aggregatePaginate(blogs,options)
     return res
     .status(200)
-    .json(new ApiResponse(200,blogs,'User blogs retrieved successfully'))
+    .json(new ApiResponse(200,userBlogs,'User blogs retrieved successfully'))
 })
 
 
