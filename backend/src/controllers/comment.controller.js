@@ -65,7 +65,6 @@ const getBlogComments = asyncHandler(async (req, res) => {
 })
 
 const addComment = asyncHandler(async (req, res) => {
-    // TODO: add a comment to a video
     const { blogId } = req.params
     const { content } = req.body
     if (!isValidObjectId(blogId)) {
@@ -91,7 +90,6 @@ const addComment = asyncHandler(async (req, res) => {
 
 
 const deleteComment = asyncHandler(async (req, res) => {
-    // TODO: delete a comment
     const {commentId} = req.params
     if (!isValidObjectId(commentId)) {
         throw new ApiError(400, "Invalid comment id")

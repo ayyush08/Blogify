@@ -23,15 +23,6 @@ const generateAccessAndRefreshTokens = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-    // get user data from frontend
-    // validation -- not empty
-    // check if user already exists: username,email
-    // check for images, check for avatar
-    // uplaod them to cloudinary, avatar check
-    // create user object - create entry in DB
-    // remove password and refresh token from response
-    // check for user creation
-    // return response
 
     const { fullName, username, email, password } = req.body;
     console.log(email);
