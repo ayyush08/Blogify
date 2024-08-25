@@ -136,10 +136,48 @@ const getUserBlogs = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(200,userBlogs,'User blogs retrieved successfully'))
 })
 
+const getAllBlogs = asyncHandler(async(req,res)=>{
+    const {page,limit} = req.query;
+    const blogs = await Blogs.aggregate([
+        {
+            $lookup:{
+                from:'users',
+                localField:'owner',
+                foreignField:'_id',
+                as:'owner'
+            }
+        },
+        {
+            $unwind:'$owner'
+        },
+        {
+            $project:{
+                title:1,
+                content:1,
+                description:1,
+                '$owner.username':1,
+                '$owner.avatar':1,
+                
+            }
+        }
+    ]);
+    if(!blogs){
+        throw new ApiError(404,'Blogs not found')
+    }
+    const options = {
+        page:parseInt(page,10) || 1,
+        limit:parseInt(limit,10) || 10
+    }
+    const allBlogs = await Blogs.aggregatePaginate(blogs,options)
+    return res
+    .status(200)
+    .json(new ApiResponse(200,allBlogs,'Blogs retrieved successfully'))
+})
 
 export {
     uploadBlog,
     updateBlogContent,
     deleteBlog,
-    getUserBlogs
+    getUserBlogs,
+    getAllBlogs
 }
