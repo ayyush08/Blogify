@@ -4,6 +4,7 @@ import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
+router.route('/fetchBlogs').get(getAllBlogs)
 router.use(verifyJWT)
 router.route('/upload/:userId').post(
     upload.fields([
@@ -13,7 +14,6 @@ router.route('/upload/:userId').post(
         }
     ]),
     uploadBlog)
-router.route('/fetchBlogs').get(getAllBlogs)
 router.route('/:blogId').put(updateBlogContent).delete(deleteBlog);
 router.route('/user/:userId').get(getUserBlogs)
 
