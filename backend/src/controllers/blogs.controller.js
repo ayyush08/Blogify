@@ -172,18 +172,13 @@ const getAllBlogs = asyncHandler(async(req,res)=>{
         }
     }
     ]
-    // const blogs = await Blogs.aggregate([
-        
-    // ]);
-    //giving errors constantly , need to figure out again so commented
-    // console.log(blogs);
     
     const options = {
         page:parseInt(page,10),
         limit:parseInt(limit,10)
     }
     const allBlogs = await Blogs.aggregatePaginate(Blogs.aggregate(aggregation),options)
-    console.log(allBlogs);
+
     
     if(!allBlogs){
         throw new ApiError(404,'Blogs not paginated')}
