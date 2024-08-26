@@ -86,7 +86,7 @@ const deleteBlog  = asyncHandler(async(req,res)=>{
 
 const getUserBlogs = asyncHandler(async(req,res)=>{
     const {userId} = req.params;
-    // const {page,limit} = req.query;
+    const {page=1,limit=10} = req.query;
     if(!isValidObjectId(userId)){
         throw new ApiError(400,'Invalid user id')
     }
@@ -94,7 +94,7 @@ const getUserBlogs = asyncHandler(async(req,res)=>{
     if(!user){
         throw new ApiError(404,'User not found')
     }
-    const blogs = await Blogs.aggregate([
+    const aggregation = [
         {
             $match:{
                 owner:user._id
@@ -118,37 +118,42 @@ const getUserBlogs = asyncHandler(async(req,res)=>{
                 description:1,
                 'owner.username':1,
                 'owner.avatar':1,
-                
+                createdAt:1
+            }
+        },
+        {
+            $sort:{
+                createdAt:-1
             }
         }
-    ]);
+    ]
+    const options = {
+        page:parseInt(page,10) || 1,
+        limit:parseInt(limit,10) || 10
+    }
+    const blogs = await Blogs.aggregatePaginate(Blogs.aggregate(aggregation,options));
     
     if(!blogs){
         throw new ApiError(404,'User blogs not found')
     }
-    // const options = {
-    //     page:parseInt(page,10) || 1,
-    //     limit:parseInt(limit,10) || 10
-    // }
-    // const userBlogs = await blogs.aggregatePaginate(blogs,options)
     return res
     .status(200)
     .json(new ApiResponse(200,blogs,'User blogs retrieved successfully'))
 })
 
 const getAllBlogs = asyncHandler(async(req,res)=>{
-    // const {page=1,limit=10} = req.query;
-    const blogs = await Blogs.aggregate([
+    const {page=1,limit=10} = req.query;
+    const aggregation = [
         {
             $lookup:{
                 from:'users',
                 localField:'owner',
                 foreignField:'_id',
-                as:'owner'
+                as:'ownerDetails'
             }
         },
         {
-            $unwind:'$owner'
+            $unwind:'$ownerDetails'
         },
         {
             $project:{
@@ -156,8 +161,8 @@ const getAllBlogs = asyncHandler(async(req,res)=>{
                 title:1,
                 content:1,
                 description:1,
-                'owner.username':1,
-                'owner.avatar':1,
+                'ownerDetails.username':1,
+                'ownerDetails.avatar':1,
                 createdAt:1
             }
         },
@@ -166,25 +171,25 @@ const getAllBlogs = asyncHandler(async(req,res)=>{
                 createdAt:-1
         }
     }
-    ]);
-    if(!blogs){
-        throw new ApiError(404,'Blogs not found')
-    }
+    ]
+    // const blogs = await Blogs.aggregate([
+        
+    // ]);
     //giving errors constantly , need to figure out again so commented
     // console.log(blogs);
     
-    // const options = {
-    //     page:1,
-    //     limit:10
-    // }
-    // const allBlogs = await Blogs.aggregatePaginate(blogs,options)
-    // console.log(allBlogs);
+    const options = {
+        page:parseInt(page,10),
+        limit:parseInt(limit,10)
+    }
+    const allBlogs = await Blogs.aggregatePaginate(Blogs.aggregate(aggregation),options)
+    console.log(allBlogs);
     
-    // if(allBlogs){
-    //     throw new ApiError(404,'Blogs not paginated')}
+    if(!allBlogs){
+        throw new ApiError(404,'Blogs not paginated')}
     return res
     .status(200)
-    .json(new ApiResponse(200,blogs,'Blogs retrieved successfully'))
+    .json(new ApiResponse(200,allBlogs,'Blogs retrieved successfully'))
 })
 
 export {
