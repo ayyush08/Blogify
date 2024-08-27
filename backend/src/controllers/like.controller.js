@@ -5,20 +5,27 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { isValidObjectId } from "mongoose";
+import mongoose from "mongoose";
+
 
 const toggleBlogLike = asyncHandler(async(req,res)=>{
     const {blogId} = req.params; 
-    const {userId} = req.user?._id;
+    
+    const userId = req.user?._id;
+    console.log(userId);
+    
     if(!isValidObjectId(blogId)){
         throw new ApiError(400,'Invalid blog id')
     }
     const likedBlog = await Like.findOne({blog:blogId,likedBy:userId});
+    // console.log(likedBlog);
+    
     try {
         if(likedBlog){
             await Like.findByIdAndDelete(likedBlog._id);
             return res
             .status(200)
-            .json(new ApiResponse(200,{},'Blog liked successfully'))
+            .json(new ApiResponse(200,{},'Blog unliked successfully'))
         }
         else{
             await Like.create({
@@ -27,7 +34,7 @@ const toggleBlogLike = asyncHandler(async(req,res)=>{
             })
             return res
             .status(200)
-            .json(new ApiResponse(200,{},'Blog unliked successfully'))
+            .json(new ApiResponse(200,{},'Blog liked successfully'))
         }
     } catch (error) {
         throw new ApiError(500,'Internal server error on toggle Blog like')
@@ -63,8 +70,56 @@ const toggleCommentLike = asyncHandler(async(req,res)=>{
     }
 })
 
+const getBlogLikes = asyncHandler(async(req,res)=>{
+    const {blogId} = req.params;
+    if(!isValidObjectId(blogId)){
+        throw new ApiError(400,'Invalid blog id')
+    }
+    const likes = await Like.aggregate([
+        {
+            $match: {
+                blog: new mongoose.Types.ObjectId(blogId)
+            }
+        },
+        {
+            $lookup: {
+                from: 'blogs',
+                localField: 'blog',
+                foreignField: '_id',
+                as: 'result'
+            }
+        },
+        {
+            $unwind:'$result'
+        },
+        {
+            $group: {
+                _id: '$result._id',
+                likes: { $sum: 1}
+            }
+        },
+        {
+            $project:{
+                _id:0,
+                likes:1,
+            }
+        }
+    ])
+    
+    if(!likes){
+        return res
+        .status(200)
+        .json(new ApiResponse(200,{},'No likes found'))
+    }
+    return res
+    .status(200)
+    .json(new ApiResponse(200,likes,'Likes retrieved successfully'))
+})
+
+
 
 export {
     toggleBlogLike,
-    toggleCommentLike
+    toggleCommentLike,
+    getBlogLikes
 }

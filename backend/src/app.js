@@ -20,4 +20,6 @@ import userRouter from './routes/user.route.js'
 app.use('/blogapi/v1/users',userRouter);
 import blogRoutes from './routes/blogs.route.js'
 app.use('/blogapi/v1/blogs',blogRoutes);
+import likeRoutes from './routes/like.route.js'
+app.use('/blogapi/v1/likes',likeRoutes);
 export {app};
