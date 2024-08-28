@@ -18,7 +18,6 @@ const toggleBlogLike = asyncHandler(async(req,res)=>{
         throw new ApiError(400,'Invalid blog id')
     }
     const likedBlog = await Like.findOne({blog:blogId,likedBy:userId});
-    // console.log(likedBlog);
     
     try {
         if(likedBlog){
@@ -44,7 +43,7 @@ const toggleBlogLike = asyncHandler(async(req,res)=>{
 
 const toggleCommentLike = asyncHandler(async(req,res)=>{
     const {commentId} = req.params; 
-    const {userId} = req.user?._id;
+    const userId = req.user?._id;
     if(!isValidObjectId(commentId)){
         throw new ApiError(400,'Invalid comment id')
     }

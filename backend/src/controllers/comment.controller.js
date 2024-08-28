@@ -5,11 +5,11 @@ import { ApiError } from "../utils/ApiError.js"
 import { isValidObjectId } from "mongoose"
 import { Blogs } from "../models/blogs.model.js"
 
-
+import mongoose from "mongoose"
 
 const getBlogComments = asyncHandler(async (req, res) => {
     const {blogId} = req.params;
-    const {page,limit} = req.query;
+    const {page=1,limit=10} = req.query;
     if(!isValidObjectId(blogId)){
         throw new ApiError(400,'Invalid blog id')
     }
@@ -17,37 +17,42 @@ const getBlogComments = asyncHandler(async (req, res) => {
     if(!blog){
         throw new ApiError(404,'Blog not found')
     }
-    const commentsAggregate = await Comment.aggregate([
+    const commentsAggregate = [
         {
             $match:{
-                blog:blog._id
+                blog: new mongoose.Types.ObjectId(blogId)
             }
         },
         {
             $lookup:{
-                from:'users',
-                localField:'owner',
+                from:'blogs',
+                localField:'blog',
                 foreignField:'_id',
-                as:'owner'
+                as:'blogDetails'
             }
         },
         {
-            $unwind:'$owner'
+            $unwind:'$blogDetails'
         },
         {
             $project:{
                 _id:1,
                 comment:1,
-                owner:{
+                blogDetails:{
                     _id:1,
-                    name:1,
-                    email:1,
-                    avatar:1
+                    title:1,
+                    description:1,
+                    owner:1,
                 },
                 createdAt:1
             }
+        },
+        {
+            $sort:{
+                createdAt:-1
+            }
         }
-    ])
+    ]
     if(!commentsAggregate){
         throw new ApiError(404,'Comments not found')
     }
@@ -55,7 +60,7 @@ const getBlogComments = asyncHandler(async (req, res) => {
         page:parseInt(page,10) || 1,
         limit:parseInt(limit,10) || 10
     }
-    const paginatedComments = await Comment.aggregatePaginate(commentsAggregate,options)
+    const paginatedComments = await Comment.aggregatePaginate(Comment.aggregate(commentsAggregate),options)
     if(!paginatedComments){
         throw new ApiError(404,'Comments pagination error')
     }
@@ -78,8 +83,8 @@ const addComment = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Video not found")
     }
     const comment = await Comment.create({
-        blog: videoId,
-        content,
+        blog: blogId,
+        comment:content,
         owner: req.user._id,
     });
     if (!comment) throw new ApiError(400, 'Error while adding comment');

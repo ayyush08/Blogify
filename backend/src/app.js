@@ -22,4 +22,8 @@ import blogRoutes from './routes/blogs.route.js'
 app.use('/blogapi/v1/blogs',blogRoutes);
 import likeRoutes from './routes/like.route.js'
 app.use('/blogapi/v1/likes',likeRoutes);
+import commentRoutes from './routes/comments.route.js'
+app.use('/blogapi/v1/comments',commentRoutes);
+
+
 export {app};
