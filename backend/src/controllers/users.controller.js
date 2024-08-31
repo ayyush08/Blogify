@@ -25,8 +25,6 @@ const generateAccessAndRefreshTokens = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
 
     const { fullName, username, email, password } = req.body;
-    console.log(email);
-    //ek ek krke bhi kr skte check - no issues
     if (
         [fullName, email, username, password].some((field) => !field?.trim() === "")
     ) {
@@ -41,22 +39,13 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    // const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-    let coverImageLocalPath;
-    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
-        coverImageLocalPath = req.files.coverImage[0].path;
-    }
-    else{
-        coverImageLocalPath = null;
-    }
 
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar is required");
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
     if (!avatar) {
         throw new ApiError(400, "Avatar is required");
@@ -65,7 +54,6 @@ const registerUser = asyncHandler(async (req, res) => {
     const user = await User.create({
         fullName,
         avatar: avatar.url,
-        coverImage: coverImage?.url || "",
         username: username.toLowerCase(),
         email,
         password,
