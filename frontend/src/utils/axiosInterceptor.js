@@ -38,4 +38,16 @@ const useAxiosInterceptors = () => {
     );
 };
 
+
+const refreshAccessToken = async () => {
+    console.log("refresh access token called");
+    try {
+        const { data } = await API.post("/blogapi/v1/users/refresh-token");
+        console.log(data);
+        return data?.data;
+    } catch (error) {
+        throw error?.response?.data?.error;
+    }
+};
+
 export { API, useAxiosInterceptors };
