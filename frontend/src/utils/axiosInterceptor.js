@@ -6,8 +6,10 @@ const API = axios.create({
     withCredentials: true
 });
 
+const useAxiosInterceptors = () => {
+    API.interceptors.request.use(
+        
+    );
+};
 
-API.interceptors.response.use(
-    (response) => response,
-    async(error)
-)
+export { API, useAxiosInterceptors };

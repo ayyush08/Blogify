@@ -1,37 +1,37 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
-
-//NEED TO CONFIGURE TOKEN SESSIONS so that after expiration, user is logged out
-
+import { API } from '../utils/axiosInterceptor.js';
+import { useAxiosInterceptors } from '../utils/axiosInterceptor.js';
+useAxiosInterceptors();
 export const registerUser = async (userData) => {
     try {
-        const {data} = await axios.post('/api/users/register', userData);
+        const {data} = await API.post('/blogapi/v1/users/register', userData);
         toast.success(data.message);
         return data;
     } catch (error) {
-        toast.error(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error?.response?.data?.message);
+        throw error?.response?.data?.message;
     }
 }
 
 export const loginUser = async (userData) => {
     try {
-        const {data} = await axios.post('/api/users/login', userData);
+        const {data} = await API.post('/blogapi/v1/users/login', userData);
         toast.success(data.message);
         return data;
     } catch (error) {
-        toast.error(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error?.response?.data?.message);
+        throw error?.response?.data?.message;
     }
 }
 
 export const logoutUser = async () => {
     try {
-        const {data} = await axios.post('/api/users/logout');
+        const {data} = await API.post('/blogapi/v1/users/logout');
         toast.success(data.message);
         return data;
     } catch (error) {
-        toast.error(error.response.data.message);
-        throw error.response.data.message;
+        toast.error(error?.response?.data?.message);
+        throw error?.response?.data?.message;
     }
 }
