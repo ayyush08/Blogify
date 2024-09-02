@@ -6,6 +6,7 @@ const SharedLayout = () => {
     return (
         <>
             <Navbar />
+            <p className='mt-10 text-white text-center text-2xl font-bold'>adadsdad</p>
             <Outlet />
         </>
     )
