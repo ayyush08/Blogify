@@ -8,14 +8,16 @@ const queryClient = new QueryClient()
 function App() {
 
   return (
+    <>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SharedLayout />} />
         </Routes>
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={true} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
+    </>
   )
 }
 
