@@ -35,3 +35,13 @@ export const logoutUser = async () => {
         throw error?.response?.data?.message;
     }
 }
+
+export const getUserProfile = async () => {
+    try {
+        const {data} = await API.get('/blogapi/v1/users/profile');
+        return data;
+    } catch (error) {
+        toast.error(error?.response?.data?.message);
+        throw error?.response?.data?.message;
+    }
+}
