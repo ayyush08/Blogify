@@ -1,6 +1,7 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import {API} from '../utils/axiosInterceptor.js';
+
 export const getUserBlogs = async (userId) => {
     try {
         const {data} = await API.get(`/blogapi/v1/blogs/user/${userId}`);

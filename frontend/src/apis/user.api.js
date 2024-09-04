@@ -2,6 +2,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { API } from '../utils/axiosInterceptor.js';
 import { useAxiosInterceptors } from '../utils/axiosInterceptor.js';
+
+
 useAxiosInterceptors();
 export const registerUser = async (userData) => {
     try {
