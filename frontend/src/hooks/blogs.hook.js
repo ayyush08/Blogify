@@ -36,9 +36,9 @@ export const useUpdateBlog = (blogId) => {
     return useMutation(
         (newData)=>updateBlog(blogId,newData),{
         onMutate: async (newData) => {
-                await queryClient.cancelQueries('current-user-blogs');
-                const previousData = queryClient.getQueryData('current-user-blogs');
-                queryClient.setQueryData('current-user-blogs', (oldBlogs) => {
+                await queryClient.cancelQueries('current-user-blog');
+                const previousData = queryClient.getQueryData('current-user-blog');
+                queryClient.setQueryData('current-user-blog', (oldBlogs) => {
                     return oldBlogs.map((blog) => 
                         blog._id === blogId ? { ...blog, ...newData } : blog
                     );
@@ -46,10 +46,10 @@ export const useUpdateBlog = (blogId) => {
                 return { previousData };
         },
         onError: (_error, _newData, context) => {
-            queryClient.setQueryData('current-user-blogs', context.previousData);
+            queryClient.setQueryData('current-user-blog', context.previousData);
         },
         onSettled: () => {
-            queryClient.invalidateQueries('current-user-blogs');
+            queryClient.invalidateQueries('current-user-blog');
         }
     }
     );
