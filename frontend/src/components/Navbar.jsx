@@ -1,17 +1,26 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
-import LoadingBar from 'react-top-loading-bar';
+import { TiAdjustBrightness } from "react-icons/ti";
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+    const [rotateState, setRotateState] = useState(false);
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
-
+    const [theme, setTheme] = useState('light');
     // const pathname = window.location.pathname;
-
+    const handleThemeChange = () => {
+        setRotateState(!rotateState);
+        if (theme === 'light') {
+            setTheme('dark');
+            document.documentElement.classList.add('dark');
+        } else {
+            setTheme('light');
+            document.documentElement.classList.remove('dark');
+        }
+    }
 
 
     return (
@@ -40,6 +49,16 @@ const Navbar = () => {
                         <Button className="mx-1" variant="outline" >Login</Button>
                         <Button className="mx-1" variant="outline">Signup</Button>
                     </div>
+                    <div className="flex items-center">
+            <div
+                className={`cursor-pointer transition-transform duration-300 ease-in-out transform rota ${
+                    rotateState ? 'rotate-45' : '-rotate-45'
+                }`}
+                onClick={handleThemeChange}
+            >
+                <TiAdjustBrightness size={24} />
+            </div>
+        </div>
                 </div>
 
                 {/* Mobile Menu Toggle Button */}
@@ -57,11 +76,10 @@ const Navbar = () => {
 
             {/* Mobile Menu with animation */}
             <div
-                className={`${
-                    isMobileMenuOpen
-                        ? 'max-h-screen opacity-100'
-                        : 'max-h-0 opacity-0'
-                } overflow-hidden transition-all duration-500 ease-in-out md:hidden flex flex-col space-y-4 mt-4`}>
+                className={`${isMobileMenuOpen
+                    ? 'max-h-screen opacity-100'
+                    : 'max-h-0 opacity-0'
+                    } overflow-hidden transition-all duration-500 ease-in-out md:hidden flex flex-col space-y-4 mt-4`}>
                 <Link to="/" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     Home
                 </Link>
