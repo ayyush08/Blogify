@@ -24,11 +24,11 @@ const Navbar = () => {
 
 
     return (
-        <nav className="p-4 bg-teal-200/70 dark:bg-teal-900/70 sticky top-0 backdrop-blur border-b border-gray-300 dark:border-teal-700 z-10">
+        <nav className="p-4 bg-teal-200/70 dark:bg-teal-900/70 font-motserrat sticky top-0 backdrop-blur border-b border-gray-300 dark:border-teal-700 z-10">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/">
-                    <div className="text-[2rem] pl-3 font-bold text-gray-900 dark:text-white">Blogify</div>
+                    <div className="text-[2rem] pl-3 font-bold font-motserrat text-gray-900 dark:text-white">Blogify</div>
                 </Link>
 
                 {/* Desktop Menu */}
