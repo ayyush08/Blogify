@@ -2,7 +2,8 @@ import React from 'react';
 
 const Hero = () => {
     return (
-        <section className="bg-gradient-to-r from-teal-500 from-10% via-teal-500 via-30% to-emerald-500 to-90%  dark:bg-teal-800 text-white py-[10rem]">
+        <section className="bg-gradient-to-r from-teal-500 from-10% via-teal-500 via-30% to-emerald-500 to-90%  dark:bg-teal-800 text-white py-[10rem] dark:from-teal-600 dark:via-teal-700 dark:to-emerald-500
+">
             <div className="container mx-auto text-center">
                 <h1 className="text-4xl md:text-6xl font-bold mb-4">
                     Welcome to Blogify
