@@ -24,7 +24,7 @@ const Navbar = () => {
 
 
     return (
-        <nav className="p-4 bg-teal-100/70 dark:bg-gray-900/70 sticky top-0 backdrop-blur border-b border-gray-300 dark:border-gray-700 z-10">
+        <nav className="p-4 bg-teal-200/70 dark:bg-teal-900/70 sticky top-0 backdrop-blur border-b border-gray-300 dark:border-teal-700 z-10">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/">
@@ -46,8 +46,8 @@ const Navbar = () => {
                         Contact
                     </Link>
                     <div className="flex items-center">
-                        <Button className="mx-1" variant="outline" >Login</Button>
-                        <Button className="mx-1" variant="outline">Signup</Button>
+                        <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50" variant="outline" >Login</Button>
+                        <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50" variant="outline">Signup</Button>
                     </div>
                     <div className="flex items-center">
             <div
@@ -93,9 +93,19 @@ const Navbar = () => {
                     Contact
                 </Link>
                 <div>
-                    <Button className="mx-1" variant="outline">Login</Button>
-                    <Button className="mx-1" variant="outline">Signup</Button>
+                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50" variant="outline">Login</Button>
+                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50" variant="outline">Signup</Button>
                 </div>
+                <div className="flex items-center">
+            <div
+                className={`cursor-pointer transition-transform duration-300 ease-in-out transform rota ${
+                    rotateState ? 'rotate-45' : '-rotate-45'
+                }`}
+                onClick={handleThemeChange}
+            >
+                <TiAdjustBrightness size={24} />
+            </div>
+        </div>
             </div>
         </nav>
     );
