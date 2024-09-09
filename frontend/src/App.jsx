@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { QueryClientProvider,QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {BrowserRouter,Route,Routes} from 'react-router-dom'
@@ -18,7 +17,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
     </>
   )
