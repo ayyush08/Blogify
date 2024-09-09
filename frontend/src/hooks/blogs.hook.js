@@ -1,8 +1,8 @@
 import { getUserBlogs, getAllBlogs, updateBlog, uploadBlog, deleteBlog } from "../apis/blogs.api";
 
-import {useQueryClient, useMutation } from "@tanstack/react-query";
+import {useQueryClient, useMutation,useQuery } from "@tanstack/react-query";
 
-const queryClient = useQueryClient();
+// const queryClient = useQueryClient();
 
 export const useGetUserBlogs = (userId) => {
     return useMutation(
@@ -19,16 +19,17 @@ export const useGetUserBlogs = (userId) => {
 };
 
 export const useGetAllBlogs = () => {
-    return useMutation(
-        getAllBlogs,
-        {
-            onSuccess: () => {
-                queryClient.invalidateQueries('all-blogs');
-            },
-            onError: (error) => {
-                console.error('Error while fetching all blogs', error);
-            }
-        })
+    const queryClient = useQueryClient();
+    return useQuery({
+        queryKey: 'all-blogs',
+        queryFn: getAllBlogs,
+        onSuccess: () => {
+          console.log('Successfully fetched all blogs');
+        },
+        onError: (error) => {
+          console.error('Error fetching blogs:', error);
+        }
+      });
 };
 
 export const useUpdateBlog = (blogId) => {

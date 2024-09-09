@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server:{
     proxy:{
-      '/api': 'http://localhost:8000'
+      '/blogapi': 'http://localhost:8000'
     }
   },
   resolve: {
