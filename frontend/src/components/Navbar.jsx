@@ -46,8 +46,8 @@ const Navbar = () => {
                         Contact
                     </Link>
                     <div className="flex items-center">
-                        <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50" variant="outline" >Login</Button>
-                        <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50" variant="outline">Signup</Button>
+                        <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
+                        <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
                     </div>
                     <div className="flex items-center">
             <div
