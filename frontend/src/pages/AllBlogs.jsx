@@ -2,8 +2,15 @@ import React, { useEffect } from 'react'
 import { useGetAllBlogs } from '@/hooks/blogs.hook'
 import { data } from 'autoprefixer';
 const AllBlogs = () => {
-    const { data, error, isLoading } = useGetAllBlogs();
-    console.log(data);
+    const { data, error, isLoading,isFetching } = useGetAllBlogs();
+    if(isFetching)
+        console.log("Fetching");
+    if(isLoading) console.log("Loading..");
+    if(error){
+        console.log(error);
+        
+    }
+    console.log(data.docs);
     
     return (
         <div>

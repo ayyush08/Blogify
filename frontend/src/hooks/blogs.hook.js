@@ -1,12 +1,12 @@
 import { getUserBlogs, getAllBlogs, updateBlog, uploadBlog, deleteBlog } from "../apis/blogs.api";
 
-import {useQueryClient, useMutation,useQuery } from "@tanstack/react-query";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 // const queryClient = useQueryClient();
 
 export const useGetUserBlogs = (userId) => {
     return useMutation(
-        ()=>getUserBlogs(userId),
+        () => getUserBlogs(userId),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries('current-user-blogs');
@@ -21,30 +21,24 @@ export const useGetUserBlogs = (userId) => {
 export const useGetAllBlogs = () => {
     const queryClient = useQueryClient();
     return useQuery({
-        queryKey: 'all-blogs',
-        queryFn: getAllBlogs,
-        onSuccess: () => {
-          console.log('Successfully fetched all blogs');
-        },
-        onError: (error) => {
-          console.error('Error fetching blogs:', error);
-        }
-      });
+        queryKey: ['all-blogs'],
+        queryFn: ()=>getAllBlogs(),
+    });
 };
 
 export const useUpdateBlog = (blogId) => {
     const queryClient = useQueryClient();
     return useMutation(
-        (newData)=>updateBlog(blogId,newData),{
+        (newData) => updateBlog(blogId, newData), {
         onMutate: async (newData) => {
-                await queryClient.cancelQueries('current-user-blog');
-                const previousData = queryClient.getQueryData('current-user-blog');
-                queryClient.setQueryData('current-user-blog', (oldBlogs) => {
-                    return oldBlogs.map((blog) => 
-                        blog._id === blogId ? { ...blog, ...newData } : blog
-                    );
-                });
-                return { previousData };
+            await queryClient.cancelQueries('current-user-blog');
+            const previousData = queryClient.getQueryData('current-user-blog');
+            queryClient.setQueryData('current-user-blog', (oldBlogs) => {
+                return oldBlogs.map((blog) =>
+                    blog._id === blogId ? { ...blog, ...newData } : blog
+                );
+            });
+            return { previousData };
         },
         onError: (_error, _newData, context) => {
             queryClient.setQueryData('current-user-blog', context.previousData);
@@ -62,7 +56,7 @@ export const useUploadBlog = () => {
     return useMutation(
         (blogData) => uploadBlog(userId, blogData),
         {
-            onMutate:async(blogData) => {
+            onMutate: async (blogData) => {
                 await queryClient.cancelQueries('current-user-blogs');
                 const previousData = queryClient.getQueryData('current-user-blogs');
                 queryClient.setQueryData('current-user-blogs', (oldBlogs) => {
@@ -84,7 +78,7 @@ export const useDeleteBlog = (blogId) => {
     const queryClient = useQueryClient();
 
     return useMutation(
-        ()=>deleteBlog(blogId),
+        () => deleteBlog(blogId),
         {
             onMutate: async (blogId) => {
                 await queryClient.cancelQueries('current-user-blogs');

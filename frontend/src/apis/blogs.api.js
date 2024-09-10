@@ -4,8 +4,12 @@ import {API} from '../utils/axiosInterceptor.js';
 
 export const getUserBlogs = async (userId) => {
     try {
-        const {data} = await API.get(`/blogapi/v1/blogs/user/${userId}`);
+        const {data} = await API.get(`/blogapi/v1/blogs/user/${userId}`,
+                { withCredentials:true}
+        );
         toast.success(data?.message);
+        // console.log(data?.docs);
+        
         return data?.docs;
     } catch (error) {
         toast.error(error?.response?.data?.message);
@@ -37,7 +41,7 @@ export const updateBlog = async (blogId, blogData) => {
 
 export const deleteBlog = async (blogId) => {
     try {
-        const {data} = await API.delete(`/api/blogs/${blogId}`);
+        const {data} = await API.delete(`/blogapi/v1/blogs/${blogId}`);
         toast.success(data?.message);
         return data;
     } catch (error) {
@@ -48,9 +52,12 @@ export const deleteBlog = async (blogId) => {
 
 export const getAllBlogs = async () => {
     try {
-        const {data} = await API.get(`/api/blogs/fetchBlogs`);
+        const {data} = await API.get('/blogapi/v1/blogs/fetchBlogs',{
+            withCredentials:true
+        });
         toast.success(data?.message);
-        return data?.docs;
+        console.log(data?.data);       
+        return data?.data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;
