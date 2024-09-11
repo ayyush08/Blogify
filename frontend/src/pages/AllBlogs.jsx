@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { useGetAllBlogs } from '@/hooks/blogs.hook'
+import Card from '@/components/Card'
 const AllBlogs = () => {
-    const { data, error, isLoading,isFetching } = useGetAllBlogs();
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const { data, error, isLoading,isFetching } = useGetAllBlogs(page,limit);
     if(isFetching)
         return <div>Fetching...</div>
     if(isLoading){
@@ -11,13 +14,17 @@ const AllBlogs = () => {
         console.log(error);
         
     }
-    // const {docs} = data
-    console.log(data.docs);
+
+    console.log(data);
     
     return (
-        <div>
-            These are all blogs
-        </div>
+        <>
+        {
+            data?.docs?.map((blog) => (
+                <Card key={blog._id} {...blog} />))
+        }
+        </>
+
     )
 }
 

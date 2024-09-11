@@ -23,6 +23,8 @@ export const useGetAllBlogs = (page=1,limit=10) => {
     return useQuery({
         queryKey: ['all-blogs',page,limit],
         queryFn: ()=>getAllBlogs(page,limit),
+        staleTime: 1000*60*5,
+        cacheTime: 1000*60*5,
     });
 };
 
