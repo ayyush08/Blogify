@@ -1,6 +1,9 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import {API} from '../utils/axiosInterceptor.js';
+// import {API} from '../utils/axiosInterceptor.js';
+import { BASE_URL } from '@/constants.js';
+const API = axios.create({ baseURL: BASE_URL,
+    withCredentials: true });
 
 export const getUserBlogs = async (userId) => {
     try {
@@ -8,7 +11,6 @@ export const getUserBlogs = async (userId) => {
                 { withCredentials:true}
         );
         toast.success(data?.message);
-        // console.log(data?.docs);
         
         return data?.docs;
     } catch (error) {
@@ -50,13 +52,10 @@ export const deleteBlog = async (blogId) => {
     }
 }
 
-export const getAllBlogs = async () => {
+export const getAllBlogs = async (page=1,limit=10) => {
     try {
-        const {data} = await API.get('/blogapi/v1/blogs/fetchBlogs',{
-            withCredentials:true
-        });
-        toast.success(data?.message);
-        console.log(data?.data);       
+        const {data} = await API.get(`/blogapi/v1/blogs/fetchBlogs?page=${page}&limit=${limit}`);
+        toast.success(data?.message);      
         return data?.data;
     } catch (error) {
         toast.error(error?.response?.data?.message);

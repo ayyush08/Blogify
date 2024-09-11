@@ -18,11 +18,11 @@ export const useGetUserBlogs = (userId) => {
     )
 };
 
-export const useGetAllBlogs = () => {
+export const useGetAllBlogs = (page=1,limit=10) => {
     const queryClient = useQueryClient();
     return useQuery({
-        queryKey: ['all-blogs'],
-        queryFn: ()=>getAllBlogs(),
+        queryKey: ['all-blogs',page,limit],
+        queryFn: ()=>getAllBlogs(page,limit),
     });
 };
 

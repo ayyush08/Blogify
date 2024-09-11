@@ -10,7 +10,6 @@ const Navbar = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
     const [theme, setTheme] = useState('light');
-    // const pathname = window.location.pathname;
     const handleThemeChange = () => {
         setRotateState(!rotateState);
         if (theme === 'light') {
