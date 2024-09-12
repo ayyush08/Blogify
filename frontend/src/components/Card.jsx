@@ -1,6 +1,9 @@
 import React from 'react'
-
-const Card = ({ _id, title, content, description, avatar, ownerDetails,onClick }) => {
+import CardLoader from './ui/CardLoader'
+const Card = ({ _id, title, content, description, avatar, ownerDetails,onClick,isFetching,isLoading }) => {
+    if(isLoading || isFetching){
+        return <CardLoader/>
+    }
     return (
         <div onClick={onClick} className="max-w-sm  cursor-pointer w-[80%] md:w-[35%] rounded-lg overflow-hidden shadow-lg shadow-teal-300 dark:shadow-gray-300 dark:border-green-800  border-green-300 border-4 p-4 bg-slate-300 dark:bg-[#31d0d0] transition duration-500 ease-in-out hover:scale-[1.05] dark:text-black ">
             <div className="flex items-center mb-4">

@@ -11,12 +11,18 @@ const AllBlogs = () => {
     const navigate = useNavigate();
     useEffect(() => {
         if (data?.docs) {
-            console.log(data.docs);
-            
-            setBlogs(prevBlogs => [...prevBlogs, ...data.docs]);
+            if (page === 1) {
+                // For the initial page, replace the blogs
+                setBlogs(data.docs);
+            } else {
+                // For subsequent pages, append the new blogs
+                setBlogs(prevBlogs => [...prevBlogs, ...data.docs]);
+            }
         }
-    }, [data]);
+    }, [data, page]);
     const handleShowMore = (e) => {
+        console.log('Show more clicked');
+        
         e.preventDefault();
         setPage(prevPage => prevPage + 1);
     };
@@ -36,9 +42,9 @@ const AllBlogs = () => {
         <div className='flex flex-col flex-wrap md:gap-5 gap-3 justify-center items-center md:flex-row p-10'> 
         {
             blogs.map((blog) => (
-                <Card onClick={()=>handleCardClick(blog._id)} key={blog._id} {...blog} />))
+                <Card onClick={()=>handleCardClick(blog._id)} key={blog._id} {...blog} isFetching={isFetching} isLoading={isLoading} />))
             }
-            {(isLoading || isFetching) && <CardLoader />}
+            {/* {(isLoading || isFetching) && <CardLoader />} */}
             </div>
             <div className='flex justify-center '>
                 <button 

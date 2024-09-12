@@ -2,14 +2,16 @@ import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import Navbar from './Navbar.jsx'
 import Footer from './Footer.jsx'
+
 const SharedLayout = () => {
     return (
-        <>
-
+        <div className="flex flex-col min-h-screen">
             <Navbar />
-            <Outlet />
-            <Footer/>
-        </>
+            <main className="flex-grow">
+                <Outlet />
+            </main>
+            <Footer />
+        </div>
     )
 }
 
