@@ -1,4 +1,4 @@
-import { getUserBlogs, getAllBlogs, updateBlog, uploadBlog, deleteBlog } from "../apis/blogs.api";
+import { getUserBlogs, getAllBlogs, updateBlog, uploadBlog, deleteBlog,getBlogById } from "../apis/blogs.api";
 
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
@@ -99,3 +99,12 @@ export const useDeleteBlog = (blogId) => {
         }
     )
 }
+
+export const useGetBlogById = (blogId) => {
+    return useQuery({
+        queryKey: ['current-user-blog', blogId],
+        queryFn: () => getBlogById(blogId),
+        staleTime: 1000 * 60 * 5,
+        cacheTime: 1000 * 60 * 5,
+    });
+};

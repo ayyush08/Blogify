@@ -62,3 +62,14 @@ export const getAllBlogs = async (page=1,limit=10) => {
         throw error?.response?.data?.message;
     }
 }
+
+export const getBlogById = async (blogId) => {
+    try {
+        const {data} = await API.get(`/blogapi/v1/blogs/${blogId}`);
+        toast.success(data?.message);
+        return data?.data;
+    } catch (error) {
+        toast.error(error?.response?.data?.message);
+        throw error?.response?.data?.message;
+    }
+}

@@ -1,29 +1,55 @@
 import React, { useEffect,useState } from 'react'
 import { useGetAllBlogs } from '@/hooks/blogs.hook'
 import Card from '@/components/Card'
+import CardLoader from '@/components/ui/CardLoader'
+import { useNavigate } from 'react-router-dom'
 const AllBlogs = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
+    const [blogs, setBlogs] = useState([]);
     const { data, error, isLoading,isFetching } = useGetAllBlogs(page,limit);
-    if(isFetching)
-        return <div>Fetching...</div>
-    if(isLoading){
-        return <div>Loading...</div>
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (data?.docs) {
+            console.log(data.docs);
+            
+            setBlogs(prevBlogs => [...prevBlogs, ...data.docs]);
+        }
+    }, [data]);
+    const handleShowMore = (e) => {
+        e.preventDefault();
+        setPage(prevPage => prevPage + 1);
+    };
+
+    const handleCardClick = (id) => {
+        navigate(`/blog/${id}`);
+        console.log('card clicked', id);
+        
     }
     if(error){
         console.log(error);
-        
+        return <div className="text-red-500">An error occurred while fetching blogs.</div>;
     }
-
-    console.log(data);
     
     return (
-        <>
+        <section className='bg-teal-50 dark:bg-teal-800 p-5'>
+        <div className='flex flex-col flex-wrap md:gap-5 gap-3 justify-center items-center md:flex-row p-10'> 
         {
-            data?.docs?.map((blog) => (
-                <Card key={blog._id} {...blog} />))
-        }
-        </>
+            blogs.map((blog) => (
+                <Card onClick={()=>handleCardClick(blog._id)} key={blog._id} {...blog} />))
+            }
+            {(isLoading || isFetching) && <CardLoader />}
+            </div>
+            <div className='flex justify-center '>
+                <button 
+                    onClick={handleShowMore} 
+                    className='px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition duration-300'
+                    disabled={isFetching}
+                >
+                    {isFetching ? 'Loading...' : 'Show More'}
+                </button>
+            </div>
+        </section>
 
     )
 }

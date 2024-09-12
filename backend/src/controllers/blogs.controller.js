@@ -187,10 +187,25 @@ const getAllBlogs = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(200,allBlogs,'Blogs retrieved successfully'))
 })
 
+const getBlogById = asyncHandler(async(req,res)=>{
+    const {blogId} = req.params;
+    if(!isValidObjectId(blogId)){
+        throw new ApiError(400,'Invalid blog id')
+    }
+    const blog = await Blogs.findById(blogId);
+    if(!blog){
+        throw new ApiError(404,'Blog not found')
+    }
+    return res
+    .status(200)
+    .json(new ApiResponse(200,blog,'Blog retrieved successfully'))
+})
+
 export {
     uploadBlog,
     updateBlogContent,
     deleteBlog,
     getUserBlogs,
-    getAllBlogs
+    getAllBlogs,
+    getBlogById
 }
