@@ -15,8 +15,8 @@ function App() {
         <Routes>
           <Route path="/" element={<SharedLayout />}>
           <Route path='/' element={<LandingPage />} />
-          </Route>
           <Route path='/blog/:id' element={<Blog/>} />
+          </Route>
         </Routes>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
