@@ -192,13 +192,42 @@ const getBlogById = asyncHandler(async(req,res)=>{
     if(!isValidObjectId(blogId)){
         throw new ApiError(400,'Invalid blog id')
     }
+    const aggregate = [
+        {
+            $match:{
+                _id: new mongoose.Types.ObjectId(blogId)
+            }
+        },
+        {
+            $lookup:{
+                from:'users',
+                localField:'owner',
+                foreignField:'_id',
+                as:'ownerDetails'
+            }
+        },
+        {
+            $unwind:'$ownerDetails'
+        },
+        {
+            $project:{
+                title:1,
+                content:1,
+                description:1,
+                'ownerDetails.username':1,
+                'ownerDetails.avatar':1,
+                createdAt:1
+            }
+        }
+    ]
     const blog = await Blogs.findById(blogId);
     if(!blog){
         throw new ApiError(404,'Blog not found')
     }
+    const blogDetails = await Blogs.aggregate(aggregate);
     return res
     .status(200)
-    .json(new ApiResponse(200,blog,'Blog retrieved successfully'))
+    .json(new ApiResponse(200,blogDetails[0],'Blog retrieved successfully'))
 })
 
 export {

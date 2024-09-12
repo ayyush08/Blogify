@@ -4,7 +4,7 @@ import { useGetBlogById } from '@/hooks/blogs.hook';
 const Blog = () => {
     const {id} = useParams();
     const {data, error, isLoading,isFetching} = useGetBlogById(id);
-    // const {_id,title, body} = blogDetails;
+    // const {title, content,description,thumbnail} = data;
     if(isLoading || isFetching){
         return <div>Loading...</div>;
     }
