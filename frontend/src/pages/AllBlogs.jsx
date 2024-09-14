@@ -1,7 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import { useGetAllBlogs } from '@/hooks/blogs.hook'
 import Card from '@/components/Card'
-import CardLoader from '@/components/ui/CardLoader'
 import { useNavigate } from 'react-router-dom'
 const AllBlogs = () => {
     const [page, setPage] = useState(1);

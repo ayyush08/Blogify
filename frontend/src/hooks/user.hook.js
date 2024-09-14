@@ -23,12 +23,15 @@ export const useLoginUser = () => {
 }  
 
 export const useLogoutUser = () => {
-    return useMutation(logoutUser, {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn:()=> logoutUser(),
         onSuccess: () => {
-            queryClient.cancelQueries('current-user');
+            queryClient.removeQueries('current-user');
         },
+        retry:0,
         onError: (error) => {
-            console.error('Error while logging out a user',error);
+            console.error('Error while logging out',error);
         }
     });
 }

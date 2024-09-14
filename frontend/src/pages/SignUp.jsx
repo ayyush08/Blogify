@@ -48,6 +48,8 @@ const SignUp = () => {
                     email: data.email,
                     password: data.password,
                 });
+                console.log(loggedInUser);
+                
                 if (loggedInUser) {
                     dispatch(login(loggedInUser));
                     navigate("/");
@@ -174,7 +176,7 @@ const SignUp = () => {
                                     onClick={togglePasswordVisibility}
                                     className="absolute top-[40px] right-0 pr-3 flex items-center cursor-pointer"
                                 >
-                                    {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                                   {passwordVisible ? <FaEyeSlash style={{color:'black'}} /> : <FaEye style={{color:'black'}} />}
                                 </span>
                             </div>
 

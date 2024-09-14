@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import { Button } from './ui/button';
 import { TiAdjustBrightness } from "react-icons/ti";
-import { login } from '@/store/authSlice';
-import { useSelector } from 'react-redux';
+import { logout } from '@/store/authSlice';
+import { useLogoutUser } from '@/hooks/user.hook';
+import { useSelector,useDispatch } from 'react-redux';
+
 const Navbar = () => {
     const location = useLocation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     console.log(location.pathname);
-    
+    const { mutateAsync: logoutUser } = useLogoutUser();
     const authStatus = useSelector(state => state.auth);
-    if(authStatus){
+    console.log(authStatus);
+    if (authStatus) {
         console.log('Logged in');
     }
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,7 +36,16 @@ const Navbar = () => {
         }
     }
 
-
+    const handleLogOut = () => {  
+        logoutUser().then((data) => {
+            console.log(data);
+            if (data) {
+                console.log('Logged out');
+            }
+        });
+        dispatch(logout());
+        navigate('/')
+        }
     return (
         <nav className="p-4 bg-teal-200/70 dark:bg-teal-900/70 font-motserrat sticky top-0 backdrop-blur border-b border-gray-300 dark:border-teal-700 z-10">
             <div className="container mx-auto flex justify-between items-center">
@@ -54,29 +68,32 @@ const Navbar = () => {
                     <Link to="/contact" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         Contact
                     </Link>
-                    {!authStatus&&
-                    <div className="flex items-center">
-                        {
-                            location.pathname === '/login' ? null : <Link to="login">
-                        <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
+                    {!authStatus.status &&
+                        <div className="flex items-center">
+                            {
+                                location.pathname === '/login' ? null : <Link to="login">
+                                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
                                 </Link>
-                        }
-                        {
-                            location.pathname === '/signup' ? null : <Link to="signup">
-                                <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
-                            </Link>
-                        }
-                    </div>
+                            }
+                            {
+                                location.pathname === '/signup' ? null : <Link to="signup">
+                                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
+                                </Link>
+                            }
+                        </div>
                     }
                     {
-                        authStatus&&
-                    (<div className="flex items-center">
-                        {
-                            location.pathname === '/dashboard' ? null : <Link to="dashboard">
-                                <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
-                            </Link>
-                        }
-                    </div>)
+                        authStatus.status &&
+                        (<div className="flex items-center">
+                            {
+                                location.pathname === '/dashboard' ? null : <Link to="dashboard">
+                                    <Button className="mx-1 dark:bg-teal-600 rounded-full bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
+                                </Link>
+                            }
+                            {
+                                    <button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</button>
+                            }
+                        </div>)
                     }
                     <div className="flex items-center">
                         <div
