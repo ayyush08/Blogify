@@ -12,7 +12,7 @@ const SignUp = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [profileImage, setProfileImage] = useState('https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png');
-    const { mutateAsync: registerUser } = useRegisterUser();
+    const { mutateAsync: registerUser,isPending } = useRegisterUser();
     const { mutateAsync: loginUser } = useLoginUser();
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -63,15 +63,14 @@ const SignUp = () => {
                 toast.error("An error occurred while registering the user.")
             }
         } catch (error) {
-            console.log(error);
-            
+            console.log(error);    
             toast.error("An error occurred while registering the user.")
             
         }
         };
         return (
             <div>
-                <div className="flex mx-auto p-2 items-center justify-center dark:bg-teal-900">
+                <div className="flex mx-auto p-2 min-h-[80vh] items-center justify-center dark:bg-teal-900">
                     <Toaster />
                     <div className="max-w-md w-full p-8 rounded-lg shadow-2xl shadow-accent-foreground">
                         <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100 font-mono text-center">Sign Up</h2>
@@ -130,7 +129,7 @@ const SignUp = () => {
                                     })}
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-white dark:border-gray-600 dark:text-black"
                                 />
-                                {errors.username && toast.error(errors.username.message)}
+                                {errors.username && <div className="text-red-500">{errors.username.message}</div>}
                             </div>
 
                             {/* Fullname Field */}
@@ -145,7 +144,7 @@ const SignUp = () => {
                                     })}
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-white dark:border-gray-600 dark:text-black"
                                 />
-                                {errors.fullName && toast.error(errors.fullName.message)}
+                                {errors.fullName && <div className="text-red-500">{errors.fullName.message}</div>}
                             </div>
 
                             {/* Email Field */}
@@ -156,7 +155,7 @@ const SignUp = () => {
                                     {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-white dark:border-gray-600 dark:text-black"
                                 />
-                                {errors.email && toast.error(errors.email.message)}
+                                {errors.email && <div className="text-red-500">Email is required</div>}
                             </div>
 
                             {/* Password Field */}
@@ -171,12 +170,12 @@ const SignUp = () => {
                                     })}
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-white dark:border-gray-600 dark:text-black"
                                 />
-                                {errors.password && toast.error(errors.password.message)}
+                                {errors.password && <div className="text-red-500">{errors.password.message}</div>}
                                 <span
                                     onClick={togglePasswordVisibility}
                                     className="absolute top-[40px] right-0 pr-3 flex items-center cursor-pointer"
                                 >
-                                   {passwordVisible ? <FaEyeSlash style={{color:'black'}} /> : <FaEye style={{color:'black'}} />}
+                                    {passwordVisible ? <FaEyeSlash style={{color:'black'}} /> : <FaEye style={{color:'black'}} />}
                                 </span>
                             </div>
 
@@ -185,7 +184,7 @@ const SignUp = () => {
                                 type="submit"
                                 className="w-full font-sans bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                                {isSubmitting ? 'Loading...' : 'Sign Up'}
+                                {isSubmitting || isPending ? 'Creating account...' : 'Sign Up'}
                             </button>
                         </form>
                     </div>

@@ -12,7 +12,7 @@ const Login = () => {
     const { register, handleSubmit, formState: { errors }, isSubmitting } = useForm();
     const [passwordVisible, setPasswordVisible] = useState(false);
     const navigate = useNavigate();
-    const { mutateAsync: loginUser } = useLoginUser();
+    const { mutateAsync: loginUser,isPending } = useLoginUser();
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -27,7 +27,6 @@ const Login = () => {
             
             if (loggedInUser) {
                 dispatch(login(loggedInUser));
-                toast.success('Logged in successfully!');
                 navigate('/');
             } else {
                 toast.error('Invalid login credentials.');
@@ -39,7 +38,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex mx-auto p-2 items-center justify-center dark:bg-teal-900">
+        <div className="flex mx-auto min-h-[80vh] p-2 items-center justify-center dark:bg-teal-900">
             <Toaster />
             <div className="max-w-md w-full p-8 rounded-lg shadow-2xl shadow-accent-foreground">
                 <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100 font-mono text-center">Login</h2>
@@ -53,7 +52,7 @@ const Login = () => {
                             {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-white dark:border-gray-600 dark:text-black"
                         />
-                        {errors.email && toast.error('Invalid email format.')}
+                        {errors.email && <div className="text-red-500">Email is required</div>}
                     </div>
 
                     {/* Password Field */}
@@ -68,7 +67,7 @@ const Login = () => {
                             })}
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-white dark:border-gray-600 dark:text-black"
                         />
-                        {errors.password && toast.error(errors.password.message)}
+                        {errors.password && <div className="text-red-500">{errors.password.message}</div>}
                         <span
                             onClick={togglePasswordVisibility}
                             className="absolute top-[40px] right-0 pr-3 flex items-center cursor-pointer"
@@ -82,7 +81,7 @@ const Login = () => {
                         type="submit"
                         className="w-full font-sans bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        {isSubmitting ? 'Logging in...' : 'Login'}
+                        {isSubmitting||isPending ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
             </div>
