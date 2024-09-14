@@ -4,6 +4,7 @@ import {BrowserRouter,Route,Routes} from 'react-router-dom'
 import SharedLayout from './components/SharedLayout'
 import LandingPage from './pages/LandingPage'
 import Blog from './pages/Blog'
+import SignUp from './pages/SignUp'
 const queryClient = new QueryClient()
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<SharedLayout />}>
           <Route path='/' element={<LandingPage />} />
           <Route path='/blog/:id' element={<Blog/>} />
+          <Route path='/signup' element={<SignUp/>} />
           </Route>
         </Routes>
       </BrowserRouter>

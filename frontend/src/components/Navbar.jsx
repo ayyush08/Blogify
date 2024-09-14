@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import { Button } from './ui/button';
 import { TiAdjustBrightness } from "react-icons/ti";
 
 const Navbar = () => {
+    const location = useLocation();
+    console.log(location.pathname);
+    
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [rotateState, setRotateState] = useState(false);
     const toggleMobileMenu = () => {
@@ -47,7 +51,11 @@ const Navbar = () => {
                     </Link>
                     <div className="flex items-center">
                         <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
-                        <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
+                        {
+                            location.pathname === '/signup' ? null : <Link to="signup">
+                            <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
+                            </Link>
+}
                     </div>
                     <div className="flex items-center">
             <div

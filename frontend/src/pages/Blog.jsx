@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
 import { useGetBlogById } from '@/hooks/blogs.hook';
+import { Toaster } from 'react-hot-toast';
 const Blog = () => {
     const {id} = useParams();
     const {data, error, isLoading,isFetching} = useGetBlogById(id);
@@ -9,7 +10,7 @@ const Blog = () => {
     
     const {title, content,description,thumbnail,ownerDetails} = {...data};
     if(isLoading || isFetching){
-        return <div>Loading...</div>;
+        return <BlogSkeleton/>;
     }
     if(error){
         return <div>An error occurred while fetching blog.</div>;
@@ -18,6 +19,7 @@ const Blog = () => {
     
     return (
         <div className="bg-teal-100 dark:bg-[#03524c] p-5 min-h-screen">
+            
             <div className="max-w-4xl mx-auto">
                 <div className="flex flex-col items-center">
                     <h1 className="text-4xl md:text-5xl uppercase tracking-wide font-extrabold  text-teal-900 dark:text-teal-300 text-center mb-5 font-mono">{title}</h1>
