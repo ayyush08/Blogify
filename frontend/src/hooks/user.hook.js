@@ -2,28 +2,23 @@ import {useQuery,useQueryClient,useMutation} from '@tanstack/react-query'
 import { registerUser,loginUser,logoutUser,getUserProfile } from '../apis/user.api'
 
 
-const queryClient = useQueryClient()
 
 
 export const useRegisterUser = () => {
-    return useMutation(registerUser, {
-        onSuccess: () => {
-            queryClient.invalidateQueries('current-user');
-        },
-        onError: (error) => {
-            console.error('Error while registering a user',error);
-        }
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: (newUser) => registerUser(newUser)
     });
 }
 
 export const useLoginUser = () => {
-    return useMutation(loginUser, {
-        onSuccess: () => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: (userData)=>loginUser(userData),
+        onSuccess: (userData) => {
             queryClient.invalidateQueries('current-user');
         },
-        onError: (error) => {
-            console.error('Error while logging in a user',error);
-        }
+        retry:0
     });
 }  
 

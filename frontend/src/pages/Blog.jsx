@@ -19,7 +19,7 @@ const Blog = () => {
     
     return (
         <div className="bg-teal-100 dark:bg-[#03524c] p-5 min-h-screen">
-            
+            <Toaster/>
             <div className="max-w-4xl mx-auto">
                 <div className="flex flex-col items-center">
                     <h1 className="text-4xl md:text-5xl uppercase tracking-wide font-extrabold  text-teal-900 dark:text-teal-300 text-center mb-5 font-mono">{title}</h1>

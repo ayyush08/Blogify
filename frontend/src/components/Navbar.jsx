@@ -7,7 +7,7 @@ import { TiAdjustBrightness } from "react-icons/ti";
 
 const Navbar = () => {
     const location = useLocation();
-    console.log(location.pathname);
+    // console.log(location.pathname);
     
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [rotateState, setRotateState] = useState(false);
