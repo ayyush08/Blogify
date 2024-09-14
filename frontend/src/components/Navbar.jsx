@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 import { Button } from './ui/button';
 import { TiAdjustBrightness } from "react-icons/ti";
 
@@ -35,9 +36,9 @@ const Navbar = () => {
                     <Link to="/" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         Home
                     </Link>
-                    <Link to="/about" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                    <ScrollLink to='about' duration={500} smooth={true} className=" cursor-pointer hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         About
-                    </Link>
+                    </ScrollLink>
                     <Link to="/blog" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         Blog
                     </Link>
