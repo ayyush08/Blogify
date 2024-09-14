@@ -5,6 +5,8 @@ import SharedLayout from './components/SharedLayout'
 import LandingPage from './pages/LandingPage'
 import Blog from './pages/Blog'
 import SignUp from './pages/SignUp'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
 const queryClient = new QueryClient()
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
           <Route path='/' element={<LandingPage />} />
           <Route path='/blog/:id' element={<Blog/>} />
           <Route path='/signup' element={<SignUp/>} />
+          <Route path='/login' element={<Login/>} />
+          <Route path='/dashboard' element={<Dashboard/>} />
           </Route>
         </Routes>
       </BrowserRouter>
