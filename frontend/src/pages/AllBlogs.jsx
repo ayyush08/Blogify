@@ -27,6 +27,7 @@ const AllBlogs = () => {
     };
 
     const handleCardClick = (id) => {
+        
         navigate(`/blog/${id}`);
         console.log('card clicked', id);
         
@@ -41,6 +42,7 @@ const AllBlogs = () => {
         <div className='flex flex-col flex-wrap md:gap-5 gap-3 justify-center items-center md:flex-row p-10'> 
         {
             blogs.map((blog) => (
+                
                 <Card onClick={()=>handleCardClick(blog._id)} key={blog._id} {...blog} isFetching={isFetching} isLoading={isLoading} />))
             }
             {/* {(isLoading || isFetching) && <CardLoader />} */}

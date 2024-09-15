@@ -131,7 +131,7 @@ const getUserBlogs = asyncHandler(async(req,res)=>{
         page:parseInt(page,10) || 1,
         limit:parseInt(limit,10) || 10
     }
-    const blogs = await Blogs.aggregatePaginate(Blogs.aggregate(aggregation,options));
+    const blogs = await Blogs.aggregatePaginate(Blogs.aggregate(aggregation),options);
     
     if(!blogs){
         throw new ApiError(404,'User blogs not found')

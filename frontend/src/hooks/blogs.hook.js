@@ -2,19 +2,20 @@ import { getUserBlogs, getAllBlogs, updateBlog, uploadBlog, deleteBlog,getBlogBy
 
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
-// const queryClient = useQueryClient();
 
-export const useGetUserBlogs = (userId) => {
+export const useGetUserBlogs = (userId,page=1,limit=10) => {
+    const queryClient = useQueryClient();
     return useMutation(
-        () => getUserBlogs(userId),
         {
-            onSuccess: () => {
+            mutationFn: (userId,page,limit) => getUserBlogs(userId,page,limit),
+            mutationKey: ['current-user-blogs', userId],
+            onError: (_error, _newData, context) => {
+                queryClient.setQueryData('current-user-blogs', context.previousData);
+            },
+            onSettled: () => {
                 queryClient.invalidateQueries('current-user-blogs');
             },
-            onError: (error) => {
-                console.error('Error while fetching user blogs', error);
-            }
-        },
+        }
     )
 };
 

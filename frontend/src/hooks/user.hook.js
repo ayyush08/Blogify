@@ -38,9 +38,9 @@ export const useLogoutUser = () => {
 
 
 export const useUserProfile = () => {
-    return useQuery('current-user', getUserProfile, {
-        onError: (error) => {
-            console.error('Error while fetching user profile',error);
-        }
+    return useQuery({
+        queryKey: ['current-user'],
+        queryFn: getUserProfile,
+        retry:0,
     });
 }

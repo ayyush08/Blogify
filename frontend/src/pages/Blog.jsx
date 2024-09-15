@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
 import { useGetBlogById } from '@/hooks/blogs.hook';
@@ -6,8 +6,11 @@ import { Toaster } from 'react-hot-toast';
 const Blog = () => {
     const {id} = useParams();
     const {data, error, isLoading,isFetching} = useGetBlogById(id);
+    if(data)
     console.log(data);
-    
+    useEffect(()=>{
+        window.scrollTo(0,0);
+    },[id]);
     const {title, content,description,thumbnail,ownerDetails} = {...data};
     if(isLoading || isFetching){
         return <BlogSkeleton/>;
@@ -18,7 +21,8 @@ const Blog = () => {
 
     
     return (
-        <div className="bg-teal-100 dark:bg-[#03524c] p-5 min-h-screen">
+        
+        <div id='blog' className="bg-teal-100 dark:bg-[#03524c] p-5 min-h-full">
             <Toaster/>
             <div className="max-w-4xl mx-auto">
                 <div className="flex flex-col items-center">

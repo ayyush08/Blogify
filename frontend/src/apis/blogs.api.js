@@ -5,11 +5,9 @@ import { BASE_URL } from '@/constants.js';
 const API = axios.create({ baseURL: BASE_URL,
     withCredentials: true });
 
-export const getUserBlogs = async (userId) => {
+export const getUserBlogs = async (userId,page=1,limit=10) => {
     try {
-        const {data} = await API.get(`/blogapi/v1/blogs/user/${userId}`,
-                { withCredentials:true}
-        );
+        const {data} = await API.get(`/blogapi/v1/blogs/user/${userId}?page=${page}&limit=${limit}`);
         toast.success(data?.message);
         
         return data?.docs;

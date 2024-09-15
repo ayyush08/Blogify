@@ -62,9 +62,6 @@ const Navbar = () => {
                     <ScrollLink to='about' duration={500} smooth={true} className=" cursor-pointer hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         About
                     </ScrollLink>
-                    <Link to="/blog" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
-                        Blog
-                    </Link>
                     <Link to="/contact" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         Contact
                     </Link>
@@ -131,16 +128,37 @@ const Navbar = () => {
                 <Link to="/about" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     About
                 </Link>
-                <Link to="/blog" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
-                    Blog
-                </Link>
+                
                 <Link to="/contact" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     Contact
                 </Link>
-                <div>
-                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50" variant="outline">Login</Button>
-                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50" variant="outline">Signup</Button>
-                </div>
+                {!authStatus.status &&
+                        <div className="flex items-center">
+                            {
+                                location.pathname === '/login' ? null : <Link to="login">
+                                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
+                                </Link>
+                            }
+                            {
+                                location.pathname === '/signup' ? null : <Link to="signup">
+                                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
+                                </Link>
+                            }
+                        </div>
+                    }
+                    {
+                        authStatus.status &&
+                        (<div className="flex items-center">
+                            {
+                                location.pathname === '/dashboard' ? null : <Link to="dashboard">
+                                    <Button className="mx-1 dark:bg-teal-600 rounded-full bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
+                                </Link>
+                            }
+                            {
+                                    <button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</button>
+                            }
+                        </div>)
+                    }
                 <div className="flex items-center">
                     <div
                         className={`cursor-pointer transition-transform duration-300 ease-in-out transform rota ${rotateState ? 'rotate-45' : '-rotate-45'
