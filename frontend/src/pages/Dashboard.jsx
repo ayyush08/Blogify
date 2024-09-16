@@ -35,7 +35,7 @@ const Dashboard = () => {
       console.log('User is not authorized');
     }
   }, [authorized]);
-  // console.log(user);
+  console.log(user);
   if(isLoading){
     return <div>Loading...</div>
   }
@@ -43,8 +43,10 @@ const Dashboard = () => {
     return <div>No blogs found</div>
   }
   return (
-    <div>
-      This is dashboard
+    <div className='min-h-screen w-full'>
+      {
+        user.data.username
+      }
     </div>
   );
 };

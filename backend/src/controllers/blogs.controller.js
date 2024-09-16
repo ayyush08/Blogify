@@ -109,15 +109,16 @@ const getUserBlogs = asyncHandler(async(req,res)=>{
             }
         },
         {
-            $unwind:'$owner'
+            $unwind:'$ownerDetails'
         },
         {
             $project:{
                 title:1,
                 content:1,
                 description:1,
-                'owner.username':1,
-                'owner.avatar':1,
+                'ownerDetails._id':1,
+                'ownerDetails.username':1,
+                'ownerDetails.avatar':1,
                 createdAt:1
             }
         },
