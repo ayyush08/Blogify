@@ -5,12 +5,13 @@ import { BASE_URL } from '@/constants.js';
 const API = axios.create({ baseURL: BASE_URL,
     withCredentials: true });
 
-export const getUserBlogs = async (userId,page=1,limit=10) => {
+export const getUserBlogs = async (userId,page,limit) => {
     try {
         const {data} = await API.get(`/blogapi/v1/blogs/user/${userId}?page=${page}&limit=${limit}`);
         toast.success(data?.message);
+        console.log(data.data);
         
-        return data?.docs;
+        return data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;

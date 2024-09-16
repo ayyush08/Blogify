@@ -8,7 +8,6 @@ import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 const queryClient = new QueryClient()
-
 function App() {
 
   return (

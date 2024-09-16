@@ -5,6 +5,7 @@ import { Link as ScrollLink } from 'react-scroll';
 import { Button } from './ui/button';
 import { TiAdjustBrightness } from "react-icons/ti";
 import { logout } from '@/store/authSlice';
+import { persistor } from '@/store/store';
 import { useLogoutUser } from '@/hooks/user.hook';
 import { useSelector,useDispatch } from 'react-redux';
 
@@ -44,6 +45,7 @@ const Navbar = () => {
             }
         });
         dispatch(logout());
+        persistor.purge();
         navigate('/')
         }
     return (

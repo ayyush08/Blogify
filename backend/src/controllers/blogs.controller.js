@@ -97,7 +97,7 @@ const getUserBlogs = asyncHandler(async(req,res)=>{
     const aggregation = [
         {
             $match:{
-                owner:user._id
+                owner: new mongoose.Types.ObjectId(userId)
             }
         },
         {
