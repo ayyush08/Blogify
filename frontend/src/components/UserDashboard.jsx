@@ -13,8 +13,8 @@ const UserProfileDashboard = ({ user, blogs }) => {
             <div className="container mx-auto">
                 {/* Profile Section */}
                 <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-6">
-                    <div className="flex items-center space-x-4">
-                        <img className="w-16 h-16 rounded-full" src={user.avatar} alt="User Profile" />
+                    <div className="flex items-center justify-center space-x-4">
+                        <img className="h-20  w-20 rounded-full" src={user.avatar} alt="User Profile" />
                         <div>
                             <h2 className="text-xl font-semibold text-teal-600 dark:text-teal-400">{user.username}</h2>
                             <p className="text-gray-600 dark:text-gray-400">{user.email}</p>
