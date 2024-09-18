@@ -12,16 +12,9 @@ const Dashboard = () => {
   const {userId:routedUserId} = useParams();
   const storedUser = useSelector(state=> state.auth);
   const loggedInUser = storedUser?.userData?.data?.user?._id;
-  console.log(loggedInUser);
-  console.log(routedUserId);
-  
-  
   const isLoggedInUser = routedUserId === loggedInUser;
-  console.log(isLoggedInUser);
-  
   const userIdToFetch = isLoggedInUser ? loggedInUser : routedUserId ;
   console.log(userIdToFetch);
-  
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [user, setUser] = useState(null);
@@ -45,8 +38,6 @@ const Dashboard = () => {
       setUserLoading(false);
     }
   }, [isLoggedInUser, routedUserId, storedUser?.userData?.data?.user]);
-
-  
   // Fetch user blogs
   const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page, limit);
 
@@ -67,7 +58,7 @@ const Dashboard = () => {
   
   return (
     <div className='min-h-screen w-full'>
-      {/* <UserProfileDashboard user={loggedInUser?storedUser?.userData?.data?.user:visitor} blogs={blogs} /> */}
+      <UserProfileDashboard user={user} blogs={blogs?.docs} />
     </div>
   );
 };
