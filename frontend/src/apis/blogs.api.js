@@ -9,9 +9,9 @@ export const getUserBlogs = async (userId,page,limit) => {
     try {
         const {data} = await API.get(`/blogapi/v1/blogs/user/${userId}?page=${page}&limit=${limit}`);
         toast.success(data?.message);
-        console.log(data.data);
+        console.log(data?.data);
         
-        return data;
+        return data?.data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;

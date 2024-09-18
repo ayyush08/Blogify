@@ -16,10 +16,8 @@ const Navbar = () => {
     console.log(location.pathname);
     const { mutateAsync: logoutUser } = useLogoutUser();
     const authStatus = useSelector(state => state.auth);
-    console.log(authStatus);
-    if (authStatus) {
-        console.log('Logged in');
-    }
+    const currentUser = authStatus?.userData?.data?.user?._id;
+    
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [rotateState, setRotateState] = useState(false);
     const toggleMobileMenu = () => {
@@ -85,7 +83,7 @@ const Navbar = () => {
                         authStatus.status &&
                         (<div className="flex items-center">
                             {
-                                location.pathname === '/dashboard' ? null : <Link to="dashboard">
+                                location.pathname === '/dashboard' ? null : <Link to={`dashboard/${currentUser}`}>
                                     <Button className="mx-1 dark:bg-teal-600 rounded-full bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
                                 </Link>
                             }

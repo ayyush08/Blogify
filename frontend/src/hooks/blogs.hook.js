@@ -9,8 +9,7 @@ export const useGetUserBlogs = (userId,page=1,limit=10) => {
         queryFn: ()=>getUserBlogs(userId,page,limit),
         staleTime: 1000*60*5,
         cacheTime: 1000*60*5,
-        keepPreviousData: true,
-        enabled: !!userId,
+        keepPreviousData: true
         
     })
 };

@@ -1,52 +1,73 @@
 import React, { useEffect,useState } from 'react';
 import { useGetUserBlogs } from '@/hooks/blogs.hook';
 import Card from '@/components/Card';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import authSlice from '@/store/authSlice';
 import { useUserProfile } from '@/hooks/user.hook';
+import UserProfileDashboard from '@/components/UserDashboard';
 import { useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
+  const {userId:routedUserId} = useParams();
+  const storedUser = useSelector(state=> state.auth);
+  const loggedInUser = storedUser?.userData?.data?.user?._id;
+  console.log(loggedInUser);
+  console.log(routedUserId);
+  
+  
+  const isLoggedInUser = routedUserId === loggedInUser;
+  console.log(isLoggedInUser);
+  
+  const userIdToFetch = isLoggedInUser ? loggedInUser : routedUserId ;
+  console.log(userIdToFetch);
+  
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [userBlogs, setUserBlogs] = useState([]);
-  const authorized = useSelector((state) => state.auth);
-  const { data: user } = useUserProfile();
-  const userId = user?.data?._id;
-  console.log(userId);
-  
-  const { data: blogs, isLoading } = useGetUserBlogs(userId, page, limit);
-
-  // Update userBlogs state when blogs data changes
+  const [user, setUser] = useState(null);
+  const [userLoading, setUserLoading] = useState(false);
+  const [userError, setUserError] = useState(null);
   useEffect(() => {
-    if (blogs) {
-      setUserBlogs(blogs?.data?.docs);     
-    }
-    else{
-      setUserBlogs([]);
-    }
-  }, [blogs]);
+    if (!isLoggedInUser) {
+      const fetchUserProfile = () => {
+        try {
+          const { data, isLoading, isError } = useUserProfile(routedUserId);
+          setUser(data?.user);
+          setUserLoading(isLoading);
+        } catch (error) {
+          setUserError(error);
+        }
+      };
 
-  // Authorization check
-  useEffect(() => {
-    if (authorized) {
-      console.log('User is authorized');
+      fetchUserProfile();
     } else {
-      console.log('User is not authorized');
+      setUser(storedUser?.userData?.data?.user);
+      setUserLoading(false);
     }
-  }, [authorized]);
-  console.log(user);
-  if(isLoading){
-    return <div>Loading...</div>
+  }, [isLoggedInUser, routedUserId, storedUser?.userData?.data?.user]);
+
+  
+  // Fetch user blogs
+  const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page, limit);
+
+
+  console.log(blogs);
+  // console.log(storedUser?.userData?.data?.user);
+  // Loading state
+  if (userLoading || blogsLoading) {
+    return <div>Loading...</div>;
   }
-  if(!blogs){
-    return <div>No blogs found</div>
+
+  // No blogs found
+  if (!blogs) {
+    return <div>No blogs found</div>;
   }
+  
+  
+  
   return (
     <div className='min-h-screen w-full'>
-      {
-        user.data.username
-      }
+      {/* <UserProfileDashboard user={loggedInUser?storedUser?.userData?.data?.user:visitor} blogs={blogs} /> */}
     </div>
   );
 };
