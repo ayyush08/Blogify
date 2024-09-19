@@ -47,7 +47,7 @@ const Navbar = () => {
         navigate('/')
         }
     return (
-        <nav className="p-4 bg-teal-200/70 dark:bg-teal-900/70 font-motserrat sticky top-0 backdrop-blur border-b border-gray-300 dark:border-teal-700 z-10">
+        <nav className="p-4 bg-teal-100/70 dark:bg-teal-900/70 font-motserrat sticky top-0 backdrop-blur border-b border-gray-300 dark:border-teal-700 z-10">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/">
@@ -83,12 +83,12 @@ const Navbar = () => {
                         authStatus.status &&
                         (<div className="flex items-center">
                             {
-                                location.pathname === '/dashboard' ? null : <Link to={`dashboard/${currentUser}`}>
-                                    <Button className="mx-1 dark:bg-teal-600 rounded-full bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
+                                location.pathname === `/dashboard/${currentUser}` ? null : <Link to={`dashboard/${currentUser}`}>
+                                    <Button className="mx-1 dark:bg-teal-600 rounded-full bg-emerald-500 text-teal-100 font-bold italic dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
                                 </Link>
                             }
                             {
-                                    <button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</button>
+                                    <Button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</Button>
                             }
                         </div>)
                     }

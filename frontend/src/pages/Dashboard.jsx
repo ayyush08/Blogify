@@ -2,7 +2,6 @@ import React, { useEffect,useState } from 'react';
 import { useGetUserBlogs } from '@/hooks/blogs.hook';
 import Card from '@/components/Card';
 import { useNavigate, useParams } from 'react-router-dom';
-import authSlice from '@/store/authSlice';
 import { useUserProfile } from '@/hooks/user.hook';
 import UserProfileDashboard from '@/components/UserDashboard';
 import { useSelector } from 'react-redux';
@@ -40,10 +39,6 @@ const Dashboard = () => {
   }, [isLoggedInUser, routedUserId, storedUser?.userData?.data?.user]);
   // Fetch user blogs
   const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page, limit);
-
-
-  console.log(blogs);
-  // console.log(storedUser?.userData?.data?.user);
   // Loading state
   if (userLoading || blogsLoading) {
     return <div>Loading...</div>;
@@ -57,9 +52,10 @@ const Dashboard = () => {
   
   
   return (
-    <div className='min-h-screen w-full'>
+    blogs&& <div className='min-h-screen w-full'>
       <UserProfileDashboard user={user} blogs={blogs?.docs} />
     </div>
+  
   );
 };
 

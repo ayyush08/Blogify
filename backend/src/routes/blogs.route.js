@@ -6,6 +6,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = Router();
 router.route('/fetchBlogs').get(getAllBlogs)
 router.route('/:blogId').get(getBlogById)
+router.route('/user/:userId').get(getUserBlogs)
 router.use(verifyJWT)
 router.route('/upload/:userId').post(
     upload.fields([
@@ -16,7 +17,6 @@ router.route('/upload/:userId').post(
     ]),
     uploadBlog)
 router.route('/:blogId').put(updateBlogContent).delete(deleteBlog);
-router.route('/user/:userId').get(getUserBlogs)
 
 
 export default router
