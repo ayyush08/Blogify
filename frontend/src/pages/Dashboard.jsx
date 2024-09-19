@@ -18,9 +18,11 @@ const Dashboard = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [user, setUser] = useState(null);
+  const [userBlogs,setUserBlogs] = useState(null)
   const [userLoading, setUserLoading] = useState(false);
   const [userError, setUserError] = useState(null);
   const { data, isLoading, isError } = useUserProfile(!isLoggedInUser?routedUserId:null);
+  const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page, limit);
   useEffect(() => {
     if (!isLoggedInUser) {
       const fetchUserProfile = () => {
@@ -41,26 +43,15 @@ const Dashboard = () => {
     }
     
   }, [isLoggedInUser, routedUserId, storedUser?.userData?.data?.user]);
-  const [userBlogs,setUserBlogs] = useState(null)
   useEffect(() => {
     if (blogs?.docs) {
-      if (page === 1) {
-        // For the initial page, replace the blogs
-        setUserBlogs(blogs?.docs);
-      } else {
-        if (blogs.docs.length > 0) {
-          // For subsequent pages, append the new blogs
-          setUserBlogs(prevBlogs => [...prevBlogs, ...blogs.docs]);
-        } else {
-          // If no data on the next page, revert to the previous page
-          setPage(1);
-          console.log('Thats all');
-          
-          toast.success("That's all 😀")
-        }
+      setUserBlogs((prevBlogs) => (page === 1 ? blogs.docs : [...prevBlogs, ...blogs.docs]));
+      if (blogs.docs.length === 0 && page > 1) {
+        toast.success("That's all 😀");
+        setPage((prevPage) => Math.max(prevPage - 1, 1)); // Prevents decrementing beyond page 1
       }
     }
-  }, [userBlogs, page]);
+  }, [blogs, page]);
   const handleShowMore = (e) => {
     e.preventDefault();
       console.log('Show more clicked');
@@ -74,7 +65,6 @@ const Dashboard = () => {
       
   }
   // Fetch user blogs
-  const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page, limit);
   // Loading state
   if (userLoading || blogsLoading) {
     return <div>Loading...</div>;
