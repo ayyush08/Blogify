@@ -20,13 +20,15 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [userLoading, setUserLoading] = useState(false);
   const [userError, setUserError] = useState(null);
+  const { data, isLoading, isError } = useUserProfile(!isLoggedInUser?routedUserId:null);
   useEffect(() => {
     if (!isLoggedInUser) {
       const fetchUserProfile = () => {
         try {
-          const { data, isLoading, isError } = useUserProfile(routedUserId);
-          setUser(data?.user);
-          setUserLoading(isLoading);
+          if(isLoading)
+            setUserLoading(isLoading);
+            setUser(data?.user);
+
         } catch (error) {
           setUserError(error);
         }
@@ -86,7 +88,7 @@ const Dashboard = () => {
 
 
   return (
-    blogs && <div className='min-h-screen w-full'>
+    user && <div className='min-h-screen w-full'>
       <div className="bg-teal-100 dark:bg-teal-900 text-gray-900 dark:text-gray-100 min-h-screen p-10">
         <div className="container mx-auto">
 
