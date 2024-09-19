@@ -1,6 +1,6 @@
 import React from 'react'
 import CardLoader from './ui/CardLoader'
-const Card = ({ _id, title, content, description, avatar, ownerDetails,onClick,isFetching,isLoading }) => {
+const Card = ({ _id, title, description,  ownerDetails,onClick,isFetching,isLoading }) => {
     if(isLoading || isFetching){
         return <CardLoader/>
     }

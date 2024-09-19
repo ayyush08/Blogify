@@ -2,6 +2,7 @@ import React, { useEffect,useState } from 'react'
 import { useGetAllBlogs } from '@/hooks/blogs.hook'
 import Card from '@/components/Card'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 const AllBlogs = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
@@ -14,8 +15,13 @@ const AllBlogs = () => {
                 // For the initial page, replace the blogs
                 setBlogs(data.docs);
             } else {
+                if(data?.docs.length>0)
                 // For subsequent pages, append the new blogs
                 setBlogs(prevBlogs => [...prevBlogs, ...data.docs]);
+                else{
+                    setPage(1);
+                    toast.success("That's all 😀")
+                }
             }
         }
     }, [data, page]);

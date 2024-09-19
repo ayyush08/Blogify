@@ -122,14 +122,14 @@ const Navbar = () => {
                     ? 'max-h-screen opacity-100'
                     : 'max-h-0 opacity-0'
                     } overflow-hidden transition-all duration-500 ease-in-out md:hidden flex flex-col space-y-4 mt-4`}>
-                <Link to="/" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                <Link to="/" className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     Home
                 </Link>
-                <Link to="/about" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                <ScrollLink  to='about' duration={500} smooth={true} className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     About
-                </Link>
+                </ScrollLink>
                 
-                <Link to="/contact" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                <Link to="/contact" className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     Contact
                 </Link>
                 {!authStatus.status &&

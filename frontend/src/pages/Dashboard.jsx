@@ -46,7 +46,7 @@ const Dashboard = () => {
     if (blogs?.docs) {
       if (page === 1) {
         // For the initial page, replace the blogs
-        setUserBlogs(blogs.docs);
+        setUserBlogs(blogs?.docs);
       } else {
         if (blogs.docs.length > 0) {
           // For subsequent pages, append the new blogs
@@ -56,15 +56,15 @@ const Dashboard = () => {
           setPage(1);
           console.log('Thats all');
           
-          toast.success("That's all")
+          toast.success("That's all 😀")
         }
       }
     }
   }, [userBlogs, page]);
   const handleShowMore = (e) => {
+    e.preventDefault();
       console.log('Show more clicked');
       
-      e.preventDefault();
       setPage(prevPage => prevPage + 1);
   };
   const handleCardClick = (id) => {
@@ -111,7 +111,7 @@ const Dashboard = () => {
               {
                 blogs?.docs.map((blog) => (
 
-                  <Card onClick={() => handleCardClick(blog._id)} key={blog._id} {...blog} />))
+                  <Card onClick={() => handleCardClick(blog._id)} key={blog._id} {...blog} isFetching={blogsLoading} isLoading={blogsLoading} />))
               }
             </div>
             <div className='flex justify-center '>
