@@ -16,10 +16,10 @@ const UserProfileDashboard = ({ user, blogs }) => {
                 {/* Profile Section */}
                 <div className="flex items-center justify-center mb-6 relative">
                     <div className="flex items-center justify-center p-5 rounded-lg bg-white dark:bg-gray-800 w-[20vw]  space-x-5">
-                        <img className="h-20  w-20 rounded-full" src={user.avatar} alt="User Profile" />
+                        <img className="h-20  w-20 rounded-full object-cover" src={user.avatar} alt="User Profile" />
                         <div>
                             <h2 className="text-xl font-semibold text-teal-600 dark:text-teal-400 font-motserrat">{user.fullName}</h2>
-                            <p className="text-gray-600 dark:text-gray-500 font-motserrat text-sm">@{user.username}</p>
+                            <p className="text-gray-600 dark:text-gray-400 font-motserrat text-sm">@{user.username}</p>
                         </div>
                     </div>
                     <button className='absolute left-[54.7%] p-1 rounded-lg scale-90 top-[-12px] font-bold dark:text-white bg-cyan-400 flex gap-1 justify-center items-center dark:bg-emerald-700'>Edit Profile<MdEditSquare/></button>
