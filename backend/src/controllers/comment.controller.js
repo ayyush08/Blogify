@@ -8,65 +8,83 @@ import { Blogs } from "../models/blogs.model.js"
 import mongoose from "mongoose"
 
 const getBlogComments = asyncHandler(async (req, res) => {
-    const {blogId} = req.params;
-    const {page=1,limit=10} = req.query;
-    if(!isValidObjectId(blogId)){
-        throw new ApiError(400,'Invalid blog id')
+    const { blogId } = req.params;
+    const { page = 1, limit = 10 } = req.query;
+    if (!isValidObjectId(blogId)) {
+        throw new ApiError(400, 'Invalid blog id')
     }
     const blog = await Blogs.findById(blogId);
-    if(!blog){
-        throw new ApiError(404,'Blog not found')
+    if (!blog) {
+        throw new ApiError(404, 'Blog not found')
     }
     const commentsAggregate = [
         {
-            $match:{
+            $match: {
                 blog: new mongoose.Types.ObjectId(blogId)
             }
         },
         {
-            $lookup:{
-                from:'blogs',
-                localField:'blog',
-                foreignField:'_id',
-                as:'blogDetails'
+            $lookup: {
+                from: "blogs",
+                localField: "blog",
+                foreignField: "_id",
+                as: "blogDetails"
+            }
+        },
+
+        {
+            $unwind: "$blogDetails"
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'blogDetails.owner',
+                foreignField: '_id',
+                as: 'ownerDetails'
             }
         },
         {
-            $unwind:'$blogDetails'
+            $unwind: "$ownerDetails"
         },
         {
-            $project:{
-                _id:1,
-                comment:1,
-                blogDetails:{
-                    _id:1,
-                    title:1,
-                    description:1,
-                    owner:1,
+            $project: {
+                _id: 1,
+                comment: 1,
+                blogDetails: {
+                    _id: 1,
+                    title: 1,
+                    description: 1,
+                    owner: 1
                 },
-                createdAt:1
+                ownerDetails: {
+                    _id: 1,
+                    username: 1,
+                    avatar: 1,
+                    fullName: 1
+                },
+                createdAt: 1
             }
         },
         {
-            $sort:{
-                createdAt:-1
+            $sort: {
+                createdAt: -1
             }
         }
     ]
-    if(!commentsAggregate){
-        throw new ApiError(404,'Comments not found')
+    if (!commentsAggregate) {
+        throw new ApiError(404, 'Comments not found')
     }
     const options = {
-        page:parseInt(page,10) || 1,
-        limit:parseInt(limit,10) || 10
+        page: parseInt(page, 10) || 1,
+        limit: parseInt(limit, 10) || 10
     }
-    const paginatedComments = await Comment.aggregatePaginate(Comment.aggregate(commentsAggregate),options)
-    if(!paginatedComments){
-        throw new ApiError(404,'Comments pagination error')
+    const paginatedComments = await Comment.aggregatePaginate(Comment.aggregate(commentsAggregate), options)
+    if (!paginatedComments) {
+        throw new ApiError(404, 'Comments pagination error')
     }
     return res
-    .status(200)
-    .json(new ApiResponse(200,paginatedComments,'Comments retrieved successfully'))
+        .status(200)
+        .json(new ApiResponse(200, paginatedComments, 'Comments retrieved successfully'))
 })
 
 const addComment = asyncHandler(async (req, res) => {
@@ -84,7 +102,7 @@ const addComment = asyncHandler(async (req, res) => {
     }
     const comment = await Comment.create({
         blog: blogId,
-        comment:content,
+        comment: content,
         owner: req.user._id,
     });
     if (!comment) throw new ApiError(400, 'Error while adding comment');
@@ -95,7 +113,7 @@ const addComment = asyncHandler(async (req, res) => {
 
 
 const deleteComment = asyncHandler(async (req, res) => {
-    const {commentId} = req.params
+    const { commentId } = req.params
     if (!isValidObjectId(commentId)) {
         throw new ApiError(400, "Invalid comment id")
     }
@@ -105,8 +123,8 @@ const deleteComment = asyncHandler(async (req, res) => {
     }
     await Comment.findByIdAndDelete(commentId);
     res
-    .status(200)
-    .json(new ApiResponse(200, null, "Comment deleted successfully"));
+        .status(200)
+        .json(new ApiResponse(200, null, "Comment deleted successfully"));
 })
 
 export {

@@ -100,7 +100,7 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              <button className="absolute md:left-[54.7%] p-1 rounded-lg scale-90 top-[-12px] font-bold dark:text-white bg-cyan-400 flex gap-1 justify-center items-center dark:bg-emerald-700">
+              <button className="absolute hover:shadow-xl transition-all md:left-[54.7%] p-1 rounded-lg scale-90 top-[-12px] font-bold dark:text-white bg-cyan-400 flex gap-1 justify-center items-center dark:bg-emerald-700">
                 Edit Profile <MdEditSquare />
               </button>
             </div>
