@@ -6,8 +6,9 @@ import { useUserProfile } from '@/hooks/user.hook';
 import { useSelector } from 'react-redux';
 import { MdEditSquare } from "react-icons/md";
 import toast from 'react-hot-toast';
-
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
 const Dashboard = () => {
+  const queryClient = new QueryClient();
   const { userId: routedUserId } = useParams();
   const navigate = useNavigate()
   const storedUser = useSelector(state => state.auth);
@@ -42,7 +43,7 @@ const Dashboard = () => {
       setUserLoading(false);
     }
     
-  }, [isLoggedInUser, routedUserId, storedUser?.userData?.data?.user]);
+  }, []);
   useEffect(() => {
     if (blogs?.docs) {
       setUserBlogs((prevBlogs) => (page === 1 ? blogs.docs : [...prevBlogs, ...blogs.docs]));
@@ -70,7 +71,7 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
-  // No blogs found
+  // No blogs 
   if (!blogs) {
     return <div>No blogs found</div>;
   }

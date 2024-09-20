@@ -4,7 +4,7 @@ import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -190,7 +190,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id).select("-password -refreshToken");
+    const {userId} = req.params;
+    const user = await User.findById(userId).select("-password -refreshToken");
     if(!user){
         throw new ApiError(404, "User not found");
     }

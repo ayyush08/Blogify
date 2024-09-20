@@ -4,38 +4,34 @@ import { getComments,addComment,deleteComment } from "../apis/comments.api.js";
 const queryClient = useQueryClient();
 
 export const useGetComments = (blogId) => {
-    return useMutation(
-        {
-            queryKey: ['current-blog-comments',blogId],
-            queryFn: () => getComments(blogId),
-            onSuccess: () => {
-                queryClient.invalidateQueries(['comments',blogId]);
-            },
-            onError: (error) => {
-                console.error('Error while fetching comments', error);
-            }
+    return useMutation({
+        mutationFn: () => getComments(blogId),
+        onError: (error) => {
+            console.error('Error while fetching comments', error);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries(['current-blog-comments',blogId]);
         }
+    }
     )
 }
 
 export const useAddComment = (blogId) => {
-    return useMutation(
-        (commentData) => addComment(blogId,commentData),
-        {
-            onSuccess: () => {
-                queryClient.invalidateQueries(['current-blog-comments',blogId]);
-            },
-            onError: (error) => {
-                console.error('Error while adding comment', error);
-            }
+    return useMutation({
+        mutationFn: (commentData) => addComment(blogId, commentData),
+        onError: (error) => {
+            console.error('Error while adding comment', error);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries(['current-blog-comments',blogId]);
         }
-    )
+    })
 }
 
-export const useDeleteComment = (commentId) => {
+export const useDeleteComment = () => {
     return useMutation(
         {
-            mutationFn: () => deleteComment(commentId),
+            mutationFn: ({commentId}) => deleteComment(commentId),
             onSuccess: () => {
                 queryClient.invalidateQueries(['current-blog-comments',commentId]);
             },

@@ -7,8 +7,17 @@ import { registerUser,loginUser,logoutUser,getUserProfile } from '../apis/user.a
 export const useRegisterUser = () => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: (newUser) => registerUser(newUser)
-    });
+        mutationFn: (newUser) => registerUser(newUser),
+        onError: (error) => {
+            console.error('Error while registering', error);
+        },
+        onMutate: async (newUser) => {
+            await queryClient.cancelQueries('current-user');
+            const previousData = queryClient.getQueryData('current-user');
+            queryClient.setQueryData('current-user', newUser);
+            return { previousData };
+        }
+        });
 }
 
 export const useLoginUser = () => {
@@ -17,6 +26,12 @@ export const useLoginUser = () => {
         mutationFn: (userData)=>loginUser(userData),
         onSuccess: (userData) => {
             queryClient.invalidateQueries('current-user');
+        },
+        onMutate: async (userData) => {
+            await queryClient.cancelQueries('current-user');
+            const previousData = queryClient.getQueryData('current-user');
+            queryClient.setQueryData('current-user', userData);
+            return { previousData };
         },
         retry:0
     });
@@ -37,10 +52,11 @@ export const useLogoutUser = () => {
 }
 
 
-export const useUserProfile = () => {
+export const useUserProfile = (userId) => {
     return useQuery({
-        queryKey: ['current-user'],
-        queryFn: getUserProfile,
-        retry:0,
+        queryKey: ['fetched-user', userId],
+        queryFn: () => getUserProfile(userId),
+        staleTime: 1000 * 60 * 5,
+        cacheTime: 1000 * 60 * 5,
     });
 }

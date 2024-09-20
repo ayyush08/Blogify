@@ -4,6 +4,7 @@ import { loginUser,logoutUser,registerUser,refreshAccessToken,getUserProfile } f
 import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
 
+router.route('/profile/:userId').get(getUserProfile)
 router.route('/register').post(
     upload.fields([
         {
@@ -16,5 +17,4 @@ router.route('/register').post(
 router.route('/login').post(loginUser)
 router.route('/logout').post(verifyJWT,logoutUser)
 router.route('/refresh-token').post(refreshAccessToken)
-router.route('/profile').get(verifyJWT,getUserProfile)
 export default router

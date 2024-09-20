@@ -1,10 +1,26 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { BASE_URL } from '@/constants';
+import { data } from 'autoprefixer';
 const API = axios.create({
     baseURL: BASE_URL,
     withCredentials: true
 });
+export const getUserProfile = async (userId) => {
+
+    if(userId!==null)
+    {try {
+        console.log("user id", userId);
+        
+        const {data} = await API.get(`/blogapi/v1/users/profile/${userId});`);
+        return data;
+    } catch (error) {
+
+        toast.error(error?.response?.data?.message);
+        throw error?.response?.data?.message;
+    }}
+    else return null;
+}
 API.interceptors.response.use(
     (response) => response, // For successful requests, just return the response
     async (error) => {
@@ -67,15 +83,6 @@ export const logoutUser = async () => {
     }
 }
 
-export const getUserProfile = async () => {
-    try {
-        const {data} = await API.get('/blogapi/v1/users/profile');
-        return data;
-    } catch (error) {
-        toast.error(error?.response?.data?.message);
-        throw error?.response?.data?.message;
-    }
-}
 
 const refreshAccessToken = async () => {
     console.log("refresh access token called");
