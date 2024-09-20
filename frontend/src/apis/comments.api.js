@@ -1,11 +1,15 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import {API} from "../utils/axiosInterceptor";
+import { BASE_URL } from "@/constants";
+
+
+const API = axios.create({ baseURL: BASE_URL, withCredentials: true });
 export const getBlogComments = async (blogId) => {
     try {
         const {data} = await API.get(`/blogapi/v1/comments/${blogId}`);
         toast.success(data.message);
-        return data?.docs;
+        
+        return data?.data?.docs;
     } catch (error) {
         toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;

@@ -1,19 +1,18 @@
 import { useQuery,useMutation,useQueryClient } from "@tanstack/react-query";
-import { getComments,addComment,deleteComment } from "../apis/comments.api.js";
-
-const queryClient = useQueryClient();
+import { getBlogComments,addComment,deleteComment } from "../apis/comments.api.js";
 
 export const useGetComments = (blogId) => {
-    return useMutation({
-        mutationFn: () => getComments(blogId),
+    const queryClient = useQueryClient();
+    return useQuery({
+        queryKey: ['current-blog-comments',blogId],
+        queryFn: () => getBlogComments(blogId),
+        staleTime: 1000*60*5,
+        cacheTime: 1000*60*5,
         onError: (error) => {
             console.error('Error while fetching comments', error);
         },
-        onSettled: () => {
-            queryClient.invalidateQueries(['current-blog-comments',blogId]);
-        }
-    }
-    )
+        keepPreviousData: true,
+    })
 }
 
 export const useAddComment = (blogId) => {

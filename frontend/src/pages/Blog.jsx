@@ -2,13 +2,18 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
 import { useGetBlogById } from '@/hooks/blogs.hook';
+import { useGetComments } from '@/hooks/comments.hook';
 import { Toaster } from 'react-hot-toast';
 const Blog = () => {
     const comments = ["comment1", "comment2", "comment3"];
     const { id } = useParams();
     const { data, error, isLoading, isFetching } = useGetBlogById(id);
-    if (data)
-        console.log(data);
+    const { data: commentsData, error: commentsError, isLoading: commentsLoading } = useGetComments(id);
+    if (commentsData) console.log(commentsData.map((comm) => comm.comment));
+    if(commentsLoading) {
+        console.log('Comments are loading');
+        
+    }
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id]);
@@ -63,18 +68,18 @@ const Blog = () => {
 
                         {/* Display Recent Comments */}
                         <div className="space-y-4">
-                            {comments?.length ? (
-                                comments.map((comment) => (
+                            {commentsData?.length ? (
+                                commentsData.map((comment) => (
                                     <div key={comment._id} className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm">
                                         <div className="flex items-center mb-2">
                                             <img
-                                                // src={comment.uploader.avatar}
-                                                // alt={comment.uploader.username}
+                                                src={comment.ownerDetails.avatar}
+                                                alt={comment.ownerDetails.username}
                                                 className="w-8 h-8 rounded-full mr-2 object-cover"
                                             />
-                                            <span className="font-semibold text-teal-900 dark:text-teal-300">comment.uploader.username</span>
+                                            <span className="font-semibold text-teal-900 dark:text-teal-300">{comment.ownerDetails.username}</span>
                                         </div>
-                                        <p className="text-teal-800 dark:text-teal-200">comment.text</p>
+                                        <p className="text-teal-800 dark:text-teal-200">{comment.comment}</p>
                                     </div>
                                 ))
                             ) : (
