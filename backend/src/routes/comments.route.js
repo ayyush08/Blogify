@@ -4,8 +4,6 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.use(verifyJWT);
-
 router.route("/:blogId").post(addComment).get(getBlogComments);
 router.route("/:commentId").delete(deleteComment);
 
