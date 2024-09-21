@@ -23,7 +23,7 @@ export const useAddComment = () => {
             console.error('Error while adding comment', error);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['current-blog-comments',blogId]);
+            queryClient.invalidateQueries(['current-blog-comments']);
         }
     })
 }
