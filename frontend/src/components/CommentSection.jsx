@@ -11,7 +11,6 @@ const CommentSection = ({ blogId }) => {
         const comment = await addComment({ blogId, commentText });
         console.log('Comment submitted', comment);
     }
-    if (commentsData) console.log(commentsData.map((comm) => comm.comment));
     if (commentsLoading) {
         console.log('Comments are loading');
 
@@ -29,7 +28,7 @@ const CommentSection = ({ blogId }) => {
                     className="w-full p-3 rounded-lg border border-teal-300 dark:border-teal-600 dark:bg-teal-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
                     rows="4"
                 />
-                {errors.commentText && <p className="text-red-500">Comment cannot be empty</p>}
+                {errors.commentText && <p className="text-red-500 font-bold">Comment cannot be empty</p>}
                 <button
                     type="submit"
                     className="mt-3 px-6 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 transition"
