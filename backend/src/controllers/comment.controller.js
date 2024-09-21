@@ -89,6 +89,7 @@ const getBlogComments = asyncHandler(async (req, res) => {
 
 const addComment = asyncHandler(async (req, res) => {
     const { blogId } = req.params
+    
     const { content } = req.body
     if (!isValidObjectId(blogId)) {
         throw new ApiError(400, "Invalid video id")

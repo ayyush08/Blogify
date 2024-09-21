@@ -3,9 +3,9 @@ import { addComment,deleteComment,getBlogComments } from "../controllers/comment
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
-
-router.route("/:blogId").post(addComment).get(getBlogComments);
-router.route("/:commentId").delete(deleteComment);
+router.route('/:blogId').get(getBlogComments)
+router.route("/:blogId").post(verifyJWT,addComment)
+router.route("/:commentId").delete(verifyJWT,deleteComment);
 
 
 export default router;

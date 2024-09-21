@@ -15,13 +15,14 @@ export const useGetComments = (blogId) => {
     })
 }
 
-export const useAddComment = (blogId) => {
+export const useAddComment = () => {
+    const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (commentData) => addComment(blogId, commentData),
+        mutationFn: ({blogId,commentText}) => addComment(blogId, {content: commentText}),
         onError: (error) => {
             console.error('Error while adding comment', error);
         },
-        onSettled: () => {
+        onSuccess: () => {
             queryClient.invalidateQueries(['current-blog-comments',blogId]);
         }
     })

@@ -16,9 +16,9 @@ export const getBlogComments = async (blogId) => {
     }
 }
 
-export const addComment = async (blogId, commentData) => {
+export const addComment = async (blogId, content) => {
     try {
-        const {data} = await API.post(`/blogapi/v1/comments/${blogId}`, commentData);
+        const {data} = await API.post(`/blogapi/v1/comments/${blogId}`, content);
         toast.success(data?.message);
         return data;
     } catch (error) {
