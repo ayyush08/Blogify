@@ -62,7 +62,8 @@ const CommentSection = ({ blogId }) => {
             <div className="space-y-4">
                 {comments?.length  >0 ? (
                     comments.map((comment) => (
-                        <SingleComment key={comment._id} comment={comment} />
+                        
+                        <SingleComment key={comment._id} comment={comment} commentsLoading={commentsLoading} />
                     ))
                 ) : (
                     <p className="text-teal-900 dark:text-teal-300">No comments yet. Be the first to comment!</p>

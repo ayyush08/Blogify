@@ -2,10 +2,13 @@ import React from 'react'
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useDeleteComment } from '@/hooks/comments.hook';
 import { useSelector } from 'react-redux';
-const SingleComment = ({comment}) => {
+import CommentSkeleton from './ui/CommentSkeleton';
+const SingleComment = ({comment,commentsLoading}) => {
     const authStatus = useSelector(state => state.auth);
     const commenter = comment.ownerDetails._id;
     const isAuthorized = authStatus?.userData?.data?.user?._id === commenter;
+    console.log('Is Authorized',isAuthorized);
+    
     const {mutateAsync:deleteComment,isPending,isError}  = useDeleteComment();
     const handleDeleteComment = async () => {
         const deletedComment = await deleteComment({commentId:comment._id});
@@ -17,7 +20,9 @@ const SingleComment = ({comment}) => {
         }
         console.log('Deleted comment', deletedComment);
     }
-    
+    if(commentsLoading){
+        return <CommentSkeleton/>
+    }
 
     return (
         <div className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm">
