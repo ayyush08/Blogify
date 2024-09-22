@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useDeleteComment } from '@/hooks/comments.hook';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,9 @@ const SingleComment = ({ comment, commentsLoading }) => {
     const commenter = comment.ownerDetails._id;
     const isAuthorized = authStatus?.userData?.data?.user?._id === commenter;
     console.log('Is Authorized', isAuthorized);
+    useEffect(()=>{
 
+    },[])
     const { mutateAsync: deleteComment, isPending, isError } = useDeleteComment();
     const handleDeleteComment = async () => {
         const deletedComment = await deleteComment({ commentId: comment._id });

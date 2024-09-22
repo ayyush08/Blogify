@@ -9,7 +9,7 @@ const Blog = () => {
     const { data, error, isLoading, isFetching } = useGetBlogById(id);
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [id]);
+    }, [id,data]);
     const { title, content, description, thumbnail, ownerDetails } = { ...data };
     if (isLoading || isFetching) {
         return <BlogSkeleton />;
