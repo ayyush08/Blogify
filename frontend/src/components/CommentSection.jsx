@@ -39,23 +39,26 @@ const CommentSection = ({ blogId }) => {
         setPage(prevPage => prevPage + 1);
     }
     return (
-        <div className="w-full mt-10 p-4 bg-teal-50 dark:bg-teal-800 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold text-teal-900 dark:text-teal-300 mb-4">Comments</h2>
+        <div className="w-full mt-10 p-4 bg-teal-50 dark:bg-teal-800 shadow-lg rounded-lg shadow-black dark:shadow-white font-motserrat">
+            <h2 className="text-2xl font-semibold text-teal-900 dark:text-emerald-50 font-motserrat mb-4 text-center">Comments</h2>
             <form onSubmit={handleSubmit(handleCommentSubmit)} className="mb-6">
                 <textarea
                     {...register('commentText', { required: true, minLength: 1 })}
                     placeholder="Write a comment..."
-                    className="w-full p-3 rounded-lg border border-teal-300 dark:border-teal-600 dark:bg-teal-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full p-3 rounded-lg border  border-teal-300 text-lg dark:border-teal-600 dark:bg-teal-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-200 dark:placeholder:text-slate-300"
                     rows="4"
                 />
-                {errors.commentText && <p className="text-red-500 font-bold">Comment cannot be empty</p>}
+                {errors.commentText && <p className="text-red-500 font-semibold">Comment cannot be empty</p>}
+                <div className='flex items-center justify-center'>
+
                 <button
                     type="submit"
-                    className="mt-3 px-6 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 transition"
+                    className="mt-3 px-6  py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 transition"
                     disabled={isAdding}
-                >
+                    >
                     {isAdding ? 'Posting...' : 'Post Comment'}
                 </button>
+                    </div>
             </form>
 
             {/* Display Recent Comments */}
@@ -72,10 +75,10 @@ const CommentSection = ({ blogId }) => {
             {commentsData?.length >0  && <div className='flex justify-center '>
                 <button 
                     onClick={handleShowMore} 
-                    className='px-4 mt-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition duration-300'
+                    className='px-4 mt-5  py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition duration-300'
                     disabled={commentsLoading}
                 >
-                    {commentsLoading ? 'Loading...' : 'Show More'}
+                    {commentsLoading ? 'Loading...' : 'See more comments'}
                 </button>
             </div>}
         </div>
