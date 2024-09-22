@@ -29,6 +29,7 @@ export const useAddComment = () => {
 }
 
 export const useDeleteComment = () => {
+    const queryClient = useQueryClient();
     return useMutation(
         {
             mutationFn: ({commentId}) => deleteComment(commentId),

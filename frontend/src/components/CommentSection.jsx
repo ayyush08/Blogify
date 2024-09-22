@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useGetComments, useAddComment } from '@/hooks/comments.hook';
 import toast from 'react-hot-toast';
+import SingleComment from './SingleComment';
 import { useForm } from 'react-hook-form';
 const CommentSection = ({ blogId }) => {
     const { data: commentsData, error: commentsError, isLoading: commentsLoading } = useGetComments(blogId);
@@ -42,17 +43,7 @@ const CommentSection = ({ blogId }) => {
             <div className="space-y-4">
                 {commentsData?.length ? (
                     commentsData.map((comment) => (
-                        <div key={comment._id} className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm">
-                            <div className="flex items-center mb-2">
-                                <img
-                                    src={comment.ownerDetails.avatar}
-                                    alt={comment.ownerDetails.username}
-                                    className="w-8 h-8 rounded-full mr-2 object-cover"
-                                />
-                                <span className="font-semibold text-teal-900 dark:text-teal-300">{comment.ownerDetails.username}</span>
-                            </div>
-                            <p className="text-teal-800 dark:text-teal-200">{comment.comment}</p>
-                        </div>
+                        <SingleComment key={comment._id} comment={comment} />
                     ))
                 ) : (
                     <p className="text-teal-900 dark:text-teal-300">No comments yet. Be the first to comment!</p>
