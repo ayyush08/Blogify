@@ -9,7 +9,7 @@ import mongoose from "mongoose"
 
 const getBlogComments = asyncHandler(async (req, res) => {
     const { blogId } = req.params;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 3 } = req.query;
     if (!isValidObjectId(blogId)) {
         throw new ApiError(400, 'Invalid blog id')
     }

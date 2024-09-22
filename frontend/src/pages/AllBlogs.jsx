@@ -23,7 +23,7 @@ const AllBlogs = () => {
                     toast.success("That's all 😀")
                 }
             }
-        }
+        }       
     }, [data, page]);
     const handleShowMore = (e) => {
         console.log('Show more clicked');

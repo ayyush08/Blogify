@@ -15,8 +15,9 @@ const SingleComment = ({comment}) => {
         if(isPending){
             console.log('Deleting comment...');
         }
-        console.log('Deleted comment', comment._id);
+        console.log('Deleted comment', deletedComment);
     }
+    
 
     return (
         <div className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm">

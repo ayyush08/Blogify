@@ -4,10 +4,11 @@ import { BASE_URL } from "@/constants";
 
 
 const API = axios.create({ baseURL: BASE_URL, withCredentials: true });
-export const getBlogComments = async (blogId) => {
+export const getBlogComments = async (blogId,page) => {
     try {
-        const {data} = await API.get(`/blogapi/v1/comments/${blogId}`);
+        const {data} = await API.get(`/blogapi/v1/comments/${blogId}?page=${page}`);
         toast.success(data.message);
+        console.log(data);
         
         return data?.data?.docs;
     } catch (error) {
