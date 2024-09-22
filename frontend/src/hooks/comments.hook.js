@@ -34,7 +34,7 @@ export const useDeleteComment = () => {
         {
             mutationFn: ({commentId}) => deleteComment(commentId),
             onSuccess: () => {
-                queryClient.invalidateQueries(['current-blog-comments',commentId]);
+                queryClient.invalidateQueries(['current-blog-comments']);
             },
             onError: (error) => {
                 console.error('Error while deleting comment', error);

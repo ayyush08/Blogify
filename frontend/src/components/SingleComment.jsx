@@ -1,7 +1,23 @@
 import React from 'react'
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useDeleteComment } from '@/hooks/comments.hook';
+import { useSelector } from 'react-redux';
 const SingleComment = ({comment}) => {
+    const authStatus = useSelector(state => state.auth);
+    const commenter = comment.ownerDetails._id;
+    const isAuthorized = authStatus?.userData?.data?.user?._id === commenter;
+    const {mutateAsync:deleteComment,isPending,isError}  = useDeleteComment();
+    const handleDeleteComment = async () => {
+        const deletedComment = await deleteComment({commentId:comment._id});
+        if(isError){
+            console.error('Error while deleting comment',isError);
+        }
+        if(isPending){
+            console.log('Deleting comment...');
+        }
+        console.log('Deleted comment', comment._id);
+    }
+
     return (
         <div className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm">
                             <div className="flex items-center mb-2">
@@ -15,9 +31,9 @@ const SingleComment = ({comment}) => {
                             <p className="text-teal-800 dark:text-teal-200">{comment.comment}</p>
                             <div className="flex justify-between items-center mt-2">
                                 <span className="text-xs text-teal-600 dark:text-teal-400">{new Date(comment.createdAt).toLocaleString()}</span>
-                                <button className="text-red-500 dark:text-red-400">
+                                {isAuthorized && <button onClick={()=>handleDeleteComment(comment._id)} className="text-red-500 dark:text-red-400">
                                     <RiDeleteBinLine />
-                                </button>
+                                </button>}
                         </div>
                         </div>  
     )
