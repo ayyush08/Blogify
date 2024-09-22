@@ -71,7 +71,7 @@ const CommentSection = ({ blogId }) => {
             {commentsData?.length >0  && <div className='flex justify-center '>
                 <button 
                     onClick={handleShowMore} 
-                    className='px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition duration-300'
+                    className='px-4 mt-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition duration-300'
                     disabled={commentsLoading}
                 >
                     {commentsLoading ? 'Loading...' : 'Show More'}

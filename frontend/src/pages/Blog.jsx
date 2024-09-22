@@ -20,8 +20,8 @@ const Blog = () => {
 
    
     return (
-
-        <div id='blog' className="bg-teal-100 dark:bg-teal-700 p-5 min-h-full">
+        
+        <div id='blog' className="bg-teal-100 flex justify-center dark:bg-teal-700 p-5 min-h-full">
             <Toaster />
             <div className="max-w-4xl mx-auto">
                 <div className="flex flex-col items-center">
@@ -38,8 +38,11 @@ const Blog = () => {
                         {content}
                     </div>
                     {/* Comment Section */}
-                    <CommentSection blogId={id}/>
                 </div>
+            </div>
+            <div className='w-[30%]'>
+                    <CommentSection blogId={id}/>
+
             </div>
         </div>
     );
