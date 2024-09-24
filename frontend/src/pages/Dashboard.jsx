@@ -110,6 +110,7 @@ const Dashboard = () => {
               <h3 className="text-lg font-semibold mb-4 text-teal-600 dark:text-teal-400 text-center font-motserrat">
                 {user.fullName}'s Blogs
               </h3>
+              {userBlogs.length === 0 && <p className="text-center mt-10">Nothing yet... Maybe start writing?</p>}
               <div className="flex flex-col flex-wrap md:gap-5 gap-3 justify-center items-center md:flex-row p-10">
                 {userBlogs.map((blog) => (
                   <Card
@@ -121,15 +122,18 @@ const Dashboard = () => {
                   />
                 ))}
               </div>
-              <div className="flex justify-center mt-4">
+              {userBlogs.length > 0 && (
+
+                <div className="flex justify-center mt-4">
                 <button
                   onClick={handleShowMore}
                   className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition duration-300 w-full md:w-auto"
                   disabled={blogsLoading}
-                >
+                  >
                   {blogsLoading ? 'Loading Blogs...' : 'Show More'}
                 </button>
               </div>
+                )}
             </div>
           </div>
         </div>
