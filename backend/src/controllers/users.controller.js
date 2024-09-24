@@ -197,10 +197,22 @@ const getUserProfile = asyncHandler(async (req, res) => {
     }
     return res.status(200).json(new ApiResponse(200, user, "User profile fetched successfully"));
 })
+
+
+
+const validateUserSession = asyncHandler(async (req, res) => {
+    const {refreshToken} = req.cookies;
+    if(!refreshToken){
+        throw new ApiError(401, "Session expired, please login again");
+    }
+    return res.status(200).json(new ApiResponse(200, {}, "Welcome back!"));
+    
+});
 export {
     registerUser,
     loginUser,
     logoutUser,
     refreshAccessToken,
-    getUserProfile
+    getUserProfile,
+    validateUserSession
 }

@@ -1,9 +1,19 @@
 import {useQuery,useQueryClient,useMutation} from '@tanstack/react-query'
-import { registerUser,loginUser,logoutUser,getUserProfile } from '../apis/user.api'
+import { registerUser,loginUser,logoutUser,getUserProfile,validateSession } from '../apis/user.api'
 
 
 
-
+export const useSessionValidator = ()=>{
+    return useQuery({
+        queryKey: 'session-validator',
+        queryFn: () => validateSession(),
+        retry: false,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        staleTime: 1000 * 60 * 5,
+        cacheTime: 1000 * 60 * 5,
+    });
+}
 export const useRegisterUser = () => {
     const queryClient = useQueryClient()
     return useMutation({

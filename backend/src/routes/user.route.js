@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { verifyJWT } from '../middlewares/auth.middleware.js'
-import { loginUser,logoutUser,registerUser,refreshAccessToken,getUserProfile } from "../controllers/users.controller.js";
+import { loginUser,logoutUser,registerUser,refreshAccessToken,getUserProfile,validateUserSession } from "../controllers/users.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
-
+router.route('/validate-session').get(verifyJWT,validateUserSession);
 router.route('/profile/:userId').get(getUserProfile)
 router.route('/register').post(
     upload.fields([

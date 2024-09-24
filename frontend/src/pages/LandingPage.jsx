@@ -6,28 +6,22 @@ import { useLogoutUser } from '@/hooks/user.hook'
 import { useDispatch,useSelector } from 'react-redux'
 import { persistor } from '@/store/store'
 import { useNavigate } from 'react-router-dom'
-
+import { useSessionValidator } from '@/hooks/user.hook'
+import toast from 'react-hot-toast'
 const LandingPage = () => {
-//     const dispatch = useDispatch();
-//     const navigate = useNavigate()
-//     const {mutateAsync:logoutUser} = useLogoutUser();
-//     const authStatus = useSelector(state => state.auth);
-//     useEffect(()=>{
-//         if(document.cookie.includes('refreshToken')){
-//             console.log('Refresh token exists');
-//     }else{
-//         console.log('Refresh token does not exist');
-//         logoutUser().then(()=>{
-//             console.log('Logged out');
-            
-//         });
-//         dispatch(logout());
-//         persistor.purge();
-//         navigate('/');
-//     }
-// },[])
-console.log(document.cookie.);
-
+    const {data,isLoading,} = useSessionValidator();
+    const navigate = useNavigate();
+    if(isLoading){
+        return <div>Loading...</div>
+    }
+    if(data){  
+        console.log('User is logged in');
+        }
+    else{
+        toast.error('Please login to continue');
+        persistor.purge();
+        navigate('/login');
+    }
     return (
         <section>
             <Hero />
