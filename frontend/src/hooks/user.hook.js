@@ -5,7 +5,7 @@ import { registerUser,loginUser,logoutUser,getUserProfile,validateSession } from
 
 export const useSessionValidator = ()=>{
     return useQuery({
-        queryKey: 'session-validator',
+        queryKey: ['session-validator'],
         queryFn: () => validateSession(),
         retry: false,
         refetchOnWindowFocus: false,
