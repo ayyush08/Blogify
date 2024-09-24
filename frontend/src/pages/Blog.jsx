@@ -1,24 +1,58 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
 import { useGetBlogById } from '@/hooks/blogs.hook';
 import CommentSection from '@/components/CommentSection';
-import { Toaster } from 'react-hot-toast';
+import { Toaster,toast } from 'react-hot-toast';
+import { persistor } from '@/store/store'; 
+import { useSessionValidator } from '@/hooks/user.hook';
+import UniversalLoader from '@/components/ui/UniversalLoader';
 const Blog = () => {
+    const {data:valid,isLoading:sessionChecking} = useSessionValidator();
     const { id } = useParams();
-    const { data, error, isLoading, isFetching } = useGetBlogById(id);
+    const navigate = useNavigate();
+    // useEffect(() => {
+    //     // Only proceed if the loading is done
+    //     if (!sessionChecking) {
+    //         // If no session data exists, navigate to login
+    //         if (!valid) {
+    //             toast.error('Please login to continue'); // Show a toast message (optional)
+    //             persistor.purge(); // Purge redux persist storage (clear auth state)
+    //             navigate('/login', { replace: true }); // Use replace to avoid navigation stack issues
+    //         }
+    //     }
+    // }, [valid, sessionChecking]);
+    const { data, error, isLoading:blogLoading, isFetching } = useGetBlogById(id);
+    const { title, content, description, thumbnail, ownerDetails } = {...data};
     useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [id,data]);
-    const { title, content, description, thumbnail, ownerDetails } = { ...data };
-    if (isLoading || isFetching) {
-        return <BlogSkeleton />;
+        console.log(sessionChecking);
+        
+        if (!sessionChecking) {
+                    // If no session data exists, navigate to login
+                    if (!valid) {
+                        toast.error('Please login to continue'); // Show a toast message (optional)
+                        persistor.purge(); // Purge redux persist storage (clear auth state)
+                        navigate('/login', { replace: true }); // Use replace to avoid navigation stack issues
+                    }
+                }
+        if(id){
+            window.scrollTo(0, 0);
+
+        }
+    }, [id,data,sessionChecking,valid]);
+
+    if (blogLoading || isFetching || sessionChecking) {
+        if(sessionChecking){
+            return <div className='flex justify-center items-center min-h-screen'>
+                <UniversalLoader/>
+            </div>
+        }
+        return (<BlogSkeleton />)
     }
     if (error) {
         return <div>An error occurred while fetching blog.</div>;
     }
 
-   
     return (
         
         <div id='blog' className="bg-teal-100  dark:bg-teal-700 p-5 min-h-full">
