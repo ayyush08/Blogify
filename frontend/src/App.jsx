@@ -7,6 +7,7 @@ import Blog from './pages/Blog'
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import BlogWriter from './pages/BlogWriter'
 const queryClient = new QueryClient()
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path='/signup' element={<SignUp/>} />
           <Route path='/login' element={<Login/>} />
           <Route path='/dashboard/:userId' element={<Dashboard/>} />
+          <Route path='/write' element={<BlogWriter/>} />
           </Route>
         </Routes>
       </BrowserRouter>
