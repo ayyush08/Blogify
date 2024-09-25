@@ -40,7 +40,7 @@ const SignUp = () => {
         formData.append('email', data.email);
         formData.append('password', data.password);
         if(selectedFile) formData.append('avatar', selectedFile);
-        else formData.append('avatar', 'https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png');
+        else formData.append('avatar', null);
         try {
             const registeredUser = await registerUser(formData);
             if (registeredUser) {
@@ -57,11 +57,14 @@ const SignUp = () => {
                 else{
                     toast.error("Something went wrong while logging in the user.")
                 }
+                setSelectedFile(null);
+                
             }
             else{
                 
                 toast.error("An error occurred while registering the user.")
             }
+            
         } catch (error) {
             console.log(error);    
             toast.error("An error occurred while registering the user.")

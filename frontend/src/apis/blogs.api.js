@@ -18,11 +18,11 @@ export const getUserBlogs = async (userId,page,limit) => {
     }
 }
 
-export const uploadBlog = async (userId, blogData) => {
+export const uploadBlog = async (blogData) => {
     try {
-        const {data} = await API.post(`/blogapi/v1/blogs/upload/${userId}`, blogData);
+        const {data} = await API.post('/blogapi/v1/blogs/upload', blogData);
         toast.success(data?.message);
-        return data;
+        return data?.data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;

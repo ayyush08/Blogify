@@ -53,25 +53,28 @@ export const useUpdateBlog = (blogId) => {
 
 export const useUploadBlog = () => {
     const queryClient = useQueryClient();
-    const userId = queryClient.getQueryData('current-user')._id;
-    return useMutation(
-        (blogData) => uploadBlog(userId, blogData),
-        {
-            onMutate: async (blogData) => {
-                await queryClient.cancelQueries('current-user-blogs');
-                const previousData = queryClient.getQueryData('current-user-blogs');
+    return useMutation({
+        mutationFn: (blogData) => uploadBlog(blogData),
+        onMutate: async (blogData) => {
+            await queryClient.cancelQueries('current-user-blogs');
+            const previousData = queryClient.getQueryData('current-user-blogs');
+            console.log('Previous data:', previousData);
+            if(previousData){
                 queryClient.setQueryData('current-user-blogs', (oldBlogs) => {
-                    return [...oldBlogs, blogData];
-                });
-                return { previousData };
-            },
-            onError: (_error, _newData, context) => {
-                queryClient.setQueryData('current-user-blogs', context.previousData);
-            },
-            onSettled: () => {
-                queryClient.invalidateQueries('current-user-blogs');
+                    return [blogData, ...oldBlogs];})
+            }else{
+                queryClient.setQueryData('current-user-blogs', [blogData]);
             }
+            return { previousData };
+        },
+        onError: (error) => {
+            console.log('Error while uploading blog', error);
+            
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries('current-user-blogs');
         }
+    }
     )
 }
 

@@ -8,7 +8,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const uploadBlog = asyncHandler(async(req,res)=>{
-    const {userId} = req.params;
+    const userId = req.user._id;
     const {title,content,description,} = req.body;
 
     if(!isValidObjectId(userId)){
