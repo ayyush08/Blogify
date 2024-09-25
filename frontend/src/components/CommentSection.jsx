@@ -48,7 +48,7 @@ const CommentSection = ({ blogId }) => {
                     className="w-full p-3 rounded-lg border  border-teal-300 text-lg dark:border-teal-600 dark:bg-teal-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-200 dark:placeholder:text-slate-300"
                     rows="4"
                 />
-                {errors.commentText && <p className="text-red-500 font-semibold">Comment cannot be empty</p>}
+                {errors.commentText && <p className="text-red-500 font-semibold text-lg dark:text-red-600" style={{ textShadow: '0 0 6px white' }}>Comment cannot be empty</p>}
                 <div className='flex items-center justify-center'>
 
                 <button

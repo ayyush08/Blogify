@@ -7,10 +7,6 @@ import Tooltip from './ui/Tooltip';
 const SingleComment = ({ comment, commentsLoading }) => {
     const authStatus = useSelector(state => state.auth);
     const commenter = comment.ownerDetails._id;
-    console.log('Commenter', commenter);
-    console.log('Auth Status', authStatus?.userData?.data?.user?._id);
-    
-    
     const isAuthorized = authStatus?.userData?.data?.user?._id === commenter;
     console.log('Is Authorized', isAuthorized);
     useEffect(()=>{

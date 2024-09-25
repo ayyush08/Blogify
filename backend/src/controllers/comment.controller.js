@@ -118,11 +118,9 @@ const deleteComment = asyncHandler(async (req, res) => {
     if (!isValidObjectId(commentId)) {
         throw new ApiError(400, "Invalid comment id")
     }
-    console.log('Comment ID', req.user._id.toString());
     
     
     const comment = await Comment.findById(commentId)
-    console.log('Comment', comment.owner.toString());
     if (comment?.owner.toString() !== req.user?._id.toString()) {
         throw new ApiError(400, "only comment owner can delete their comment");
     }

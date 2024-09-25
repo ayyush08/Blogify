@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import { Button } from './ui/button';
 import { TiAdjustBrightness } from "react-icons/ti";
 import { logout } from '@/store/authSlice';
 import { persistor } from '@/store/store';
 import { useLogoutUser } from '@/hooks/user.hook';
-import { useSelector,useDispatch } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { FaFilePen } from "react-icons/fa6";
 const Navbar = () => {
     const location = useLocation();
     const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Navbar = () => {
     const { mutateAsync: logoutUser } = useLogoutUser();
     const authStatus = useSelector(state => state.auth);
     const currentUser = authStatus?.userData?.data?.user?._id;
-    
+
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [rotateState, setRotateState] = useState(false);
     const toggleMobileMenu = () => {
@@ -35,7 +35,7 @@ const Navbar = () => {
         }
     }
 
-    const handleLogOut = () => {  
+    const handleLogOut = () => {
         logoutUser().then((data) => {
             console.log(data);
             if (data) {
@@ -45,7 +45,7 @@ const Navbar = () => {
         dispatch(logout());
         persistor.purge();
         navigate('/')
-        }
+    }
     return (
         <nav className="p-4 bg-teal-100/70 dark:bg-teal-900/70 font-motserrat sticky top-0 backdrop-blur border-b border-gray-300 dark:border-teal-700 z-10">
             <div className="container mx-auto flex justify-between items-center">
@@ -69,12 +69,12 @@ const Navbar = () => {
                         <div className="flex items-center">
                             {
                                 location.pathname === '/login' ? null : <Link to="login">
-                                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
+                                    <Button className="mx-1 dark:bg-teal-600 focus:scale-75 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
                                 </Link>
                             }
                             {
                                 location.pathname === '/signup' ? null : <Link to="signup">
-                                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
+                                    <Button className="mx-1 dark:bg-teal-600 focus:scale-75 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
                                 </Link>
                             }
                         </div>
@@ -83,12 +83,21 @@ const Navbar = () => {
                         authStatus.status &&
                         (<div className="flex items-center">
                             {
+                                location.pathname === '/write' ? null : <Link to='/write'>
+                                    <Button className="mx-2  p-4 dark:bg-cyan-600 font-semibold  rounded-2xl bg-cyan-500 text-gray-800 dark:text-teal-50 focus:scale-75 transition-all dark:hover:bg-slate-300 flex justify-center items-center gap-3 italic dark:hover:text-black"
+                                        variant='outline'>
+                                        <FaFilePen />Write
+                                    </Button>
+
+                                </Link>
+                            }
+                            {
                                 location.pathname === `/dashboard/${currentUser}` ? null : <Link to={`dashboard/${currentUser}`}>
                                     <Button className="mx-1 dark:bg-teal-600 rounded-full bg-emerald-500 text-teal-100 font-bold italic dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
                                 </Link>
                             }
                             {
-                                    <Button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</Button>
+                                <Button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</Button>
                             }
                         </div>)
                     }
@@ -125,40 +134,50 @@ const Navbar = () => {
                 <Link to="/" className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     Home
                 </Link>
-                <ScrollLink  to='about' duration={500} smooth={true} className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                <ScrollLink to='about' duration={500} smooth={true} className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     About
                 </ScrollLink>
-                
+
                 <Link to="/contact" className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     Contact
                 </Link>
                 {!authStatus.status &&
-                        <div className="flex items-center">
-                            {
-                                location.pathname === '/login' ? null : <Link to="login">
-                                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
-                                </Link>
-                            }
-                            {
-                                location.pathname === '/signup' ? null : <Link to="signup">
-                                    <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
-                                </Link>
-                            }
-                        </div>
-                    }
-                    {
-                        authStatus.status &&
-                        (<div className="flex items-center">
-                            {
-                                location.pathname === `/dashboard/${currentUser}` ? null : <Link to={`dashboard/${currentUser}`}>
-                                    <Button className="mx-1 dark:bg-teal-600 rounded-full bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
-                                </Link>
-                            }
-                            {
-                                    <button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</button>
-                            }
-                        </div>)
-                    }
+                    <div className="flex items-center">
+
+                        {
+                            location.pathname === '/login' ? null : <Link to="login">
+                                <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
+                            </Link>
+                        }
+                        {
+                            location.pathname === '/signup' ? null : <Link to="signup">
+                                <Button className="mx-1 dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
+                            </Link>
+                        }
+                    </div>
+                }
+                {
+                    authStatus.status &&
+                    (<div className="flex items-center">
+                        {
+                            location.pathname === '/write' ? null : <Link to='/write'>
+                                <Button className="mx-2  p-4 dark:bg-cyan-600 font-semibold  rounded-2xl bg-cyan-500 text-gray-800 dark:text-teal-50 focus:scale-75 transition-all dark:hover:bg-slate-300 flex justify-center items-center gap-3 italic dark:hover:text-black"
+                                    variant='outline'>
+                                    <FaFilePen />Write
+                                </Button>
+
+                            </Link>
+                        }
+                        {
+                            location.pathname === `/dashboard/${currentUser}` ? null : <Link to={`dashboard/${currentUser}`}>
+                                <Button className="mx-1 dark:bg-teal-600 rounded-full bg-emerald-500 text-teal-100 font-bold italic dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Dashboard</Button>
+                            </Link>
+                        }
+                        {
+                            <Button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</Button>
+                        }
+                    </div>)
+                }
                 <div className="flex items-center">
                     <div
                         className={`cursor-pointer transition-transform duration-300 ease-in-out transform rota ${rotateState ? 'rotate-45' : '-rotate-45'
