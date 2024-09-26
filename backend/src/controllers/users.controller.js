@@ -205,7 +205,7 @@ const validateUserSession = asyncHandler(async (req, res) => {
     if(!refreshToken){
         throw new ApiError(401, "Session expired, please login again");
     }
-    return res.status(200).json(new ApiResponse(200, {}, "Welcome back!"));
+    return res.status(200).json(new ApiResponse(200, {}, "Welcome 😀!"));
     
 });
 export {

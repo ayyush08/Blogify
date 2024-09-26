@@ -12,7 +12,7 @@ const LandingPage = () => {
                 persistor.purge();
             }
         }
-    },[sessionChecking,valid])
+    },[sessionChecking,valid,persistor])
     return (
         <section>
             <Hero />

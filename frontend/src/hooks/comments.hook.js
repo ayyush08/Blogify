@@ -11,7 +11,14 @@ export const useGetComments = (blogId,page) => {
         onError: (error) => {
             console.error('Error while fetching comments', error);
         },
-        refetchOnWindowFocus: true,
+        onSuccess: (data) => {
+            if (data.docs.length === 0) {
+                queryClient.setQueryData(['current-blog-comments',blogId,page],(oldData)=>({
+                    ...oldData,
+                    docs: []
+                }))
+            }
+        }
     })
 }
 

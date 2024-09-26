@@ -7,7 +7,7 @@ const Card = ({ _id, title, description,  ownerDetails,onClick,isFetching,isLoad
     return (
         <div onClick={onClick} className="cursor-pointer 
                 w-[80%] md:w-[45%] lg:w-[30%] 
-                min-h-[200px] 
+                min-h-[200px] max-h-[300px]
                 rounded-lg 
                 overflow-hidden 
                 shadow-lg shadow-teal-300 

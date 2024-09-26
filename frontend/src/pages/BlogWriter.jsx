@@ -63,16 +63,16 @@ const BlogWriter = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8 font-motserrat bg-teal-50 dark:bg-teal-900 transition duration-300">
-      <div className="max-w-3xl mx-auto bg-white dark:bg-teal-800 p-6 rounded-lg shadow-lg shadow-teal-500/50">
-        <h1 className="text-3xl text-teal-700 dark:text-teal-200 font-bold mb-6 text-center italic">
+    <div className="min-h-screen p-4 md:p-8 font-motserrat bg-teal-50 dark:bg-teal-700 transition duration-300">
+      <div className="max-w-3xl mx-auto bg-white dark:bg-slate-600/50 p-6 rounded-lg shadow-lg shadow-teal-500/50">
+        <h1 className="text-3xl text-teal-700 dark:text-teal-50 font-bold mb-6 text-center italic">
           Write a new Blog
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Blog Title */}
           <div>
-            <label htmlFor="title" className="block text-lg font-semibold text-teal-900 dark:text-teal-100">
+            <label htmlFor="title" className="block text-lg font-semibold text-teal-900 text-center dark:text-white">
               Blog Title
             </label>
             <input
@@ -83,7 +83,7 @@ const BlogWriter = () => {
                 maxLength: { value: 100, message: 'Title should be less than 100 characters' }
               })}
               className={`w-full mt-2 p-3 rounded-lg border ${errors.title ? 'border-red-500' : 'border-teal-300 dark:border-teal-600'
-                } bg-teal-50 dark:bg-teal-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-300 dark:focus:ring-teal-500`}
+                } bg-teal-50 dark:bg-teal-100 dark:placeholder:text-gray-500 font-mono dark:text-black focus:outline-none focus:ring-2 focus:ring-teal-300 dark:focus:ring-teal-500`}
               placeholder="Enter your blog title"
             />
             {errors.title && <p className="text-red-500 mt-1">{errors.title.message}</p>}
@@ -91,7 +91,7 @@ const BlogWriter = () => {
 
           {/* Blog Description */}
           <div>
-            <label htmlFor="description" className="block text-lg font-semibold text-teal-900 dark:text-teal-100">
+            <label htmlFor="description" className="block text-lg font-semibold text-center text-teal-900 dark:text-white">
               Blog Description
             </label>
             <textarea
@@ -101,7 +101,7 @@ const BlogWriter = () => {
                 minLength: { value: 50, message: 'Description should be atleast 50 characters' }
               })}
               className={`w-full mt-2 p-3 rounded-lg border ${errors.description ? 'border-red-500' : 'border-teal-300 dark:border-teal-600'
-                } bg-teal-50 dark:bg-teal-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-300 dark:focus:ring-teal-500`}
+                } bg-teal-50  dark:bg-teal-100 dark:text-black dark:placeholder:text-gray-500 font-mono focus:outline-none focus:ring-2 focus:ring-teal-300 dark:focus:ring-teal-500`}
               rows="3"
               placeholder="Write a short description"
             />
@@ -110,23 +110,46 @@ const BlogWriter = () => {
 
           {/* Blog Thumbnail */}
           <div>
-            <label htmlFor="thumbnail" className="block text-lg font-semibold text-teal-900 dark:text-teal-100">
+            <label htmlFor="thumbnail" className="block text-lg font-semibold text-center text-teal-900 dark:text-white">
               Blog Thumbnail
             </label>
-            <input
-              type="file"
-              id="thumbnail"
-              accept="image/*"
-              {...register('thumbnail', {
-                required: { value: true, message: 'Thumbnail is required' },
-                validate: (value) => value[0].size < 2000000 || 'Thumbnail size should be less than 2MB'
-              })}
-              className={`mt-2 block w-full text-sm text-teal-900 dark:text-teal-100 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm ${errors.thumbnail
-                  ? 'file:bg-red-500 dark:file:bg-red-700'
-                  : 'file:bg-teal-100 dark:file:bg-teal-700'
-                } file:text-teal-700 dark:file:text-teal-300 hover:file:bg-teal-200 dark:hover:file:bg-teal-600`}
-              onChange={handleThumbnailChange}
-            />
+            {!thumbnail && (
+
+              <div className="relative mt-4 w-full max-w-xs mx-auto ">
+              <input
+                type="file"
+                id="thumbnail"
+                accept="image/*"
+                {...register('thumbnail', {
+                  required: { value: true, message: 'Thumbnail is required' },
+                  validate: (value) => value[0]?.size < 2000000 || 'Thumbnail size should be less than 2MB'
+                })}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                onChange={handleThumbnailChange}
+              />
+              <label
+                htmlFor="thumbnail"
+                className={` w-full h-48 border-2 border-dashed rounded-lg 
+    flex items-center justify-center cursor-pointer
+    ${errors.thumbnail ? 'border-red-500' : 'border-teal-500'}`}
+    >
+                <div className="flex flex-col items-center">
+                  <svg
+                    className="w-10 h-10 text-teal-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v14M5 12h14" />
+                  </svg>
+                  <p className="mt-2 text-sm text-teal-500">Choose a file</p>
+                </div>
+              </label>
+            </div>
+                  )}
+
+
             {errors.thumbnail && <p className="text-red-500 mt-1">{errors.thumbnail.message}</p>}
             {thumbnail && (
               <div className="mt-4">
@@ -137,18 +160,19 @@ const BlogWriter = () => {
 
           {/* Blog Content */}
           <div>
-            <label htmlFor="content" className="block text-lg font-semibold text-teal-900 dark:text-teal-100">
+            <label htmlFor="content" className="block text-lg font-semibold text-center text-teal-900 dark:text-white">
               Blog Content
             </label>
             <textarea
               id="content"
-              {...register('content', { required: {
-                value: true, message: 'Content is required' ,
-              },
-              minLength: { value: 200, message: 'Content should be atleast 200 characters' }
-             })}
+              {...register('content', {
+                required: {
+                  value: true, message: 'Content is required',
+                },
+                minLength: { value: 200, message: 'Content should be atleast 200 characters' }
+              })}
               className={`w-full mt-2 p-3 rounded-lg border ${errors.content ? 'border-red-500' : 'border-teal-300 dark:border-teal-600'
-                } bg-teal-50 dark:bg-teal-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-300 dark:focus:ring-teal-500`}
+                } bg-teal-50 focus:outline-none focus:ring-2 focus:ring-teal-300 dark:focus:ring-teal-500 dark:bg-teal-100 dark:text-black dark:placeholder:text-gray-500 font-mono `}
               rows="10"
               placeholder="Write your blog content here"
             />

@@ -7,8 +7,7 @@ const API = axios.create({ baseURL: BASE_URL, withCredentials: true });
 export const getBlogComments = async (blogId,page) => {
     try {
         const {data} = await API.get(`/blogapi/v1/comments/${blogId}?page=${page}`);
-        toast.success(data.message);
-        console.log(data);
+        console.log(data?.message);
         
         return data?.data?.docs;
     } catch (error) {

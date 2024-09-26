@@ -56,9 +56,9 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex space-x-4 items-center">
-                    <ScrollLink to="/" duration={500} smooth={true} className="hover:scale-105 cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                    {location.pathname === '/' ? null : <Link to="/" className="hover:scale-105 cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         Home
-                    </ScrollLink>
+                    </Link>}
                     <ScrollLink to='about' duration={500} smooth={true} className=" cursor-pointer hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         About
                     </ScrollLink>
@@ -131,9 +131,9 @@ const Navbar = () => {
                     ? 'max-h-screen opacity-100'
                     : 'max-h-0 opacity-0'
                     } overflow-hidden transition-all duration-500 ease-in-out md:hidden flex flex-col space-y-4 mt-4`}>
-                <Link to="/" className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
-                    Home
-                </Link>
+                {location.pathname === '/' ? null : <Link to="/" className=" cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                        Home
+                    </Link>}
                 <ScrollLink to='about' duration={500} smooth={true} className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     About
                 </ScrollLink>

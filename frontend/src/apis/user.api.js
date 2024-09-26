@@ -53,7 +53,8 @@ API.interceptors.response.use(
 export const registerUser = async (userData) => {
     try {
         const {data} = await API.post('/blogapi/v1/users/register', userData);
-        toast.success(data.message);
+        console.log(data?.message);
+        
         return data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
@@ -64,7 +65,8 @@ export const registerUser = async (userData) => {
 export const loginUser = async (userData) => {
     try {
         const {data} = await API.post('/blogapi/v1/users/login', userData);
-        toast.success(data.message);
+        console.log(data?.message);
+        
         return data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
@@ -75,7 +77,8 @@ export const loginUser = async (userData) => {
 export const logoutUser = async () => {
     try {
         const {data} = await API.post('/blogapi/v1/users/logout');
-        toast.success(data.message);
+        console.log(data?.message);
+        
         return data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
