@@ -14,11 +14,12 @@ const SingleComment = ({ comment, commentsLoading }) => {
     const dispatch = useDispatch();
     const authStatus = useSelector(state => state.auth);
     const likedCheck = useSelector(state => state.likes);
-    const checkLike = likedCheck.likedComments.map((like) => like.commentId).includes(comment._id);
-    console.log('Comment Likes', likedCheck.likedComments);
+    const currentUserId = authStatus?.userData?.data?.user?._id;
+    const checkLike = likedCheck.likedComments.some(like => like.commentId === comment._id && like.commenter === currentUserId);
+
     
     const commenter = comment.ownerDetails._id;
-    const [isLiked, setIsLiked] = useState(null);
+    const [isLiked, setIsLiked] = useState(checkLike);
     const isAuthorized = authStatus?.userData?.data?.user?._id === commenter;
     console.log('Is Authorized', isAuthorized);
     const { mutateAsync: deleteComment, isPending, isError } = useDeleteComment();
@@ -26,8 +27,8 @@ const SingleComment = ({ comment, commentsLoading }) => {
     const handleDeleteComment = async e => {
         e.preventDefault();
         try {
-            const deletedComment = await deleteComment({ commentId: comment._id });
-            console.log('Deleted comment', deletedComment);
+            await deleteComment({ commentId: comment._id });
+
         } catch (error) {
             console.log('Error while deleting comment', error);
             
@@ -40,25 +41,26 @@ const SingleComment = ({ comment, commentsLoading }) => {
         e.preventDefault();
 
         try {
-            const liked = await likeComment(comment._id);
+            await likeComment(comment._id);
             if(!isLiked){
-                dispatch(setLikedComments({commentId:comment._id,type:'add',commenter:authStatus.userData.data.user._id}));
+                dispatch(setLikedComments({commentId:comment._id,type:'add',commenter:currentUserId}));
                 setIsLiked(true);
             }
             else{
-                dispatch(setLikedComments({commentId:comment._id,type:'remove',commenter:authStatus.userData.data.user._id}));
+                dispatch(setLikedComments({commentId:comment._id,type:'remove',commenter:currentUserId}));
                 setIsLiked(false);
             }
 
         } catch (error) {
             console.error('Error while liking comment', error);
-            setIsLiked(false);
+            // setIsLiked(false);
         }
     
 
     }
     useEffect(() => {
-        setIsLiked(checkLike);
+        const currentLikeStatus = likedCheck.likedComments.some(like => like.commentId === comment._id && like.commenter === currentUserId);
+        setIsLiked(currentLikeStatus);
     }, [checkLike,commentLikes])
     return (
         <div className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm font-motserrat">

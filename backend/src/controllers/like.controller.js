@@ -53,7 +53,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
             await Like.findByIdAndDelete(likedComment._id);
             return res
                 .status(200)
-                .json(new ApiResponse(200, {}, 'Comment liked successfully'))
+                .json(new ApiResponse(200, {}, 'Comment unliked successfully'))
         }
         else {
             await Like.create({
@@ -62,7 +62,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
             })
             return res
                 .status(200)
-                .json(new ApiResponse(200, {}, 'Comment unliked successfully'))
+                .json(new ApiResponse(200, {}, 'Comment liked successfully'))
         }
     } catch (error) {
         throw new ApiError(500, 'Internal server error on toggle Comment like')
