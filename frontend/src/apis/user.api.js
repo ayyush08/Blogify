@@ -101,7 +101,8 @@ const refreshAccessToken = async () => {
 export const validateSession = async() => {
     try {
         const { data } = await API.get("/blogapi/v1/users/validate-session");
-        toast.success(data?.message);
+        console.log(data?.message);
+        
         return data;
         
     } catch (error) {

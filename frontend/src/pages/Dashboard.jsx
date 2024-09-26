@@ -6,6 +6,7 @@ import { useUserProfile } from '@/hooks/user.hook';
 import { useSelector } from 'react-redux';
 import { MdEditSquare } from "react-icons/md";
 import toast from 'react-hot-toast';
+import UniversalLoader from '@/components/ui/UniversalLoader';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 const Dashboard = () => {
   const queryClient = new QueryClient();
@@ -17,13 +18,12 @@ const Dashboard = () => {
   const userIdToFetch = isLoggedInUser ? loggedInUser : routedUserId;
   console.log(userIdToFetch);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
   const [user, setUser] = useState(null);
   const [userBlogs,setUserBlogs] = useState(null)
   const [userLoading, setUserLoading] = useState(false);
   const [userError, setUserError] = useState(null);
   const { data, isLoading, isError } = useUserProfile(!isLoggedInUser?routedUserId:null);
-  const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page, limit);
+  const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page);
   useEffect(() => {
     if (!isLoggedInUser) {
       const fetchUserProfile = () => {
@@ -43,7 +43,7 @@ const Dashboard = () => {
       setUserLoading(false);
     }
     
-  }, []);
+  }, [user, data, isLoading]);
   useEffect(() => {
     if (blogs?.docs) {
       setUserBlogs((prevBlogs) => (page === 1 ? blogs.docs : [...prevBlogs, ...blogs.docs]));
@@ -68,7 +68,7 @@ const Dashboard = () => {
   // Fetch user blogs
   // Loading state
   if (userLoading || blogsLoading) {
-    return <div>Loading...</div>;
+    return <div className='flex justify-center items-center min-h-screen'><UniversalLoader/></div>;
   }
 
   // No blogs 

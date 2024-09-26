@@ -4,6 +4,7 @@ import About from '@/components/About'
 import AllBlogs from './AllBlogs'
 import { useSessionValidator } from '@/hooks/user.hook';
 import { persistor } from '@/store/store';
+import { Toaster,toast } from 'react-hot-toast';
 const LandingPage = () => {
     const {data:valid,isLoading:sessionChecking} = useSessionValidator();
     useEffect(()=>{
@@ -11,10 +12,12 @@ const LandingPage = () => {
             if (!valid) {
                 persistor.purge();
             }
+            toast.success("Welcome")
         }
-    },[sessionChecking,valid,persistor])
+    },[])
     return (
         <section>
+            <Toaster />
             <Hero />
             <About/>
             <AllBlogs/>
