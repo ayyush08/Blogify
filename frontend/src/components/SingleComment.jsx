@@ -53,7 +53,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
 
         } catch (error) {
             console.error('Error while liking comment', error);
-            // setIsLiked(false);
+            setIsLiked(false);
         }
     
 
