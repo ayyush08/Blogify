@@ -56,9 +56,9 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex space-x-4 items-center">
-                    <Link to="/" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                    <ScrollLink to="/" duration={500} smooth={true} className="hover:scale-105 cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         Home
-                    </Link>
+                    </ScrollLink>
                     <ScrollLink to='about' duration={500} smooth={true} className=" cursor-pointer hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         About
                     </ScrollLink>

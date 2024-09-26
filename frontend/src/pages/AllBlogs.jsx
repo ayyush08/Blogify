@@ -19,7 +19,7 @@ const AllBlogs = () => {
                 // For subsequent pages, append the new blogs
                 setBlogs(prevBlogs => [...prevBlogs, ...data.docs]);
                 else{
-                    setPage(1);
+                    // setPage(1);
                     toast.success("That's all 😀")
                 }
             }
@@ -51,9 +51,9 @@ const AllBlogs = () => {
                 
                 <Card onClick={()=>handleCardClick(blog._id)} key={blog._id} {...blog} isFetching={isFetching} isLoading={isLoading} />))
             }
-            {/* {(isLoading || isFetching) && <CardLoader />} */}
+
             </div>
-            <div className='flex justify-center '>
+            {data?.docs.length>0 && (<div className='flex justify-center '>
                 <button 
                     onClick={handleShowMore} 
                     className='px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition duration-300'
@@ -61,7 +61,7 @@ const AllBlogs = () => {
                 >
                     {isFetching ? 'Loading...' : 'Show More'}
                 </button>
-            </div>
+            </div>)}
         </section>
 
     )

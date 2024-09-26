@@ -8,7 +8,6 @@ const API = axios.create({ baseURL: BASE_URL,
 export const getUserBlogs = async (userId,page,limit) => {
     try {
         const {data} = await API.get(`/blogapi/v1/blogs/user/${userId}?page=${page}&limit=${limit}`);
-        toast.success(data?.message);
         console.log(data?.message);
         
         return data?.data;
@@ -54,7 +53,7 @@ export const deleteBlog = async (blogId) => {
 export const getAllBlogs = async (page=1,limit=10) => {
     try {
         const {data} = await API.get(`/blogapi/v1/blogs/fetchBlogs?page=${page}&limit=${limit}`);
-        toast.success(data?.message);      
+        console.log(data?.message);
         return data?.data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
@@ -65,7 +64,7 @@ export const getAllBlogs = async (page=1,limit=10) => {
 export const getBlogById = async (blogId) => {
     try {
         const {data} = await API.get(`/blogapi/v1/blogs/${blogId}`);
-        toast.success(data?.message);
+        console.log(data?.message);
         return data?.data;
     } catch (error) {
         toast.error(error?.response?.data?.message);

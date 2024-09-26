@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
 import { useGetBlogById } from '@/hooks/blogs.hook';
 import CommentSection from '@/components/CommentSection';
@@ -11,17 +11,6 @@ const Blog = () => {
     const {data:valid,isLoading:sessionChecking} = useSessionValidator();
     const { id } = useParams();
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     // Only proceed if the loading is done
-    //     if (!sessionChecking) {
-    //         // If no session data exists, navigate to login
-    //         if (!valid) {
-    //             toast.error('Please login to continue'); // Show a toast message (optional)
-    //             persistor.purge(); // Purge redux persist storage (clear auth state)
-    //             navigate('/login', { replace: true }); // Use replace to avoid navigation stack issues
-    //         }
-    //     }
-    // }, [valid, sessionChecking]);
     const { data, error, isLoading:blogLoading, isFetching } = useGetBlogById(id);
     const { title, content, description, thumbnail, ownerDetails } = {...data};
     useEffect(() => {
