@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { set } from "react-hook-form";
 
 
 const initialState = {
     likedComments: [],
+    likedBlogs: [],
 
 }
 const likesSlice = createSlice({
@@ -27,6 +29,23 @@ const likesSlice = createSlice({
                 );
             }
         },
+        setLikedBlogs: (state, action) => {
+            const { blogId, type,liker } = action.payload;
+            if (type === "add") {
+                // If user hasn't liked it yet, push the new like
+                const existingLike = state.likedBlogs.find(
+                    (blog) => blog.blogId === blogId && blog.liker === liker
+                );
+                if (!existingLike) {
+                    state.likedBlogs.push({ blogId, liker });
+                }
+            } else if (type === "remove") {
+                // Remove the like by filtering it out
+                state.likedBlogs = state.likedBlogs.filter(
+                    (blog) => blog.blogId !== blogId && blog.liker !== liker
+                );
+            }
+        }
     },
 });
 

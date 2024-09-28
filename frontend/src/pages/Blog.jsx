@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useGetBlogLikes,useToggleBlogLike } from '@/hooks/likes.hook';
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
 import { useGetBlogById } from '@/hooks/blogs.hook';
 import CommentSection from '@/components/CommentSection';
