@@ -28,7 +28,7 @@ const Blog = () => {
     const [blogLikeCount, setBlogLikeCount] = useState(blogLikes || 0);
     const { title, content, description, thumbnail, ownerDetails } = { ...data };
 
-    const handleLike = async() => {
+    const handleLike = async () => {
         try {
             await likeBlog(id);
             if (!isLiked) {
@@ -55,9 +55,9 @@ const Blog = () => {
             navigate('/login', { replace: true });
         }
 
-        if (id) {
-            window.scrollTo(0, 0);
-        }
+        // if (id) {
+        //     window.scrollTo(0, 0);
+        // }
 
         const currentLikeStatus = likedCheck.likedBlogs.some(
             (like) => like.blogId === id && like.liker === currentUserId
@@ -83,30 +83,33 @@ const Blog = () => {
             <Toaster />
             <div className="max-w-4xl mx-auto">
                 <div className="flex flex-col items-center justify-center">
-                    <h1 className="text-4xl md:text-5xl uppercase tracking-wide font-extrabold  text-teal-900 dark:text-teal-300 text-center mb-5 font-mono">{title}</h1>
+                    <h1 className="text-4xl md:text-5xl uppercase tracking-wide font-extrabold  text-teal-900 dark:text-teal-300 text-center mb-5 font-mono underline">{title}</h1>
 
-                    <div className="flex relative items-center  mb-5 p-2 rounded-md transition-all  hover:cursor-pointer dark:hover:bg-gray-50/10 ">
-                        <div className="w-12 h-12 rounded-2xl overflow-hidden mr-4">
-                            <img className="w-full h-full object-cover" src={ownerDetails.avatar} alt={ownerDetails.username} />
-                        </div>
+                    <div className="flex items-center justify-between w-full mb-5 p-2 rounded-md transition-all hover:cursor-pointer dark:hover:bg-gray-50/10">
+    {/* User Avatar and Username on the left */}
+    <div className="flex items-center hover:bg-gray-500/20 rounded-md p-1 font-motserrat">
+        <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+            <img className="w-full h-full object-cover" src={ownerDetails.avatar} alt={ownerDetails.username} />
+        </div>
+        <p className="text-teal-900 dark:text-teal-300 font-semibold">
+            {ownerDetails.username}
+        </p>
+    </div>
 
-                        <p className="text-teal-900  dark:text-teal-300 font-semibold font-motserrat hover:underline">{ownerDetails.username}</p>
-                        <div className='flex gap-2 items-end absolute left-[30rem] scale-125'>
-                            <Tooltip text={isLiked ? "Unlike this blog" : "Like this blog"}>
-                                <div> {/* Wrapper div to avoid nesting button inside button */}
-                                    <button
-                                        onClick={handleLike}
-                                        className="text-teal-600 dark:text-white transition-all scale-125"
+    {/* Like Button on the far right */}
+    <div className="flex gap-2 items-center hover:scale-110 transition-all font-motserrat">
+        <Tooltip text={isLiked ? "Unlike this blog" : "Like this blog"}>
+            <button
+                onClick={handleLike}
+                className="text-teal-600 dark:text-white transition-all transform  focus:outline-none"
+            >
+                {isLiked ? <AiFillLike size={24} /> : <AiOutlineLike size={24} />}
+            </button>
+        </Tooltip>
+        {likesLoading ? <span>Loading...</span> : <span>{blogLikeCount}</span>}
+    </div>
+</div>
 
-                                    >
-                                        {isLiked ? <AiFillLike /> : <AiOutlineLike />}
-                                    </button>
-                                </div>
-                            </Tooltip>
-                            {likesLoading ? <span>Loading...</span> : <span>{blogLikes}</span>}
-
-                        </div>
-                    </div>
                     <img className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg mb-5" src={thumbnail} alt={title} />
                     <p className="text-xl md:text-2xl text-slate-900 font-bold italic dark:text-teal-50 text-center mb-5">{description}</p>
                     <div className="prose dark:prose-dark max-w-none text-gray-900 dark:text-white text-lg">

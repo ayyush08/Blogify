@@ -17,7 +17,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
     const currentUserId = authStatus?.userData?.data?.user?._id;
     const checkLike = likedCheck.likedComments.some(like => like.commentId === comment._id && like.commenter === currentUserId);
 
-    
+    const [commentLikesCount, setCommentLikesCount] = useState(commentLikes || 0);
     const commenter = comment.ownerDetails._id;
     const [isLiked, setIsLiked] = useState(checkLike);
     const isAuthorized = authStatus?.userData?.data?.user?._id === commenter;
@@ -43,17 +43,19 @@ const SingleComment = ({ comment, commentsLoading }) => {
         try {
             await likeComment(comment._id);
             if(!isLiked){
-                dispatch(setLikedComments({commentId:comment._id,type:'add',commenter:currentUserId}));
                 setIsLiked(true);
+                setCommentLikesCount((prevCount) => prevCount + 1);
+                dispatch(setLikedComments({commentId:comment._id,type:'add',commenter:currentUserId}));
             }
             else{
-                dispatch(setLikedComments({commentId:comment._id,type:'remove',commenter:currentUserId}));
                 setIsLiked(false);
+                setCommentLikesCount((prevCount) => prevCount - 1);
+                dispatch(setLikedComments({commentId:comment._id,type:'remove',commenter:currentUserId}));
             }
 
         } catch (error) {
-            console.error('Error while liking comment', error);
             setIsLiked(false);
+            console.error('Error while liking comment', error);
         }
     
 
@@ -61,7 +63,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
     useEffect(() => {
         const currentLikeStatus = likedCheck.likedComments.some(like => like.commentId === comment._id && like.commenter === currentUserId);
         setIsLiked(currentLikeStatus);
-    }, [checkLike,commentLikes])
+    }, [comment,commentsLoading])
     return (
         <div className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm font-motserrat">
             <div className="flex items-center justify-between mb-2">
@@ -74,19 +76,19 @@ const SingleComment = ({ comment, commentsLoading }) => {
                     />
                     <span className="font-medium text-teal-900 dark:text-white font-motserrat">{comment.ownerDetails.username}</span>
                 </div>
-                <div className='flex gap-2'>
+                <div className='flex gap-2 hover:scale-110 transition-all p-1'>
                     <Tooltip text={isLiked ? "Unlike this comment" : "Like this comment"}>
                         <div> {/* Wrapper div to avoid nesting button inside button */}
                             <button
                                 onClick={handleLike}
-                                className="text-teal-600 dark:text-white transition-all scale-125"
+                                className="text-teal-600 dark:text-white transition-all scale-125 focus:outline-none"
                                 
                             >
                                 {isLiked ? <AiFillLike /> : <AiOutlineLike />}
                             </button>
                         </div>
                     </Tooltip>
-                    {likesLoading ? <span>Loading...</span>:<span>{commentLikes}</span>}
+                    {likesLoading ? <span>Loading...</span>:<span>{commentLikesCount}</span>}
 
                 </div>
 
