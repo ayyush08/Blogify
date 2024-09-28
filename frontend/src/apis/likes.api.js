@@ -6,8 +6,13 @@ const API = axios.create({ baseURL: BASE_URL, withCredentials: true });
 export const getBlogLikes = async (blogId) => {
     try {
         const {data} = await API.get(`/blogapi/v1/likes/bloglikes/${blogId}`);
-        toast.success(data?.message);
-        return data?.likes;
+        console.log(data?.message);
+        
+        if(data?.data.length === 0){
+            return 0;
+        }
+        
+        return data?.data[0].likes;
     } catch (error) {
         toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;

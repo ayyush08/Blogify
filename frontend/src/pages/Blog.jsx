@@ -1,40 +1,74 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useGetBlogLikes,useToggleBlogLike } from '@/hooks/likes.hook';
+import { useGetBlogLikes, useToggleBlogLike } from '@/hooks/likes.hook';
+import Tooltip from '@/components/ui/Tooltip';
+import { setLikedBlogs } from '@/store/likesSlice';
+import { AiOutlineLike, AiFillLike } from "react-icons/ai";
+import { useSelector, useDispatch } from 'react-redux';
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
 import { useGetBlogById } from '@/hooks/blogs.hook';
 import CommentSection from '@/components/CommentSection';
-import { Toaster,toast } from 'react-hot-toast';
-import { persistor } from '@/store/store'; 
+import { Toaster, toast } from 'react-hot-toast';
+import { persistor } from '@/store/store';
 import { useSessionValidator } from '@/hooks/user.hook';
 import UniversalLoader from '@/components/ui/UniversalLoader';
+import { set } from 'react-hook-form';
 const Blog = () => {
-    const {data:valid,isLoading:sessionChecking} = useSessionValidator();
+    const { data: valid, isLoading: sessionChecking } = useSessionValidator();
     const { id } = useParams();
+    const { data, error, isLoading: blogLoading, isFetching } = useGetBlogById(id);
+    const { mutateAsync: likeBlog } = useToggleBlogLike();
+    const { data: blogLikes, isLoading: likesLoading } = useGetBlogLikes(id);
+    const likedCheck = useSelector(state => state.likes);
+    const currentUserId = useSelector(state => state.auth?.userData?.data?.user?._id);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { data, error, isLoading:blogLoading, isFetching } = useGetBlogById(id);
-    const { title, content, description, thumbnail, ownerDetails } = {...data};
-    useEffect(() => {
-        console.log(sessionChecking);
-        
-        if (!sessionChecking) {
-                    // If no session data exists, navigate to login
-                    if (!valid) {
-                        toast.error('Please login to continue'); // Show a toast message (optional)
-                        persistor.purge(); // Purge redux persist storage (clear auth state)
-                        navigate('/login', { replace: true }); // Use replace to avoid navigation stack issues
-                    }
-                }
-        if(id){
-            window.scrollTo(0, 0);
+    const checkLike = likedCheck.likedBlogs.some(like => like.blogId === id && like.liker === currentUserId);
+    const [isLiked, setIsLiked] = useState(checkLike);
+    const [blogLikeCount, setBlogLikeCount] = useState(blogLikes || 0);
+    const { title, content, description, thumbnail, ownerDetails } = { ...data };
+
+    const handleLike = async() => {
+        try {
+            await likeBlog(id);
+            if (!isLiked) {
+                setIsLiked(true);
+                setBlogLikeCount((prevCount) => prevCount + 1);
+                dispatch(setLikedBlogs({ blogId: id, type: 'add', liker: currentUserId }));
+            }
+            else {
+                setIsLiked(false);
+                setBlogLikeCount((prevCount) => prevCount - 1);
+                dispatch(setLikedBlogs({ blogId: id, type: 'remove', liker: currentUserId }));
+            }
+        } catch (error) {
+            console.error('Error while liking blog', error);
+            setIsLiked(false);
 
         }
-    }, [id,data,sessionChecking,valid]);
+
+    }
+    useEffect(() => {
+        if (!sessionChecking && valid === false) {
+            toast.error('Please login to continue');
+            persistor.purge();
+            navigate('/login', { replace: true });
+        }
+
+        if (id) {
+            window.scrollTo(0, 0);
+        }
+
+        const currentLikeStatus = likedCheck.likedBlogs.some(
+            (like) => like.blogId === id && like.liker === currentUserId
+        );
+        setIsLiked(currentLikeStatus);
+    }, [valid, sessionChecking, likedCheck, id, currentUserId]);
 
     if (blogLoading || isFetching || sessionChecking) {
-        if(sessionChecking){
+        if (sessionChecking) {
             return <div className='flex justify-center items-center min-h-screen'>
-                <UniversalLoader/>
+                <UniversalLoader />
             </div>
         }
         return (<BlogSkeleton />)
@@ -44,17 +78,34 @@ const Blog = () => {
     }
 
     return (
-        
+
         <div id='blog' className="bg-teal-100  dark:bg-teal-700 p-5 min-h-full">
             <Toaster />
             <div className="max-w-4xl mx-auto">
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center justify-center">
                     <h1 className="text-4xl md:text-5xl uppercase tracking-wide font-extrabold  text-teal-900 dark:text-teal-300 text-center mb-5 font-mono">{title}</h1>
-                    <div className="flex items-center  mb-5 p-2 rounded-md transition-all hover:bg-gray-400/30 hover:cursor-pointer dark:hover:bg-gray-50/10 ">
+
+                    <div className="flex relative items-center  mb-5 p-2 rounded-md transition-all  hover:cursor-pointer dark:hover:bg-gray-50/10 ">
                         <div className="w-12 h-12 rounded-2xl overflow-hidden mr-4">
                             <img className="w-full h-full object-cover" src={ownerDetails.avatar} alt={ownerDetails.username} />
                         </div>
-                        <p className="text-teal-900  dark:text-teal-300 font-semibold font-motserrat  cursor-pointer">{ownerDetails.username}</p>
+
+                        <p className="text-teal-900  dark:text-teal-300 font-semibold font-motserrat hover:underline">{ownerDetails.username}</p>
+                        <div className='flex gap-2 items-end absolute left-[30rem] scale-125'>
+                            <Tooltip text={isLiked ? "Unlike this blog" : "Like this blog"}>
+                                <div> {/* Wrapper div to avoid nesting button inside button */}
+                                    <button
+                                        onClick={handleLike}
+                                        className="text-teal-600 dark:text-white transition-all scale-125"
+
+                                    >
+                                        {isLiked ? <AiFillLike /> : <AiOutlineLike />}
+                                    </button>
+                                </div>
+                            </Tooltip>
+                            {likesLoading ? <span>Loading...</span> : <span>{blogLikes}</span>}
+
+                        </div>
                     </div>
                     <img className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg mb-5" src={thumbnail} alt={title} />
                     <p className="text-xl md:text-2xl text-slate-900 font-bold italic dark:text-teal-50 text-center mb-5">{description}</p>
@@ -62,10 +113,10 @@ const Blog = () => {
                         {content}
                     </div>
                     {/* Comment Section */}
-                    <CommentSection blogId={id}/>
+                    <CommentSection blogId={id} />
                 </div>
             </div>
-    
+
         </div>
     );
 };

@@ -30,6 +30,7 @@ export const useGetBlogLikes = (blogId) => {
     return useQuery({
         queryKey:['current-blog-likes',blogId],
         queryFn:()=>getBlogLikes(blogId),
+        refetchOnWindowFocus:false,
     }
     )
 }

@@ -11,6 +11,7 @@ const LandingPage = () => {
         if (!sessionChecking) {
             if (!valid) {
                 persistor.purge();
+                toast.error('Please login to continue');
             }
             toast.success("Welcome")
         }

@@ -50,4 +50,4 @@ const likesSlice = createSlice({
 });
 
 export default likesSlice.reducer;
-export const { setLikedComments } = likesSlice.actions;
+export const { setLikedComments,setLikedBlogs } = likesSlice.actions;

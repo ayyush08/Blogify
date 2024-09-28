@@ -217,6 +217,7 @@ const getBlogById = asyncHandler(async(req,res)=>{
                 description:1,
                 'ownerDetails.username':1,
                 'ownerDetails.avatar':1,
+                'ownerDetails._id':1,
                 createdAt:1,
                 thumbnail:1
             }
