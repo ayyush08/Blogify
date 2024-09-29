@@ -55,10 +55,6 @@ const Blog = () => {
             navigate('/login', { replace: true });
         }
 
-        // if (id) {
-        //     window.scrollTo(0, 0);
-        // }
-
         const currentLikeStatus = likedCheck.likedBlogs.some(
             (like) => like.blogId === id && like.liker === currentUserId
         );

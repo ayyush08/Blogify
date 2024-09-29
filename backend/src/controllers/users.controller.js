@@ -198,7 +198,22 @@ const getUserProfile = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, user, "User profile fetched successfully"));
 })
 
-
+const updateUserProfile = asyncHandler(async (req, res) => {
+    const userId = req.user?._id;
+    const {fullName, username, email} = req.body;
+    if(!userId){
+        throw new ApiError(401, "Unauthorized request");
+    }
+    const updatedUser = User.findByIdAndUpdate({
+        fullName,
+        username,
+        email
+    }, {new: true})
+    if(!updatedUser){
+        throw new ApiError(500, "User not updated");
+    }
+    return res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
+})
 
 const validateUserSession = asyncHandler(async (req, res) => {
     const {refreshToken} = req.cookies;
@@ -214,5 +229,6 @@ export {
     logoutUser,
     refreshAccessToken,
     getUserProfile,
-    validateUserSession
+    validateUserSession,
+    updateUserProfile
 }
