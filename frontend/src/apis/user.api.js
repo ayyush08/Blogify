@@ -109,3 +109,15 @@ export const validateSession = async() => {
         throw error?.response?.data?.message;
     }
 }
+
+export const updateUserProfile = async (userData) => {
+    try {
+        const {data} = await API.put('/blogapi/v1/users/update-profile', userData);
+        console.log(data?.message);
+        toast.success(data?.message);
+        return data;
+    } catch (error) {
+        toast.error(error?.response?.data?.message);
+        throw error?.response?.data?.message;
+    }
+}
