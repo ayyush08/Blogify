@@ -15,9 +15,10 @@ const SingleComment = ({ comment, commentsLoading }) => {
     const likedCheck = useSelector(state => state.likes);
     const currentUserId = authStatus?.userData?._id;
     const checkLike = likedCheck.likedComments.some(like => like.commentId === comment._id && like.commenter === currentUserId);
-
+    
     const [commentLikesCount, setCommentLikesCount] = useState(commentLikes || 0);
     const commenter = comment.ownerDetails._id;
+    console.log(currentUserId,authStatus.userData,commenter);
     const [isLiked, setIsLiked] = useState(checkLike);
     const isAuthorized = currentUserId === commenter;
     console.log('Is Authorized', isAuthorized);
