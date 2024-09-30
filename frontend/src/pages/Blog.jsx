@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useGetBlogLikes, useToggleBlogLike } from '@/hooks/likes.hook';
 import Tooltip from '@/components/ui/Tooltip';
 import { setLikedBlogs } from '@/store/likesSlice';
+import { updateDetails } from '@/store/authSlice';
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { useSelector, useDispatch } from 'react-redux';
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
@@ -21,6 +22,7 @@ const Blog = () => {
     const { mutateAsync: likeBlog } = useToggleBlogLike();
     const likedCheck = useSelector(state => state.likes);
     const currentUserId = useSelector(state => state.auth?.userData?._id);
+    const authizedUser = useSelector(state => state.auth?.userData);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const checkLike = likedCheck.likedBlogs.some(like => like.blogId === id && like.liker === currentUserId);
@@ -48,9 +50,10 @@ const Blog = () => {
         }
 
     }
-    useEffect(() => {
+    useEffect(async() => {
         if (!sessionChecking && !valid) {
             toast.error('Please login to continue');
+            dispatch(updateDetails(null));
             persistor.purge();
             navigate('/login', { replace: true });
         }
