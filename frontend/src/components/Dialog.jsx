@@ -16,23 +16,22 @@ import { useUpdateUserProfile } from "@/hooks/user.hook";
 import toast from "react-hot-toast";
 import { updateDetails } from "@/store/authSlice";
 import { useSelector,useDispatch } from "react-redux";
+import { QueryClient } from "@tanstack/react-query";
 export function DialogDemo({  title,username,fullName,email }) {
+    const queryClient = new QueryClient();
     const userData = useSelector(state => state.auth.userData);
     const dispatch = useDispatch();
-    console.log(
-        "User Data",
-        userData
-    );
-    useEffect(()=>{
-
-    },[userData])
     const {mutateAsync:updateProfile,isPending:updating}  = useUpdateUserProfile();
     const [newData, setNewData] = useState({fullName:fullName,username:username,email:email});
+    useEffect(()=>{
+    },[updating,newData,userData,dispatch])
     const handleUpdateProfile = async () => {
         try {
             const update = await updateProfile({fullName: newData.fullName, username: newData.username, email: newData.email});
             if(update){
                 dispatch(updateDetails(update.data));
+                setNewData({fullName: update.data.fullName, username: update.data.username, email: update.data.email});
+                queryClient.invalidateQueries('current-user');
                 console.log("Profile Updated Successfully",update);
             }
             else{
@@ -46,6 +45,9 @@ export function DialogDemo({  title,username,fullName,email }) {
             toast.error("Profile Update Failed");
         }
         console.log("New Data", newData)
+    }
+    if(updating){
+        console.log("Profile Update Pending");
     }
     return (
         <Dialog>
@@ -106,7 +108,7 @@ export function DialogDemo({  title,username,fullName,email }) {
 
                 </div>
                 <DialogFooter >
-                    <Button onClick={handleUpdateProfile} className="dark:bg-cyan-500 bg-blue-600/70 hover:bg-blue-900 dark:text-white dark:hover:bg-cyan-700 font-motserrat"  type="submit">Save changes</Button>
+                    <Button onClick={()=>handleUpdateProfile()} className="dark:bg-cyan-500 bg-blue-600/70 hover:bg-blue-900 dark:text-white dark:hover:bg-cyan-700 font-motserrat"  type="submit">{updating?'Saving changes...':'Save Changes'}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

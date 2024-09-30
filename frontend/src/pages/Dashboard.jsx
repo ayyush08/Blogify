@@ -14,42 +14,19 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const storedUser = useSelector(state => state.auth);
   const loggedInUser = storedUser?.userData?._id;
-  console.log(loggedInUser,"on dash");
-  
   const currentUserData = storedUser?.userData;
-  console.log(currentUserData,"on dash");
+  console.log(currentUserData,"Current User Data");
   
   const isLoggedInUser = routedUserId === loggedInUser;
-  
   const userIdToFetch = isLoggedInUser ? loggedInUser : routedUserId;
   console.log(userIdToFetch);
   const [page, setPage] = useState(1);
-  const [user, setUser] = useState(null);
   const [userBlogs,setUserBlogs] = useState(null)
   const [userLoading, setUserLoading] = useState(false);
   const [userError, setUserError] = useState(null);
-  const { data, isLoading, isError } = useUserProfile(!isLoggedInUser?routedUserId:null);
+  const { data:otherUser, isLoading, isError } = useUserProfile(!isLoggedInUser?routedUserId:null);
   const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page);
-  useEffect(() => {
-    if (!isLoggedInUser) {
-      const fetchUserProfile = () => {
-        try {
-          if(isLoading)
-            setUserLoading(isLoading);
-            setUser(data?.user);
-
-        } catch (error) {
-          setUserError(error);
-        }
-      };
-
-      fetchUserProfile();
-    } else {
-      setUser(storedUser?.userData);
-      setUserLoading(false);
-    }
-    
-  }, [user, data, isLoading]);
+  const user = isLoggedInUser ? currentUserData : otherUser;
   useEffect(() => {
     if (blogs?.docs) {
       setUserBlogs((prevBlogs) => (page === 1 ? blogs.docs : [...prevBlogs, ...blogs.docs]));
@@ -71,8 +48,7 @@ const Dashboard = () => {
       console.log('card clicked', id);
       
   }
-  // Fetch user blogs
-  // Loading state
+
   if (userLoading || blogsLoading) {
     return <div className='flex justify-center items-center min-h-screen'><UniversalLoader/></div>;
   }
