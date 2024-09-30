@@ -31,11 +31,11 @@ const Login = () => {
                 dispatch(login(loggedInUser.data.user));
                 navigate('/');
             } else {
-                toast.error('Invalid login credentials.');
+                console.log('Login failed');
             }
         } catch (error) {
             console.error(error);
-            toast.error('An error occurred during login.');
+            
         }
     };
 

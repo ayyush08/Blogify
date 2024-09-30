@@ -12,13 +12,23 @@ const CommentSection = ({ blogId }) => {
     const handleCommentSubmit = async (data) => {
         const {commentText} = data;
         const comment = await addComment({ blogId, commentText });
+        reset();
         console.log('Comment submitted', comment);
     }
     if (commentsLoading) {
         console.log('Comments are loading');
 
     }
+    if(commentsError){
+        console.error('Error while fetching comments',commentsError);
+    }
     useEffect(() => {
+        if (commentsError) {
+            console.error('Error while fetching comments', commentsError);
+            toast.error('Failed to load comments');
+             // Early return if there's an error
+        }
+
         if (commentsData) {
             if (page === 1) {
                 // For the initial page, replace the comments
@@ -26,15 +36,14 @@ const CommentSection = ({ blogId }) => {
             } else {
                 // For subsequent pages, append the new comments
                 if (commentsData.length > 0) {
-                    setComments(prevComments => [...prevComments, ...commentsData]);
+                    setComments((prevComments) => [...prevComments, ...commentsData]);
                 } else {
                     toast.success("That's all 😀");
                 }
             }
         }
-    }, [commentsData, page]);
-    const handleShowMore = (e) => {
-        e.preventDefault();
+    }, [commentsData, commentsError, page]);
+    const handleShowMore = () => {
         console.log('Show more clicked');
         setPage(prevPage => prevPage + 1);
     }
@@ -74,7 +83,7 @@ const CommentSection = ({ blogId }) => {
             </div>
             {commentsData?.length >0  && <div className='flex justify-center '>
                 <button 
-                    onClick={handleShowMore} 
+                    onClick={()=>handleShowMore()} 
                     className='px-4 mt-5  py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition duration-300'
                     disabled={commentsLoading}
                 >

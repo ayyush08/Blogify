@@ -20,7 +20,7 @@ const Blog = () => {
     const { mutateAsync: likeBlog } = useToggleBlogLike();
     const { data: blogLikes, isLoading: likesLoading } = useGetBlogLikes(id);
     const likedCheck = useSelector(state => state.likes);
-    const currentUserId = useSelector(state => state.auth?.userData?.data?.user?._id);
+    const currentUserId = useSelector(state => state.auth?.userData?._id);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const checkLike = likedCheck.likedBlogs.some(like => like.blogId === id && like.liker === currentUserId);

@@ -7,8 +7,7 @@ export const useSessionValidator = ()=>{
     return useQuery({
         queryKey: ['session-validator'],
         queryFn: () => validateSession(),
-        staleTime: 1000 * 60 * 5,
-        cacheTime: 1000 * 60 * 5,
+        
     });
 }
 export const useRegisterUser = () => {

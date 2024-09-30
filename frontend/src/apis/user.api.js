@@ -70,6 +70,7 @@ export const loginUser = async (userData) => {
         return data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
+        console.log(error?.response?.data)
         throw error?.response?.data?.message;
     }
 }

@@ -8,19 +8,18 @@ import { setLikedComments} from '@/store/likesSlice';
 import Popup from './Popup';
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import Tooltip from './ui/Tooltip';
-import { set } from 'react-hook-form';
 const SingleComment = ({ comment, commentsLoading }) => {
     const {data:commentLikes,isLoading:likesLoading} = useGetCommentLikes(comment._id);
     const dispatch = useDispatch();
     const authStatus = useSelector(state => state.auth);
     const likedCheck = useSelector(state => state.likes);
-    const currentUserId = authStatus?.userData?.data?.user?._id;
+    const currentUserId = authStatus?.userData?._id;
     const checkLike = likedCheck.likedComments.some(like => like.commentId === comment._id && like.commenter === currentUserId);
 
     const [commentLikesCount, setCommentLikesCount] = useState(commentLikes || 0);
     const commenter = comment.ownerDetails._id;
     const [isLiked, setIsLiked] = useState(checkLike);
-    const isAuthorized = authStatus?.userData?.data?.user?._id === commenter;
+    const isAuthorized = currentUserId === commenter;
     console.log('Is Authorized', isAuthorized);
     const { mutateAsync: deleteComment, isPending, isError } = useDeleteComment();
     const { mutateAsync: likeComment, isPending: liking, isError: likeError } = useToggleCommentLike();
@@ -34,9 +33,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
             
         }
     }
-    if (commentsLoading) {
-        return <CommentSkeleton />
-    }
+   
     const handleLike =async e => {
         e.preventDefault();
 
@@ -63,7 +60,10 @@ const SingleComment = ({ comment, commentsLoading }) => {
     useEffect(() => {
         const currentLikeStatus = likedCheck.likedComments.some(like => like.commentId === comment._id && like.commenter === currentUserId);
         setIsLiked(currentLikeStatus);
-    }, [comment,commentsLoading])
+    }, [comment,commentsLoading]);
+    if (commentsLoading) {
+        return <CommentSkeleton />
+    }
     return (
         <div className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm font-motserrat">
             <div className="flex items-center justify-between mb-2">
