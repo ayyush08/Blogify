@@ -15,7 +15,7 @@ const LandingPage = () => {
             }
             toast.success("Welcome")
         }
-    },[])
+    },[sessionChecking,valid])
     return (
         <section>
             <Toaster />

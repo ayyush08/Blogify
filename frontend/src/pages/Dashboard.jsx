@@ -4,10 +4,11 @@ import Card from '@/components/Card';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUserProfile } from '@/hooks/user.hook';
 import { useSelector } from 'react-redux';
-import { MdEditSquare } from "react-icons/md";
+
 import toast from 'react-hot-toast';
 import UniversalLoader from '@/components/ui/UniversalLoader';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { DialogDemo } from '@/components/Dialog';
 const Dashboard = () => {
   const queryClient = new QueryClient();
   const { userId: routedUserId } = useParams();
@@ -76,7 +77,11 @@ const Dashboard = () => {
     return <div>No blogs found</div>;
   }
 
+  const handleEditProfile = () => {
+    console.log('Edit profile clicked');
 
+    
+  }
 
   return (
     (user&&userBlogs) && (
@@ -100,9 +105,12 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              <button className="absolute hover:shadow-xl transition-all md:left-[54.7%] p-1 rounded-lg scale-90 top-[-12px] font-bold dark:text-white bg-cyan-400 flex gap-1 justify-center items-center dark:bg-emerald-700">
-                Edit Profile <MdEditSquare />
-              </button>
+              <div className="absolute top-[-15px] right-[34rem]">
+
+                <DialogDemo trigger={handleEditProfile} title={"Edit Profile"} username={storedUser?.userData?.data?.user?.username} email={storedUser?.userData?.data?.user?.email} fullName={storedUser?.userData?.data?.user?.fullName} pfp={storedUser?.userData?.data?.user?.avatar}  />
+              </div>
+                
+        
             </div>
 
             {/* Blogs Section */}
