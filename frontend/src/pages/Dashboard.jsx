@@ -10,12 +10,17 @@ import UniversalLoader from '@/components/ui/UniversalLoader';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { DialogDemo } from '@/components/Dialog';
 const Dashboard = () => {
-  const queryClient = new QueryClient();
   const { userId: routedUserId } = useParams();
   const navigate = useNavigate()
   const storedUser = useSelector(state => state.auth);
-  const loggedInUser = storedUser?.userData?.data?.user?._id;
+  const loggedInUser = storedUser?.userData?._id;
+  console.log(loggedInUser,"on dash");
+  
+  const currentUserData = storedUser?.userData;
+  console.log(currentUserData,"on dash");
+  
   const isLoggedInUser = routedUserId === loggedInUser;
+  
   const userIdToFetch = isLoggedInUser ? loggedInUser : routedUserId;
   console.log(userIdToFetch);
   const [page, setPage] = useState(1);
@@ -40,7 +45,7 @@ const Dashboard = () => {
 
       fetchUserProfile();
     } else {
-      setUser(storedUser?.userData?.data?.user);
+      setUser(storedUser?.userData);
       setUserLoading(false);
     }
     
@@ -77,11 +82,7 @@ const Dashboard = () => {
     return <div>No blogs found</div>;
   }
 
-  const handleEditProfile = () => {
-    console.log('Edit profile clicked');
 
-    
-  }
 
   return (
     (user&&userBlogs) && (
@@ -107,7 +108,7 @@ const Dashboard = () => {
               </div>
               <div className="absolute top-[-14px] right-4 sm:right-[5.5rem] md:right-[8.5rem] lg:right-[22rem] lg:top-[-1rem]">
 
-                <DialogDemo trigger={handleEditProfile} title={"Edit Profile"} username={storedUser?.userData?.data?.user?.username} email={storedUser?.userData?.data?.user?.email} fullName={storedUser?.userData?.data?.user?.fullName} pfp={storedUser?.userData?.data?.user?.avatar}  />
+                <DialogDemo title={"Edit Profile"} username={currentUserData.username} email={currentUserData.email} fullName={currentUserData.fullName}  />
               </div>
                 
         

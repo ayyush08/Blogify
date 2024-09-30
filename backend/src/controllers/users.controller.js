@@ -199,20 +199,23 @@ const getUserProfile = asyncHandler(async (req, res) => {
 })
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-    const userId = req.user?._id;
-    const {fullName, username, email} = req.body;
-    if(!userId){
-        throw new ApiError(401, "Unauthorized request");
-    }
-    const updatedUser = User.findByIdAndUpdate({
-        fullName,
-        username,
-        email
-    }, {new: true})
-    if(!updatedUser){
-        throw new ApiError(500, "User not updated");
-    }
-    return res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
+    const {fullName,email,username} = req.body; //agar files update kra rhe to alag controller rkhe behtar hota h
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set:{
+                fullName:fullName,
+                email:email,
+                username:username
+            }
+        },
+        {new:true} //update ke baad ki info return hoti h aise
+    ).select('-password')
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200,user,'Profile details successfully updated'))
 })
 
 const validateUserSession = asyncHandler(async (req, res) => {

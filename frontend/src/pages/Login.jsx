@@ -26,7 +26,9 @@ const Login = () => {
             });
             
             if (loggedInUser) {
-                dispatch(login(loggedInUser));
+                console.log('Logged in user:', loggedInUser);
+                
+                dispatch(login(loggedInUser.data.user));
                 navigate('/');
             } else {
                 toast.error('Invalid login credentials.');

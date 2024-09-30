@@ -51,7 +51,7 @@ const SignUp = () => {
                 console.log(loggedInUser);
                 
                 if (loggedInUser) {
-                    dispatch(login(loggedInUser));
+                    dispatch(login(loggedInUser.data.user));
                     navigate("/");
                 }
                 else{

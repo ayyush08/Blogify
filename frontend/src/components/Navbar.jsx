@@ -16,7 +16,7 @@ const Navbar = () => {
     console.log(location.pathname);
     const { mutateAsync: logoutUser } = useLogoutUser();
     const authStatus = useSelector(state => state.auth);
-    const currentUser = authStatus?.userData?.data?.user?._id;
+    const currentUser = authStatus?.userData?._id;
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [rotateState, setRotateState] = useState(false);

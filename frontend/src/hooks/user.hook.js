@@ -1,5 +1,5 @@
 import {useQuery,useQueryClient,useMutation} from '@tanstack/react-query'
-import { registerUser,loginUser,logoutUser,getUserProfile,validateSession } from '../apis/user.api'
+import { registerUser,loginUser,logoutUser,getUserProfile,validateSession,updateUserProfile } from '../apis/user.api'
 
 
 
@@ -69,4 +69,20 @@ export const useUserProfile = (userId) => {
         staleTime: 1000 * 60 * 5,
         cacheTime: 1000 * 60 * 5,
     });
+}
+
+export const useUpdateUserProfile = () => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: (userData) => updateUserProfile(userData),
+        onMutate: async (userData) => {
+            console.log('update user profile called',userData);
+            
+            const previousData = queryClient.getQueryData('current-user');
+            queryClient.setQueryData('current-user', userData);
+            return { previousData };
+        },
+        staleTime: 1000 * 60 * 5,
+        cacheTime: 1000 * 60 * 5,
+    })
 }
