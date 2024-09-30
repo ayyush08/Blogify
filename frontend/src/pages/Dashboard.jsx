@@ -90,7 +90,7 @@ const Dashboard = () => {
           <div className="container mx-auto">
             {/* Profile Section */}
             <div className="flex flex-col md:flex-row items-center justify-center mb-6 relative">
-              <div className="flex flex-col md:flex-row items-center justify-center p-5 rounded-lg bg-white dark:bg-gray-800 w-full md:w-[20vw] space-x-0 md:space-x-5">
+              <div className="flex flex-col md:flex-row items-center justify-center p-5 rounded-lg bg-white dark:bg-gray-800 w-[85vw] sm:w-[60vw] md:w-[50vw] lg:w-[40vw] space-x-0 md:space-x-5 relative">
                 <img
                   className="h-20 w-20 rounded-full object-cover"
                   src={user?.avatar}
@@ -105,7 +105,7 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              <div className="absolute top-[-15px] right-[34rem]">
+              <div className="absolute top-[-14px] right-4 sm:right-[5.5rem] md:right-[8.5rem] lg:right-[22rem] lg:top-[-1rem]">
 
                 <DialogDemo trigger={handleEditProfile} title={"Edit Profile"} username={storedUser?.userData?.data?.user?.username} email={storedUser?.userData?.data?.user?.email} fullName={storedUser?.userData?.data?.user?.fullName} pfp={storedUser?.userData?.data?.user?.avatar}  />
               </div>

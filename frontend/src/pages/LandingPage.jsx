@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Hero from '../components/Hero'
 import About from '@/components/About'
+import UniversalLoader from '@/components/ui/UniversalLoader'
 import AllBlogs from './AllBlogs'
 import { useSessionValidator } from '@/hooks/user.hook';
 import { persistor } from '@/store/store';
@@ -16,6 +17,11 @@ const LandingPage = () => {
             toast.success("Welcome")
         }
     },[sessionChecking,valid])
+    if(sessionChecking){
+        return <div className='flex justify-center items-center min-h-screen'>
+            <UniversalLoader/>
+        </div>
+    }
     return (
         <section>
             <Toaster />
