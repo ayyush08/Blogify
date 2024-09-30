@@ -15,7 +15,7 @@ import { MdEditSquare } from "react-icons/md";
 export function DialogDemo({ trigger, title,username,fullName,email }) {
     return (
         <Dialog>
-            <DialogTrigger asChild>
+            <DialogTrigger className="bg-teal-400 dark:hover:bg-teal-600 dark:bg-teal-700 rounded-xl italic hover:bg-teal-300" asChild>
                 <Button variant="outline">Edit Profile
                 </Button>
 
@@ -68,8 +68,8 @@ export function DialogDemo({ trigger, title,username,fullName,email }) {
 
                    
                 </div>
-                <DialogFooter>
-                    <Button type="submit">Save changes</Button>
+                <DialogFooter >
+                    <Button  type="submit">Save changes</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
