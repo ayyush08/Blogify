@@ -24,8 +24,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
     console.log('Is Authorized', isAuthorized);
     const { mutateAsync: deleteComment, isPending, isError } = useDeleteComment();
     const { mutateAsync: likeComment, isPending: liking, isError: likeError } = useToggleCommentLike();
-    const handleDeleteComment = async e => {
-        e.preventDefault();
+    const handleDeleteComment = async() => {
         try {
             await deleteComment({ commentId: comment._id });
 
@@ -35,8 +34,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
         }
     }
    
-    const handleLike =async e => {
-        e.preventDefault();
+    const handleLike =async() => {
 
         try {
             await likeComment(comment._id);
@@ -81,7 +79,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
                     <Tooltip text={isLiked ? "Unlike this comment" : "Like this comment"}>
                         <div> {/* Wrapper div to avoid nesting button inside button */}
                             <button
-                                onClick={handleLike}
+                                onClick={()=>handleLike()}
                                 className="text-teal-600 dark:text-white transition-all scale-125 focus:outline-none"
                                 
                             >
@@ -109,7 +107,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
                         description={"This action cannot be undone."}
                         action={"Delete"}
                         cancel={"Cancel"}
-                        handleDeleteComment={handleDeleteComment}
+                        handleDeleteComment={()=>handleDeleteComment()}
                     >
                     </Popup>
                 )}
