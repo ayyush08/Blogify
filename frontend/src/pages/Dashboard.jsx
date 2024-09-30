@@ -22,19 +22,24 @@ const Dashboard = () => {
   console.log(userIdToFetch);
   const [page, setPage] = useState(1);
   const [userBlogs,setUserBlogs] = useState(null)
-  const [userLoading, setUserLoading] = useState(false);
-  const [userError, setUserError] = useState(null);
   const { data:otherUser, isLoading, isError } = useUserProfile(!isLoggedInUser?routedUserId:null);
   const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page);
   const user = isLoggedInUser ? currentUserData : otherUser;
   useEffect(() => {
     if (blogs?.docs) {
-      setUserBlogs((prevBlogs) => (page === 1 ? blogs.docs : [...prevBlogs, ...blogs.docs]));
-      if (blogs.docs.length === 0 && page > 1) {
-        toast.success("That's all 😀");
-        setPage((prevPage) => Math.max(prevPage - 1, 1)); // Prevents decrementing beyond page 1
+      if (page === 1) {
+          // For the initial page, replace the blogs
+          setUserBlogs(blogs.docs);
+      } else {
+          if(blogs?.docs.length>0)
+          // For subsequent pages, append the new blogs
+          setUserBlogs(prevBlogs => [...prevBlogs, ...blogs.docs]);
+          else{
+              // setPage(1);
+              toast.success("That's all 😀")
+          }
       }
-    }
+  }      
   }, [blogs, page]);
   const handleShowMore = (e) => {
     e.preventDefault();
@@ -49,7 +54,7 @@ const Dashboard = () => {
       
   }
 
-  if (userLoading || blogsLoading) {
+  if ( blogsLoading) {
     return <div className='flex justify-center items-center min-h-screen'><UniversalLoader/></div>;
   }
 
@@ -107,7 +112,7 @@ const Dashboard = () => {
                   />
                 ))}
               </div>
-              {userBlogs.length > 0 && (
+              {blogs?.docs.length > 0 && (
 
                 <div className="flex justify-center mt-4">
                 <button

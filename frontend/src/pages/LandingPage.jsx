@@ -12,11 +12,12 @@ const LandingPage = () => {
         if (!sessionChecking) {
             if (!valid) {
                 persistor.purge();
+
                 // toast.error('Please login to continue');
             }
             toast.success("Welcome")
         }
-    },[sessionChecking,valid])
+    },[sessionChecking])
     if(sessionChecking){
         return <div className='flex justify-center items-center min-h-screen'>
             <UniversalLoader/>

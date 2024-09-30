@@ -17,8 +17,8 @@ const Blog = () => {
     const { data: valid, isLoading: sessionChecking } = useSessionValidator();
     const { id } = useParams();
     const { data, error, isLoading: blogLoading, isFetching } = useGetBlogById(id);
-    const { mutateAsync: likeBlog } = useToggleBlogLike();
     const { data: blogLikes, isLoading: likesLoading } = useGetBlogLikes(id);
+    const { mutateAsync: likeBlog } = useToggleBlogLike();
     const likedCheck = useSelector(state => state.likes);
     const currentUserId = useSelector(state => state.auth?.userData?._id);
     const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const Blog = () => {
 
     }
     useEffect(() => {
-        if (!sessionChecking && valid === false) {
+        if (!sessionChecking && !valid) {
             toast.error('Please login to continue');
             persistor.purge();
             navigate('/login', { replace: true });
