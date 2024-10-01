@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams,Link } from 'react-router-dom'
 import { useGetBlogLikes, useToggleBlogLike } from '@/hooks/likes.hook';
 import Tooltip from '@/components/ui/Tooltip';
 import { setLikedBlogs } from '@/store/likesSlice';
@@ -50,14 +50,16 @@ const Blog = () => {
         }
 
     }
-    useEffect(async() => {
+    useEffect(() => {
         if (!sessionChecking && !valid) {
             toast.error('Please login to continue');
             dispatch(updateDetails(null));
-            persistor.purge();
+            // persistor.purge();
             navigate('/login', { replace: true });
         }
-
+        if(id){
+            window.scrollTo(0, 0);
+        }
         const currentLikeStatus = likedCheck.likedBlogs.some(
             (like) => like.blogId === id && like.liker === currentUserId
         );
@@ -86,14 +88,14 @@ const Blog = () => {
 
                     <div className="flex items-center justify-between w-full mb-5 p-2 rounded-md transition-all hover:cursor-pointer dark:hover:bg-gray-50/10">
     {/* User Avatar and Username on the left */}
-    <div className="flex items-center hover:bg-gray-500/20 rounded-md p-1 font-motserrat">
+    <Link  to={`/dashboard/${ownerDetails._id}`} className="flex items-center hover:bg-gray-500/20 rounded-md p-1 font-motserrat">
         <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
             <img className="w-full h-full object-cover" src={ownerDetails.avatar} alt={ownerDetails.username} />
         </div>
         <p className="text-teal-900 dark:text-teal-300 font-semibold">
             {ownerDetails.username}
         </p>
-    </div>
+    </Link>
 
     {/* Like Button on the far right */}
     <div className="flex gap-2 items-center hover:scale-110 transition-all font-motserrat">

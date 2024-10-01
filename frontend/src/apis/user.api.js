@@ -12,7 +12,7 @@ export const getUserProfile = async (userId) => {
     {try {
         console.log("user id", userId);
         
-        const {data} = await API.get(`/blogapi/v1/users/profile/${userId});`);
+        const {data} = await API.get(`/blogapi/v1/users/profile/${userId}`);
         return data;
     } catch (error) {
 
@@ -69,7 +69,7 @@ export const loginUser = async (userData) => {
         
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        // toast.error(error?.response?.data?.message);
         console.log(error?.response?.data)
         throw error?.response?.data?.message;
     }

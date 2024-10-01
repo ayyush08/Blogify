@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGetUserBlogs } from '@/hooks/blogs.hook';
 import Card from '@/components/Card';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useUserProfile } from '@/hooks/user.hook';
 import { useSelector } from 'react-redux';
 
@@ -11,51 +11,55 @@ import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { DialogDemo } from '@/components/Dialog';
 const Dashboard = () => {
   const { userId: routedUserId } = useParams();
+  const location = useLocation();
+  
   const navigate = useNavigate()
   const storedUser = useSelector(state => state.auth);
   const loggedInUser = storedUser?.userData?._id;
   const currentUserData = storedUser?.userData;
-  console.log(currentUserData,"Current User Data");
   
   const isLoggedInUser = routedUserId === loggedInUser;
   const userIdToFetch = isLoggedInUser ? loggedInUser : routedUserId;
   console.log(userIdToFetch);
   const [page, setPage] = useState(1);
-  const [userBlogs,setUserBlogs] = useState(null)
-  const { data:otherUser, isLoading, isError } = useUserProfile(!isLoggedInUser?routedUserId:null);
+  const [userBlogs, setUserBlogs] = useState(null)
+  const { data: otherUser, isLoading, isError } = useUserProfile(!isLoggedInUser ? routedUserId : null);
   const { data: blogs, isLoading: blogsLoading } = useGetUserBlogs(userIdToFetch, page);
-  const user = isLoggedInUser ? currentUserData : otherUser;
+  const user = isLoggedInUser ? currentUserData : otherUser?.data;
+  console.log(user);
+  console.log(location.pathname,loggedInUser);
+
   useEffect(() => {
     if (blogs?.docs) {
       if (page === 1) {
-          // For the initial page, replace the blogs
-          setUserBlogs(blogs.docs);
+        // For the initial page, replace the blogs
+        setUserBlogs(blogs.docs);
       } else {
-          if(blogs?.docs.length>0)
+        if (blogs?.docs.length > 0)
           // For subsequent pages, append the new blogs
           setUserBlogs(prevBlogs => [...prevBlogs, ...blogs.docs]);
-          else{
-              // setPage(1);
-              toast.success("That's all 😀")
-          }
+        else {
+          // setPage(1);
+          toast.success("That's all 😀")
+        }
       }
-  }      
+    }
   }, [blogs, page]);
   const handleShowMore = (e) => {
     e.preventDefault();
-      console.log('Show more clicked');
-      
-      setPage(prevPage => prevPage + 1);
+    console.log('Show more clicked');
+
+    setPage(prevPage => prevPage + 1);
   };
   const handleCardClick = (id) => {
-      
-      navigate(`/blog/${id}`);
-      console.log('card clicked', id);
-      
+
+    navigate(`/blog/${id}`);
+    console.log('card clicked', id);
+
   }
 
-  if ( blogsLoading) {
-    return <div className='flex justify-center items-center min-h-screen'><UniversalLoader/></div>;
+  if (blogsLoading) {
+    return <div className='flex justify-center items-center min-h-screen'><UniversalLoader /></div>;
   }
 
   // No blogs 
@@ -66,7 +70,7 @@ const Dashboard = () => {
 
 
   return (
-    (user&&userBlogs) && (
+    (user && userBlogs) && (
       <div className="min-h-screen w-full">
         <div className="bg-teal-100 dark:bg-teal-900 text-gray-900 dark:text-gray-100 min-h-screen p-6 md:p-10">
           <div className="container mx-auto">
@@ -87,12 +91,18 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              <div className="absolute top-[-14px] right-4 sm:right-[5.5rem] md:right-[8.5rem] lg:right-[22rem] lg:top-[-1rem]">
+              {location.pathname === `/dashboard/${loggedInUser}` && (
+                <div className="absolute top-[-14px] right-4 sm:right-[5.5rem] md:right-[8.5rem] lg:right-[22rem] lg:top-[-1rem]">
+                  <DialogDemo
+                    title={"Edit Profile"}
+                    username={currentUserData.username}
+                    email={currentUserData.email}
+                    fullName={currentUserData.fullName}
+                  />
+                </div>
+              )}
 
-                <DialogDemo title={"Edit Profile"} username={currentUserData.username} email={currentUserData.email} fullName={currentUserData.fullName}  />
-              </div>
-                
-        
+
             </div>
 
             {/* Blogs Section */}
@@ -115,15 +125,15 @@ const Dashboard = () => {
               {blogs?.docs.length > 0 && (
 
                 <div className="flex justify-center mt-4">
-                <button
-                  onClick={handleShowMore}
-                  className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition duration-300 w-full md:w-auto"
-                  disabled={blogsLoading}
+                  <button
+                    onClick={handleShowMore}
+                    className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 transition duration-300 w-full md:w-auto"
+                    disabled={blogsLoading}
                   >
-                  {blogsLoading ? 'Loading Blogs...' : 'Show More'}
-                </button>
-              </div>
-                )}
+                    {blogsLoading ? 'Loading Blogs...' : 'Show More'}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -59,22 +59,22 @@ const Navbar = () => {
                     {location.pathname === '/' ? null : <Link to="/" className="hover:scale-105 cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         Home
                     </Link>}
-                    <ScrollLink to='about' duration={500} smooth={true} className=" cursor-pointer hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                    {location.pathname==='/'?<ScrollLink to='about' duration={500} smooth={true} className=" cursor-pointer hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         About
-                    </ScrollLink>
-                    <Link to="/contact" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
-                        Contact
-                    </Link>
+                    </ScrollLink>:null}
+                    {location.pathname=='/contact'?null:<Link to="/contact" className="hover:scale-105 hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                        Contact Us
+                    </Link>}
                     {!authStatus.status &&
                         <div className="flex items-center">
                             {
                                 location.pathname === '/login' ? null : <Link to="login">
-                                    <Button className="mx-1 dark:bg-teal-600 focus:scale-75 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
+                                    <Button className="mx-1 dark:bg-teal-600 focus:scale-75 bg-teal-300 font-semibold text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline" >Login</Button>
                                 </Link>
                             }
                             {
                                 location.pathname === '/signup' ? null : <Link to="signup">
-                                    <Button className="mx-1 dark:bg-teal-600 focus:scale-75 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
+                                    <Button className="mx-1 dark:bg-teal-600 focus:scale-75 bg-teal-300 font-semibold text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Signup</Button>
                                 </Link>
                             }
                         </div>
@@ -97,7 +97,7 @@ const Navbar = () => {
                                 </Link>
                             }
                             {
-                                <Button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-200 text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</Button>
+                                <Button onClick={handleLogOut} className="mx-1 p-2 rounded-lg dark:bg-teal-600 bg-teal-300 font-semibold text-teal-900 dark:text-teal-50 dark:hover:bg-slate-300 dark:hover:text-black" variant="outline">Logout</Button>
                             }
                         </div>)
                     }
@@ -134,13 +134,13 @@ const Navbar = () => {
                 {location.pathname === '/' ? null : <Link to="/" className=" cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                         Home
                     </Link>}
-                <ScrollLink to='about' duration={500} smooth={true} className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                {location.pathname=='/'?<ScrollLink to='about' duration={500} smooth={true} className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
                     About
-                </ScrollLink>
+                </ScrollLink>:null}
 
-                <Link to="/contact" className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
-                    Contact
-                </Link>
+                {location.pathname ==='/contact' ? null : <Link to="/contact" className="cursor-pointer hover:font-semibold transition-transform duration-300 text-gray-900 dark:text-white">
+                    Contact Us
+                </Link>}
                 {!authStatus.status &&
                     <div className="flex items-center">
 

@@ -192,6 +192,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler(async (req, res) => {
     const {userId} = req.params;
+    if(!isValidObjectId(userId)){
+        throw new ApiError(400, "Invalid user id");
+    }
+    console.log("user id on back", userId);
+    
     const user = await User.findById(userId).select("-password -refreshToken");
     if(!user){
         throw new ApiError(404, "User not found");

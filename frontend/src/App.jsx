@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import BlogWriter from './pages/BlogWriter'
+import Contact from './pages/Contact'
 const queryClient = new QueryClient()
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route path='/login' element={<Login/>} />
           <Route path='/dashboard/:userId' element={<Dashboard/>} />
           <Route path='/write' element={<BlogWriter/>} />
+          <Route path='/contact' element={<Contact/>} />
           </Route>
         </Routes>
       </BrowserRouter>
