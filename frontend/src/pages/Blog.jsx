@@ -7,22 +7,21 @@ import { updateDetails } from '@/store/authSlice';
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { useSelector, useDispatch } from 'react-redux';
 import BlogSkeleton from '@/components/ui/BlogSkeleton';
-import { useGetBlogById } from '@/hooks/blogs.hook';
+import { useGetBlogById,useDeleteBlog } from '@/hooks/blogs.hook';
 import CommentSection from '@/components/CommentSection';
 import { Toaster, toast } from 'react-hot-toast';
-import { persistor } from '@/store/store';
+import { RiDeleteBin5Fill } from "react-icons/ri";
 import { useSessionValidator } from '@/hooks/user.hook';
 import UniversalLoader from '@/components/ui/UniversalLoader';
-import { set } from 'react-hook-form';
 const Blog = () => {
     const { data: valid, isLoading: sessionChecking } = useSessionValidator();
     const { id } = useParams();
     const { data, error, isLoading: blogLoading, isFetching } = useGetBlogById(id);
     const { data: blogLikes, isLoading: likesLoading } = useGetBlogLikes(id);
     const { mutateAsync: likeBlog } = useToggleBlogLike();
+    const { mutateAsync:deleteBlog,isPending:deletingBlog } = useDeleteBlog();
     const likedCheck = useSelector(state => state.likes);
     const currentUserId = useSelector(state => state.auth?.userData?._id);
-    const authizedUser = useSelector(state => state.auth?.userData);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const checkLike = likedCheck.likedBlogs.some(like => like.blogId === id && like.liker === currentUserId);
@@ -50,21 +49,42 @@ const Blog = () => {
         }
 
     }
+    const handleDeleteBlog =async ()=>{
+        try {
+            await deleteBlog(id);
+            if(deletingBlog) toast.loading('Deleting blog...');
+            if(!deletingBlog)
+            toast.success('Blog deleted successfully');
+            let isNavigated = true;
+            navigate(`/dashboard/${currentUserId}`, { replace: true });
+        } catch (error) {
+            console.error('Error while deleting blog', error);
+            toast.error('Failed to delete blog');
+        }
+        
+    }
     useEffect(() => {
+        let isMounted = true;
         if (!sessionChecking && !valid) {
             toast.error('Please login to continue');
             dispatch(updateDetails(null));
             // persistor.purge();
             navigate('/login', { replace: true });
         }
-        if(id){
+        if(id && isMounted){
             window.scrollTo(0, 0);
         }
         const currentLikeStatus = likedCheck.likedBlogs.some(
             (like) => like.blogId === id && like.liker === currentUserId
         );
-        setIsLiked(currentLikeStatus);
-    }, [valid, sessionChecking, likedCheck, id, currentUserId]);
+        if(isMounted){
+            setIsLiked(currentLikeStatus);
+
+        }
+        return () => {
+            isMounted = false;
+        }
+    }, [valid, sessionChecking, likedCheck, id, currentUserId, dispatch, navigate]);
 
     if (blogLoading || isFetching || sessionChecking) {
         if (sessionChecking) {
@@ -88,7 +108,9 @@ const Blog = () => {
 
                     <div className="flex items-center justify-between w-full mb-5 p-2 rounded-md transition-all hover:cursor-pointer ">
     {/* User Avatar and Username on the left */}
-    <Link  to={`/dashboard/${ownerDetails._id}`} className="flex items-center hover:bg-gray-500/20 dark:hover:bg-gray-50/10 rounded-md p-1 font-motserrat">
+    <Tooltip text={`${ownerDetails.username}`}>
+
+    <Link  to={`/dashboard/${ownerDetails._id}`} className="flex items-center hover:scale-110 transition-all hover:bg-gray-500/20 dark:hover:bg-gray-50/10 rounded-md p-1 font-motserrat">
         <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
             <img className="w-full h-full object-cover" src={ownerDetails.avatar} alt={ownerDetails.username} />
         </div>
@@ -96,18 +118,27 @@ const Blog = () => {
             {ownerDetails.username}
         </p>
     </Link>
+    </Tooltip>
 
     {/* Like Button on the far right */}
-    <div className="flex gap-2 items-center hover:scale-110 transition-all font-motserrat">
+    <div className="flex gap-5 items-center justify-center transition-all font-motserrat">
+        <div className='flex items-center gap-2 justify-center hover:scale-110 '>
+
         <Tooltip text={isLiked ? "Unlike this blog" : "Like this blog"}>
             <button
-                onClick={handleLike}
+                onClick={()=>handleLike()}
                 className="text-teal-600 dark:text-white transition-all transform  focus:outline-none"
-            >
+                >
                 {isLiked ? <AiFillLike size={24} /> : <AiOutlineLike size={24} />}
             </button>
         </Tooltip>
         {likesLoading ? <span>Loading...</span> : <span>{blogLikeCount}</span>}
+                </div>
+       {currentUserId=== ownerDetails._id && <Tooltip text="Delete this blog">
+        <button onClick={()=>handleDeleteBlog()} className='text-red-500 scale-125 hover:scale-150 transition-all'>
+        <RiDeleteBin5Fill />
+        </button>
+        </Tooltip>}
     </div>
 </div>
 

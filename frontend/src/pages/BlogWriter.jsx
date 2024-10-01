@@ -64,7 +64,7 @@ const BlogWriter = () => {
 
   return (
     <div className="min-h-screen p-4 md:p-8 font-motserrat bg-teal-50 dark:bg-teal-700 transition duration-300">
-      <div className="max-w-3xl mx-auto bg-white dark:bg-slate-600/50 p-6 rounded-lg shadow-lg shadow-teal-500/50">
+      <div className="max-w-3xl mx-auto bg-white dark:bg-slate-600/40 p-6 rounded-lg shadow-lg shadow-teal-500 dark:shadow-white">
         <h1 className="text-3xl text-teal-700 dark:text-teal-50 font-bold mb-6 text-center italic">
           Write a new Blog
         </h1>
@@ -129,13 +129,13 @@ const BlogWriter = () => {
               />
               <label
                 htmlFor="thumbnail"
-                className={` w-full h-48 border-2 border-dashed rounded-lg 
+                className={` w-full h-48 border-2 border-dashed dark:border-white rounded-lg 
     flex items-center justify-center cursor-pointer
     ${errors.thumbnail ? 'border-red-500' : 'border-teal-500'}`}
     >
                 <div className="flex flex-col items-center">
                   <svg
-                    className="w-10 h-10 text-teal-500"
+                    className="w-10 h-10 text-teal-500 dark:text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -143,7 +143,7 @@ const BlogWriter = () => {
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v14M5 12h14" />
                   </svg>
-                  <p className="mt-2 text-sm text-teal-500">Choose a file</p>
+                  <p className="mt-2 text-sm text-teal-500 dark:text-white">Choose a file</p>
                 </div>
               </label>
             </div>

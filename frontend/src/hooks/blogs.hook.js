@@ -78,27 +78,16 @@ export const useUploadBlog = () => {
     )
 }
 
-export const useDeleteBlog = (blogId) => {
+export const useDeleteBlog = () => {
     const queryClient = useQueryClient();
 
     return useMutation(
-        () => deleteBlog(blogId),
         {
-            onMutate: async (blogId) => {
-                await queryClient.cancelQueries('current-user-blogs');
-                const previousData = queryClient.getQueryData('current-user-blogs');
-                queryClient.setQueryData('current-user-blogs', (oldBlogs) => {
-                    return oldBlogs.filter((blog) => blog._id !== blogId);
-                });
-                return { previousData };
-            },
-            onError: (_error, _newData, context) => {
-                queryClient.setQueryData('current-user-blogs', context.previousData);
-            },
-            onSettled: () => {
+            mutationFn: (blogId) => deleteBlog(blogId),
+            onSuccess: () => {
                 queryClient.invalidateQueries('current-user-blogs');
             }
-        }
+            }
     )
 }
 
@@ -108,5 +97,6 @@ export const useGetBlogById = (blogId) => {
         queryFn: () => getBlogById(blogId),
         staleTime: 1000 * 60 * 5,
         cacheTime: 1000 * 60 * 5,
+        enabled: !!blogId
     });
 };

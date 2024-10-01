@@ -11,7 +11,7 @@ export const getBlogComments = async (blogId,page) => {
         
         return data?.data?.docs;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        
         throw error?.response?.data?.message;
     }
 }

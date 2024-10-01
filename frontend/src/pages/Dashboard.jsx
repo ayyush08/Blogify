@@ -72,10 +72,10 @@ const Dashboard = () => {
   return (
     (user && userBlogs) && (
       <div className="min-h-screen w-full">
-        <div className="bg-teal-100 dark:bg-teal-700 text-gray-900 dark:text-gray-100 min-h-screen p-6 md:p-10">
+        <div className="bg-teal-100 dark:bg-teal-700/80 text-gray-900 dark:text-gray-100 min-h-screen p-6 md:p-10">
           <div className="container mx-auto">
             {/* Profile Section */}
-            <div className="flex flex-col md:flex-row items-center justify-center mb-6 relative">
+            <div className="flex flex-col md:flex-row items-center justify-center mb-6 relative ">
               <div className="flex flex-col md:flex-row items-center justify-center p-5 rounded-lg bg-white/50 dark:bg-slate-700/40 w-[85vw] sm:w-[60vw] md:w-[50vw] lg:w-[40vw] space-x-0 md:space-x-5 relative">
                 <img
                   className="h-20 w-20 rounded-full object-cover"

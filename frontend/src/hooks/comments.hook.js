@@ -18,7 +18,8 @@ export const useGetComments = (blogId,page) => {
                     docs: []
                 }))
             }
-        }
+        },
+        enabled: !!blogId
     })
 }
 

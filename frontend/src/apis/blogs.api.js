@@ -12,7 +12,7 @@ export const getUserBlogs = async (userId,page,limit) => {
         
         return data?.data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        
         throw error?.response?.data?.message;
     }
 }
@@ -67,7 +67,7 @@ export const getBlogById = async (blogId) => {
         console.log(data?.message);
         return data?.data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+       
         throw error?.response?.data?.message;
     }
 }
