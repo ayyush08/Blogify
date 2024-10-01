@@ -14,8 +14,10 @@ const LandingPage = () => {
                 persistor.purge();
 
                 // toast.error('Please login to continue');
+            }else{
+
+                toast.success("Welcome")
             }
-            toast.success("Welcome")
         }
     },[sessionChecking])
     if(sessionChecking){
@@ -23,7 +25,7 @@ const LandingPage = () => {
             <UniversalLoader/>
         </div>
     }
-    return (
+    return (!sessionChecking &&
         <section>
             <Toaster />
             <Hero />
