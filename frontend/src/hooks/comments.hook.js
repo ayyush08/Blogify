@@ -6,8 +6,6 @@ export const useGetComments = (blogId,page) => {
     return useQuery({
         queryKey: ['current-blog-comments',blogId,page],
         queryFn: () => getBlogComments(blogId,page),
-        staleTime: 1000*60*5,
-        cacheTime: 1000*60*5,
         onError: (error) => {
             console.error('Error while fetching comments', error);
         },

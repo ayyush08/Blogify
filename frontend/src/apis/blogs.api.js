@@ -12,7 +12,7 @@ export const getUserBlogs = async (userId,page,limit) => {
         
         return data?.data;
     } catch (error) {
-        
+        toast.error("Failed to fetch user blogs");
         throw error?.response?.data?.message;
     }
 }
@@ -23,7 +23,7 @@ export const uploadBlog = async (blogData) => {
         toast.success(data?.message);
         return data?.data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        toast.error("Failed to upload blog");
         throw error?.response?.data?.message;
     }
 }
@@ -34,7 +34,7 @@ export const updateBlog = async (blogId, blogData) => {
         toast.success(data.message);
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        toast.error("Failed to update blog");
         throw error?.response?.data?.message;
     }
 }
@@ -45,7 +45,7 @@ export const deleteBlog = async (blogId) => {
         toast.success(data?.message);
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        toast.error("Failed to delete blog");
         throw error?.response?.data?.message;
     }
 }
@@ -56,7 +56,7 @@ export const getAllBlogs = async (page=1,limit=10) => {
         console.log(data?.message);
         return data?.data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        toast.error("Failed to fetch blogs");
         throw error?.response?.data?.message;
     }
 }
@@ -67,7 +67,7 @@ export const getBlogById = async (blogId) => {
         console.log(data?.message);
         return data?.data;
     } catch (error) {
-       
+    
         throw error?.response?.data?.message;
     }
 }

@@ -14,7 +14,6 @@ export const getBlogLikes = async (blogId) => {
         
         return data?.data[0].likes;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;
     }
 }
@@ -26,7 +25,6 @@ export const getCommentLikes = async (commentId) => {
         }
         return data?.data[0].likes;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;
     }
 }
@@ -37,7 +35,7 @@ export const toggleBlogLike = async (blogId) => {
         toast.success(data?.message);
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        toast.error("Failed to toggle blog like");
         throw error?.response?.data?.message;
     }
 }
@@ -48,7 +46,7 @@ export const toggleCommentLike = async (commentId) => {
         toast.success(data?.message);
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        toast.error("Failed to toggle comment like");
         throw error?.response?.data?.message;
     }
 }

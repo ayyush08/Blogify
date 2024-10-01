@@ -30,7 +30,7 @@ export const useGetBlogLikes = (blogId) => {
     return useQuery({
         queryKey:['current-blog-likes',blogId],
         queryFn:()=>getBlogLikes(blogId),
-        refetchOnWindowFocus:false,
+        enabled: !!blogId
     }
     )
 }
@@ -39,6 +39,7 @@ export const useGetCommentLikes = (commentId) => {
     return useQuery({
         queryKey:['current-comment-likes',commentId],
         queryFn:()=>getCommentLikes(commentId),
+        enabled: !!commentId
 }
     )
 }

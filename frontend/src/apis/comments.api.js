@@ -22,7 +22,7 @@ export const addComment = async (blogId, content) => {
         toast.success(data?.message);
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        toast.error("Failed to add comment");
         throw error?.response?.data?.message;
     }
 }
@@ -33,7 +33,7 @@ export const deleteComment = async (commentId) => {
         toast.success(data?.message);
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        toast.error("Failed to delete comment");
         throw error?.response?.data?.message;
     }
 }
