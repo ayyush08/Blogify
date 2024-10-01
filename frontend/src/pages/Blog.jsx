@@ -140,7 +140,7 @@ const Blog = () => {
                                 {likesLoading ? <span>Loading...</span> : <span>{blogLikeCount}</span>}
                             </div>
                             {currentUserId === ownerDetails._id && <Tooltip text="Delete this blog">
-                                <button onClick={() => handleDeleteBlog()} className='text-red-500 scale-125 hover:scale-150 transition-all'>
+                                <button onClick={() => handleDeleteBlog()} className='text-red-500 bg-red-100/30 rounded-sm p-1  scale-125 hover:scale-150 transition-all'>
                                     <RiDeleteBin5Fill />
                                 </button>
                             </Tooltip>}
