@@ -51,7 +51,7 @@ export function DialogDemo({  title,username,fullName,email }) {
     }
     return (
         <Dialog>
-            <DialogTrigger className="bg-teal-400 dark:hover:bg-teal-600 dark:bg-teal-700 rounded-xl italic hover:bg-teal-300" asChild>
+            <DialogTrigger className="bg-teal-400/80 dark:hover:bg-teal-600 dark:bg-teal-700/90 rounded-xl italic hover:bg-teal-300" asChild>
                 <Button variant="outline">Edit Profile  <MdEditSquare className="ml-1"/>
                 </Button>
 

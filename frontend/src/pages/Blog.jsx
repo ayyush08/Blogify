@@ -86,9 +86,9 @@ const Blog = () => {
                 <div className="flex flex-col items-center justify-center">
                     <h1 className="text-4xl md:text-5xl uppercase tracking-wide font-extrabold  text-teal-900 dark:text-teal-300 text-center mb-5 font-mono underline">{title}</h1>
 
-                    <div className="flex items-center justify-between w-full mb-5 p-2 rounded-md transition-all hover:cursor-pointer dark:hover:bg-gray-50/10">
+                    <div className="flex items-center justify-between w-full mb-5 p-2 rounded-md transition-all hover:cursor-pointer ">
     {/* User Avatar and Username on the left */}
-    <Link  to={`/dashboard/${ownerDetails._id}`} className="flex items-center hover:bg-gray-500/20 rounded-md p-1 font-motserrat">
+    <Link  to={`/dashboard/${ownerDetails._id}`} className="flex items-center hover:bg-gray-500/20 dark:hover:bg-gray-50/10 rounded-md p-1 font-motserrat">
         <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
             <img className="w-full h-full object-cover" src={ownerDetails.avatar} alt={ownerDetails.username} />
         </div>
