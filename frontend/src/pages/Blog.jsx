@@ -90,14 +90,14 @@ const Blog = () => {
         return () => {
             isMounted = false;
         }
-    }, [valid, sessionChecking, likedCheck, id, currentUserId, dispatch, navigate]);
+    }, [valid, sessionChecking, id, currentUserId, dispatch, navigate]);
 
-    if (blogLoading || isFetching || sessionChecking) {
-        if (sessionChecking) {
-            return <div className='flex justify-center items-center min-h-screen'>
-                <UniversalLoader />
-            </div>
-        }
+    if (sessionChecking) {
+        return <div className='flex justify-center items-center min-h-screen'>
+            <UniversalLoader />
+        </div>
+    }
+    if (blogLoading && isFetching) {
         return (<BlogSkeleton />)
     }
     if (error) {

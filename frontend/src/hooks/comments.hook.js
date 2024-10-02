@@ -17,7 +17,12 @@ export const useGetComments = (blogId,page) => {
                 }))
             }
         },
-        enabled: !!blogId
+        enabled: !!blogId,
+        staleTime: 1000 * 60 * 5,
+        cacheTime: 1000 * 60 * 5,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: true,
+        
     })
 }
 

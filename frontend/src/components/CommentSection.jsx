@@ -3,6 +3,7 @@ import { useGetComments, useAddComment } from '@/hooks/comments.hook';
 import toast from 'react-hot-toast';
 import SingleComment from './SingleComment';
 import { set, useForm } from 'react-hook-form';
+import CommentSkeleton from './ui/CommentSkeleton';
 const CommentSection = ({ blogId }) => {
     const [page, setPage] = useState(1);
     const [comments, setComments] = useState([]);
@@ -42,10 +43,13 @@ const CommentSection = ({ blogId }) => {
                 }
             }
         }
-    }, [commentsData, commentsError, page]);
+    }, [commentsData, page]);
     const handleShowMore = () => {
         console.log('Show more clicked');
         setPage(prevPage => prevPage + 1);
+    }
+    if(commentsLoading){
+        return <CommentSkeleton/>
     }
     return (
         <div className="w-full mt-10 p-4 bg-teal-50 dark:bg-teal-800 shadow-lg rounded-lg shadow-black dark:shadow-white font-motserrat">
