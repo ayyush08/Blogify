@@ -11,7 +11,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-const Popup = ({trigger,title,description,cancel,action,handleDeleteComment}) => {
+const Popup = ({trigger,title,description,cancel,action,handleDelete}) => {
     return (
         <>
             <AlertDialog>
@@ -25,7 +25,7 @@ const Popup = ({trigger,title,description,cancel,action,handleDeleteComment}) =>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>{cancel}</AlertDialogCancel>
-                        <AlertDialogAction className="bg-red-500" onClick={handleDeleteComment}>{action}</AlertDialogAction>
+                        <AlertDialogAction className="bg-red-500" onClick={handleDelete}>{action}</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

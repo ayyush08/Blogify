@@ -14,6 +14,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { useSessionValidator } from '@/hooks/user.hook';
 import UniversalLoader from '@/components/ui/UniversalLoader';
+import Popup from '@/components/Popup';
 const Blog = () => {
     const { data: valid, isLoading: sessionChecking } = useSessionValidator();
     const { id } = useParams();
@@ -139,11 +140,19 @@ const Blog = () => {
                                 </Tooltip>
                                 {likesLoading ? <span>Loading...</span> : <span>{blogLikeCount}</span>}
                             </div>
-                            {currentUserId === ownerDetails._id && <Tooltip text="Delete this blog">
-                                <button onClick={() => handleDeleteBlog()} className='text-red-500 bg-red-100/30 rounded-sm p-1  scale-125 hover:scale-150 transition-all'>
+                            {currentUserId === ownerDetails._id &&
+                            <Popup trigger={
+                             <Tooltip text="Delete this blog">
+                                <button  className='text-red-500 bg-red-100/30 rounded-sm p-1  scale-125 hover:scale-150 transition-all'>
                                     <RiDeleteBin5Fill />
                                 </button>
                             </Tooltip>}
+                            title="Delete Blog"
+                            description="Are you sure you want to delete this blog?"
+                            cancel="Cancel"
+                            action="Delete"
+                            handleDelete={handleDeleteBlog}
+                            ></Popup>}
                         </div>
                     </div>
 

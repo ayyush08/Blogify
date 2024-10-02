@@ -107,7 +107,7 @@ const SingleComment = ({ comment, commentsLoading }) => {
                         description={"This action cannot be undone."}
                         action={"Delete"}
                         cancel={"Cancel"}
-                        handleDeleteComment={()=>handleDeleteComment()}
+                        handleDelete={()=>handleDeleteComment()}
                     >
                     </Popup>
                 )}

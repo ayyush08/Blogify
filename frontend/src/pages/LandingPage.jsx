@@ -4,16 +4,17 @@ import About from '@/components/About'
 import UniversalLoader from '@/components/ui/UniversalLoader'
 import AllBlogs from './AllBlogs'
 import { useSessionValidator } from '@/hooks/user.hook';
-import { persistor } from '@/store/store';
+import { updateDetails,logout } from '@/store/authSlice'
+import { useDispatch } from 'react-redux'
 import { Toaster,toast } from 'react-hot-toast';
 const LandingPage = () => {
     const {data:valid,isLoading:sessionChecking} = useSessionValidator();
+    const dispatch = useDispatch();
     useEffect(()=>{
         if (!sessionChecking) {
             if (!valid) {
-                persistor.purge();
-
-                // toast.error('Please login to continue');
+                dispatch(logout());
+                
             }else{
 
                 toast.success("Welcome")
