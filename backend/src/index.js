@@ -13,6 +13,9 @@ connectDB()
     app.on("error",(error)=>{
         console.log("ERRR:",error);
     })
+    app.get('/',(req,res)=>{
+        res.send("Welcome to Blog API Backend")
+    })
     app.listen(process.env.PORT || 8000,()=>{
         console.log(`Server listening on port ${process.env.PORT}`)
     })
