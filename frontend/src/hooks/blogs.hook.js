@@ -53,8 +53,6 @@ export const useGetBlogById = (blogId) => {
     return useQuery({
         queryKey: ['current-user-blog', blogId],
         queryFn: () => getBlogById(blogId),
-        staleTime: 1000 * 60 * 5,
-        cacheTime: 1000 * 60 * 5,
         enabled: !!blogId
     });
 };
