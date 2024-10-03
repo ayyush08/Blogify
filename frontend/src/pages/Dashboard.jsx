@@ -44,7 +44,7 @@ const Dashboard = () => {
         }
       }
     }
-  }, [blogs, page]);
+  }, [blogs, page,userIdToFetch]);
   const handleShowMore = (e) => {
     e.preventDefault();
     console.log('Show more clicked');
