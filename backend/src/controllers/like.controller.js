@@ -12,7 +12,6 @@ const toggleBlogLike = asyncHandler(async (req, res) => {
     const { blogId } = req.params;
 
     const userId = req.user?._id;
-    console.log(userId);
 
     if (!isValidObjectId(blogId)) {
         throw new ApiError(400, 'Invalid blog id')

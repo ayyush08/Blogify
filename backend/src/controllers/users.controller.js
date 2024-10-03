@@ -85,7 +85,6 @@ const loginUser = asyncHandler(async (req, res) => {
     const isPasswordCorrect = await user.isPasswordCorrect(password);
 
     if (!isPasswordCorrect) {
-        // throw new ApiError(401, "Invalid password");
         return res.status(401).json(new ApiResponse(401, {}, "Invalid password"));
     }
 
@@ -195,8 +194,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
     if(!isValidObjectId(userId)){
         throw new ApiError(400, "Invalid user id");
     }
-    console.log("user id on back", userId);
-    
     const user = await User.findById(userId).select("-password -refreshToken");
     if(!user){
         throw new ApiError(404, "User not found");
