@@ -8,6 +8,7 @@ export const useSessionValidator = ()=>{
         queryKey: ['session-validator'],
         queryFn: () => validateSession(),
         retry: 0,
+        
     });
 }
 export const useRegisterUser = () => {
@@ -59,7 +60,7 @@ export const useUserProfile = (userId) => {
         queryFn: () => getUserProfile(userId),
         staleTime: 1000 * 60 * 5,
         cacheTime: 1000 * 60 * 5,
-        
+        enabled: !!userId,
     });
 }
 
@@ -70,6 +71,6 @@ export const useUpdateUserProfile = () => {
         onSuccess: (newUser) => {
             queryClient.invalidateQueries('current-user');
         },
-        
+    
     })
 }
