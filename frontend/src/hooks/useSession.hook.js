@@ -15,7 +15,7 @@ const useSession = () => {
             // If no session data exists, navigate to login
             if (!data) {
                 toast.error('Please login to continue'); // Show a toast message (optional)
-                persistor.purge(); // Purge redux persist storage (clear auth state)
+                // persistor.purge(); // Purge redux persist storage (clear auth state)
                 navigate('/login', { replace: true }); // Use replace to avoid navigation stack issues
             }
         }
