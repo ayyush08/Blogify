@@ -4,7 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
-import { login } from '@/store/authSlice';
+import { login,updateDetails } from '@/store/authSlice';
 import { useLoginUser } from '@/hooks/user.hook';
 
 const Login = () => {
@@ -29,6 +29,7 @@ const Login = () => {
                 console.log('Logged in user:', loggedInUser);
                 
                 dispatch(login(loggedInUser.data.user));
+                updateDetails(loggedInUser.data.user);
                 navigate('/');
             } else {
                 console.log('Login failed');
