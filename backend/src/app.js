@@ -1,13 +1,13 @@
 import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser'
+import cors from "cors";
+import cookieParser from 'cookie-parser';
 const app = express()
 
 
 app.use(cors({
     origin: process.env.ALLOWED_ORIGINS,
     credentials: true,
-    method: "*"
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 }))
 
 
