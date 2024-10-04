@@ -12,11 +12,9 @@ import { useGetBlogById, useDeleteBlog } from '@/hooks/blogs.hook';
 import CommentSection from '@/components/CommentSection';
 import { Toaster, toast } from 'react-hot-toast';
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { useSessionValidator } from '@/hooks/user.hook';
 import UniversalLoader from '@/components/ui/UniversalLoader';
 import Popup from '@/components/Popup';
 const Blog = () => {
-    const { data: valid, isLoading: sessionChecking } = useSessionValidator();
     const { id } = useParams();
     const { data, error, isLoading: blogLoading, isFetching } = useGetBlogById(id);
     const { data: blogLikes, isLoading: likesLoading } = useGetBlogLikes(id);
@@ -71,12 +69,6 @@ const Blog = () => {
     }
     useEffect(() => {
         let isMounted = true;
-        if (!sessionChecking && !valid) {
-            toast.error('Please login to continue');
-            dispatch(updateDetails(null));
-            // persistor.purge();
-            navigate('/login', { replace: true });
-        }
         if (id && isMounted) {
             window.scrollTo(0, 0);
         }
@@ -90,7 +82,7 @@ const Blog = () => {
         return () => {
             isMounted = false;
         }
-    }, [valid, sessionChecking, id, currentUserId, dispatch, navigate]);
+    }, [id, currentUserId, dispatch, navigate]);
 
     if (sessionChecking) {
         return <div className='flex justify-center items-center min-h-screen'>

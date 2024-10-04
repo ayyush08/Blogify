@@ -99,17 +99,6 @@ const refreshAccessToken = async () => {
     }
 };
 
-export const validateSession = async() => {
-    try {
-        const { data } = await API.get("/blogapi/v1/users/validate-session");
-        console.log(data?.message);
-        
-        return data;
-        
-    } catch (error) {
-        throw error?.response?.data?.message;
-    }
-}
 
 export const updateUserProfile = async (userData) => {
     try {

@@ -1,16 +1,9 @@
 import {useQuery,useQueryClient,useMutation} from '@tanstack/react-query'
-import { registerUser,loginUser,logoutUser,getUserProfile,validateSession,updateUserProfile } from '../apis/user.api'
+import { registerUser,loginUser,logoutUser,getUserProfile,updateUserProfile } from '../apis/user.api'
 
 
 
-export const useSessionValidator = ()=>{
-    return useQuery({
-        queryKey: ['session-validator'],
-        queryFn: () => validateSession(),
-        retry: 0,
-        
-    });
-}
+
 export const useRegisterUser = () => {
     const queryClient = useQueryClient()
     return useMutation({
