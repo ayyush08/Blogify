@@ -33,7 +33,6 @@ export const toggleBlogLike = async (blogId) => {
         toast.success(data?.message);
         return data;
     } catch (error) {
-        toast.error("Failed to toggle blog like");
         throw error?.response?.data?.message;
     }
 }
@@ -44,7 +43,6 @@ export const toggleCommentLike = async (commentId) => {
         toast.success(data?.message);
         return data;
     } catch (error) {
-        toast.error("Failed to toggle comment like");
         throw error?.response?.data?.message;
     }
 }

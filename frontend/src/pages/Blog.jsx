@@ -113,7 +113,7 @@ const Blog = () => {
                             </Link>
                         </Tooltip>
 
-                        {/* Like Button on the far right */}
+                        {currentUserId &&
                         <div className="flex gap-5 items-center justify-center transition-all font-motserrat">
                             <div className='flex items-center gap-2 justify-center hover:scale-110 '>
 
@@ -140,7 +140,7 @@ const Blog = () => {
                             action="Delete"
                             handleDelete={handleDeleteBlog}
                             ></Popup>}
-                        </div>
+                        </div>}
                     </div>
 
                     <img className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg mb-5" src={thumbnail} alt={title} />

@@ -39,6 +39,10 @@ const SignUp = () => {
         formData.append('fullName', data.fullName);
         formData.append('email', data.email);
         formData.append('password', data.password);
+        if(!selectedFile){
+            toast.error("Please select a profile picture.");
+            return;
+        }
         if(selectedFile) formData.append('avatar', selectedFile);
         else formData.append('avatar', null);
         try {
@@ -55,7 +59,7 @@ const SignUp = () => {
                     navigate("/");
                 }
                 else{
-                    toast.error("Something went wrong while logging in the user.")
+                    toast.error("Something went wrong")
                 }
                 setSelectedFile(null);
                 

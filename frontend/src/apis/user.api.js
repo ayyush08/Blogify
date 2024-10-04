@@ -11,7 +11,6 @@ export const getUserProfile = async (userId) => {
         return data;
     } catch (error) {
 
-        toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;
     }}
     else return null;
@@ -52,7 +51,6 @@ export const registerUser = async (userData) => {
         
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;
     }
 }
@@ -64,7 +62,6 @@ export const loginUser = async (userData) => {
         
         return data;
     } catch (error) {
-        // toast.error(error?.response?.data?.message);
         console.log(error?.response?.data)
         throw error?.response?.data?.message;
     }
@@ -77,7 +74,7 @@ export const logoutUser = async () => {
         
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
+        
         throw error?.response?.data?.message;
     }
 }
@@ -102,7 +99,6 @@ export const updateUserProfile = async (userData) => {
         toast.success(data?.message);
         return data;
     } catch (error) {
-        toast.error(error?.response?.data?.message);
         throw error?.response?.data?.message;
     }
 }
