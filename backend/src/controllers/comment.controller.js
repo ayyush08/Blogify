@@ -83,7 +83,6 @@ const getBlogComments = asyncHandler(async (req, res) => {
     if (!paginatedComments) {
         throw new ApiError(404, 'Comments pagination error')
     }
-    console.log(paginatedComments.docs[0].ownerDetails);
     
     return res
         .status(200)
