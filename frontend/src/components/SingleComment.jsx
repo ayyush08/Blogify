@@ -57,10 +57,12 @@ const SingleComment = ({ comment, commentsLoading }) => {
     useEffect(() => {
         const currentLikeStatus = likedCheck.likedComments.some(like => like.commentId === comment._id && like.commenter === currentUserId);
         setIsLiked(currentLikeStatus);
-    }, [comment]);
+    }, [currentUserId,comment]);
     if (commentsLoading) {
         return <CommentSkeleton />
     }
+    console.log('Comment', comment);
+    
     return (
         <div className="p-3 border rounded-md bg-white dark:bg-teal-900 shadow-sm font-motserrat">
             <div className="flex items-center justify-between mb-2">

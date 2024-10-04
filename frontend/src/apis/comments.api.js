@@ -19,7 +19,7 @@ export const addComment = async (blogId, content) => {
     try {
         const {data} = await API.post(`/blogapi/v1/comments/${blogId}`, content);
         toast.success(data?.message);
-        return data;
+        return data.data;
     } catch (error) {
         toast.error("Failed to add comment");
         throw error?.response?.data?.message;

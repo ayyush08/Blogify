@@ -6,6 +6,7 @@ import { isValidObjectId } from "mongoose"
 import { Blogs } from "../models/blogs.model.js"
 
 import mongoose from "mongoose"
+import { User } from "../models/user.model.js"
 
 const getBlogComments = asyncHandler(async (req, res) => {
     const { blogId } = req.params;
@@ -38,7 +39,7 @@ const getBlogComments = asyncHandler(async (req, res) => {
         {
             $lookup: {
                 from: 'users',
-                localField: 'blogDetails.owner',
+                localField: 'owner',
                 foreignField: '_id',
                 as: 'ownerDetails'
             }
@@ -82,6 +83,8 @@ const getBlogComments = asyncHandler(async (req, res) => {
     if (!paginatedComments) {
         throw new ApiError(404, 'Comments pagination error')
     }
+    console.log(paginatedComments.docs[0].ownerDetails);
+    
     return res
         .status(200)
         .json(new ApiResponse(200, paginatedComments, 'Comments retrieved successfully'))
@@ -89,10 +92,14 @@ const getBlogComments = asyncHandler(async (req, res) => {
 
 const addComment = asyncHandler(async (req, res) => {
     const { blogId } = req.params
-    
+    const userId = req.user._id
     const { content } = req.body
     if (!isValidObjectId(blogId)) {
         throw new ApiError(400, "Invalid video id")
+    }
+    const user = User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found")
     }
     if (!content) {
         throw new ApiError(400, "Comment is required")
@@ -104,12 +111,13 @@ const addComment = asyncHandler(async (req, res) => {
     const comment = await Comment.create({
         blog: blogId,
         comment: content,
-        owner: req.user._id,
+        owner: userId,
     });
+    
     if (!comment) throw new ApiError(400, 'Error while adding comment');
     res
         .status(201)
-        .json(new ApiResponse(201, content, "Comment added successfully"))
+        .json(new ApiResponse(201, comment, "Comment added successfully"))
 })
 
 

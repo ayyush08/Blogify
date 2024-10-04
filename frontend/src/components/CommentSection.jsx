@@ -16,12 +16,13 @@ const CommentSection = ({ blogId }) => {
         const {commentText} = data;
         const comment = await addComment({ blogId, commentText });
         reset();
-        console.log('Comment submitted', comment);
     }
     if (commentsLoading) {
         console.log('Comments are loading');
 
     }
+    console.log("all comments",commentsData);
+    
     if(commentsError){
         console.error('Error while fetching comments',commentsError);
     }
@@ -45,7 +46,7 @@ const CommentSection = ({ blogId }) => {
                 }
             }
         }
-    }, [commentsData, page]);
+    }, [commentsData, page,]);
     const handleShowMore = () => {
         console.log('Show more clicked');
         setPage(prevPage => prevPage + 1);
@@ -86,7 +87,7 @@ const CommentSection = ({ blogId }) => {
                         <SingleComment key={comment._id} comment={comment} commentsLoading={commentsLoading} />
                     ))
                 ) : (
-                    <p className="text-teal-900 dark:text-teal-300">No comments yet. Be the first to comment!</p>
+                    <p className="text-teal-900 dark:text-teal-300">No comments yet.</p>
                 )}
             </div>
             {commentsData?.length >0  && <div className='flex justify-center '>
