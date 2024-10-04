@@ -42,7 +42,9 @@ const AllBlogs = () => {
         console.log(error);
         return <div className="text-red-500">An error occurred while fetching blogs.</div>;
     }
-    
+    if(!data.docs){
+        return null;
+    }
     return (
         <section className='bg-teal-50 dark:bg-teal-800 p-5'>
         <div className='flex flex-col flex-wrap md:gap-5 gap-3 justify-center items-center md:flex-row p-10'> 
