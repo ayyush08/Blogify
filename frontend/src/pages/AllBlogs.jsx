@@ -42,7 +42,7 @@ const AllBlogs = () => {
         console.log(error);
         return <div className="text-red-500">An error occurred while fetching blogs.</div>;
     }
-    if(!data.docs){
+    if(!data){
         return null;
     }
     return (
