@@ -1,11 +1,6 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { BASE_URL } from '@/constants';
-
-const API = axios.create({
-    baseURL: BASE_URL,
-    withCredentials: true
-});
+import { API } from '@/constants';
 export const getUserProfile = async (userId) => {
 
     if(userId!==null)

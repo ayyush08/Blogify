@@ -1,9 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import { BASE_URL } from "@/constants";
+import { API } from "@/constants";
 
 
-const API = axios.create({ baseURL: BASE_URL, withCredentials: true });
 export const getBlogComments = async (blogId,page) => {
     try {
         const {data} = await API.get(`/blogapi/v1/comments/${blogId}?page=${page}`);

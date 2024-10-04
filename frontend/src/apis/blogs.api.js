@@ -1,9 +1,6 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
-// import {API} from '../utils/axiosInterceptor.js';
-import { BASE_URL } from '@/constants.js';
-const API = axios.create({ baseURL: BASE_URL,
-    withCredentials: true });
+import { API } from '@/constants.js';
 
 export const getUserBlogs = async (userId,page,limit) => {
     try {
