@@ -76,7 +76,7 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Email is required");
     }
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
     if (!user) {
         throw new ApiError(402, "User not found");
@@ -96,20 +96,26 @@ const loginUser = asyncHandler(async (req, res) => {
         "-password -refreshToken"
     );
 
-    const options = {
-        httpOnly: true,
-        secure: true,
-    };
+    // const options = {
+    //     httpOnly: true,
+    //     secure: true,
+
+    // };
+    res.setHeader("Set-Cookie", [
+        `accessToken=${accessToken}; Max-Age=${1 * 24 * 60 * 60}; Path=/; HttpOnly; Secure; SameSite=None`,
+        `refreshToken=${refreshToken}; Max-Age=${15 * 24 * 60 * 60}; Path=/; HttpOnly; Secure; SameSite=None`,
+    ]);
+
 
     return res
         .status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
         .json(
             new ApiResponse(
                 200,
                 {
-                    user: loggedInUser
+                    user: loggedInUser,
+                    accessToken,
+                    refreshToken,
                 },
                 "User logged in successfully"
             )
@@ -129,15 +135,18 @@ const logoutUser = asyncHandler(async (req, res) => {
         }
     );
 
-    const options = {
-        httpOnly: true,
-        secure: true,
-    };
+    // const options = {
+    //     httpOnly: true,
+    //     secure: true,
+    // };
+    res.setHeader("Set-Cookie", [
+        `accessToken=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=None`,
+        `refreshToken=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=None`,
+    ]);//clearing cookies in production
+
 
     return res
         .status(200)
-        .clearCookie("accessToken", options)
-        .clearCookie("refreshToken", options)
         .json(new ApiResponse(200, {}, "User logged out successfully"));
 });
 
@@ -164,23 +173,26 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         if (incomingRefreshToken !== user?.refreshToken) {
             throw new ApiError(401, "Refresh Token is expired or used up");
         }
-
-        const options = {
-            httpOnly: true,
-            secure: true,
-        };
-
         const { accessToken, newRefreshToken } =
             await generateAccessAndRefreshTokens(user._id);
 
+        // const options = {
+        //     httpOnly: true,
+        //     secure: true,
+        // };
+        res.setHeader("Set-Cookie", [
+            `accessToken=${accessToken}; Max-Age=${1 * 24 * 60 * 60}; Path=/; HttpOnly; Secure; SameSite=None`,
+            `refreshToken=${newRefreshToken}; Max-Age=${15 * 24 * 60 * 60}; Path=/; HttpOnly; Secure; SameSite=None`,
+        ]);//clearing cookies in production
+
+
+
         return res
             .status(200)
-            .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken", newRefreshToken, options)
             .json(
                 new ApiResponse(
                     200,
-                    { accessToken, newRefreshToken },
+                    { accessToken, refreshToken: newRefreshToken },
                     "Access token refreshed :)"
                 )
             );
@@ -190,35 +202,35 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
-    const {userId} = req.params;
-    if(!isValidObjectId(userId)){
+    const { userId } = req.params;
+    if (!isValidObjectId(userId)) {
         throw new ApiError(400, "Invalid user id");
     }
     const user = await User.findById(userId).select("-password -refreshToken");
-    if(!user){
+    if (!user) {
         throw new ApiError(404, "User not found");
     }
     return res.status(200).json(new ApiResponse(200, user, "User profile fetched successfully"));
 })
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-    const {fullName,email,username} = req.body; //agar files update kra rhe to alag controller rkhe behtar hota h
+    const { fullName, email, username } = req.body; //agar files update kra rhe to alag controller rkhe behtar hota h
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
-            $set:{
-                fullName:fullName,
-                email:email,
-                username:username
+            $set: {
+                fullName: fullName,
+                email: email,
+                username: username
             }
         },
-        {new:true} //update ke baad ki info return hoti h aise
+        { new: true } //update ke baad ki info return hoti h aise
     ).select('-password')
 
     return res
-    .status(200)
-    .json(new ApiResponse(200,user,'Profile details successfully updated'))
+        .status(200)
+        .json(new ApiResponse(200, user, 'Profile details successfully updated'))
 })
 
 export {
