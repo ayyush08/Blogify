@@ -222,8 +222,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 })
 
 const validateUserSession = asyncHandler(async (req, res) => {
-    const {refreshToken} = req.cookies;
-    if(!refreshToken){
+    const {accessToken} = req.cookies;
+    if(!accessToken){
         throw new ApiError(401, "Session expired, please login again");
     }
     return res.status(200).json(new ApiResponse(200, {}, "Welcome 😀!"));
