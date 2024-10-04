@@ -84,11 +84,6 @@ const Blog = () => {
         }
     }, [id, currentUserId, dispatch, navigate]);
 
-    if (sessionChecking) {
-        return <div className='flex justify-center items-center min-h-screen'>
-            <UniversalLoader />
-        </div>
-    }
     if (blogLoading && isFetching) {
         return (<BlogSkeleton />)
     }
