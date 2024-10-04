@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { useGetComments, useAddComment } from '@/hooks/comments.hook';
 import toast from 'react-hot-toast';
 import SingleComment from './SingleComment';
@@ -7,6 +8,7 @@ import CommentSkeleton from './ui/CommentSkeleton';
 const CommentSection = ({ blogId }) => {
     const [page, setPage] = useState(1);
     const [comments, setComments] = useState([]);
+    const currentUser = useSelector(state => state.auth?.userData);
     const { data: commentsData, error: commentsError, isLoading: commentsLoading } = useGetComments(blogId,page);
     const { register, handleSubmit, reset, isSubmitting, formState: { errors } } = useForm()
     const { mutateAsync: addComment, isPending:isAdding, isError } = useAddComment();
@@ -54,6 +56,8 @@ const CommentSection = ({ blogId }) => {
     return (
         <div className="w-full mt-10 p-4 bg-teal-50 dark:bg-teal-800 shadow-lg rounded-lg shadow-black dark:shadow-white font-motserrat">
             <h2 className="text-2xl font-semibold text-teal-900 dark:text-emerald-50 font-motserrat mb-4 text-center">Comments</h2>
+            
+                {currentUser&&
             <form onSubmit={handleSubmit(handleCommentSubmit)} className="mb-6">
                 <textarea
                     {...register('commentText', { required: true, minLength: 1 })}
@@ -62,7 +66,7 @@ const CommentSection = ({ blogId }) => {
                     rows="4"
                 />
                 {errors.commentText && <p className="text-red-500 font-semibold text-lg dark:text-red-600" style={{ textShadow: '0 0 6px white' }}>Comment cannot be empty</p>}
-                <div className='flex items-center justify-center'>
+                    <div className='flex items-center justify-center'>
 
                 <button
                     type="submit"
@@ -72,7 +76,7 @@ const CommentSection = ({ blogId }) => {
                     {isAdding ? 'Posting...' : 'Post Comment'}
                 </button>
                     </div>
-            </form>
+            </form>}
 
             {/* Display Recent Comments */}
             <div className="space-y-4">
