@@ -61,7 +61,7 @@ Create a .env file in the backend directory and add the following:
 
 ```js
 PORT=your_port
-ALLOWED_OROGINS=your_frontend_url
+ALLOWED_ORIGINS=your_frontend_url
 
 MONGO_URI=your_mongo_connection_string
 
@@ -75,6 +75,8 @@ REFRESH_TOKEN_EXPIRY=your_own_expiry_time_for_refresh_tokens
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+
+VITE_API_BASE_URL=your_backend_endpoint
 ```
 
 ### 4. Run the app
