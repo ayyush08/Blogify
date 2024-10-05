@@ -61,7 +61,7 @@ Create a .env file in the backend directory and add the following:
 
 ```js
 PORT=your_port
-CORS_ORIGIN=your_frontend_url
+ALLOWED_OROGINS=your_frontend_url
 
 MONGO_URI=your_mongo_connection_string
 
@@ -92,3 +92,8 @@ npm run dev
 ```
 The app should now be running on http://localhost:5173.
 
+
+## Deployment
+This project's backend is deployed using render and frontend is deployed using vercel.
+You can check it out here:
+ https://blogify-client-zeta.vercel.app/
