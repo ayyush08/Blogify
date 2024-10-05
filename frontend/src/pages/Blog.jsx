@@ -93,67 +93,84 @@ const Blog = () => {
 
     return (
 
-        <div id='blog' className="bg-teal-100  dark:bg-teal-700 p-5 min-h-full">
-            <Toaster />
-            <div className="max-w-4xl mx-auto">
-                <div className="flex flex-col items-center justify-center">
-                    <h1 className="text-4xl md:text-5xl uppercase tracking-wide font-extrabold  text-teal-900 dark:text-teal-300 text-center mb-5 font-mono underline">{title}</h1>
+        <div id='blog' className="bg-teal-100 dark:bg-teal-700 p-2 sm:p-5 min-h-full">
+    <Toaster />
+    <div className="max-w-4xl mx-auto">
+        <div className="flex flex-col items-center justify-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl uppercase tracking-wide font-extrabold text-teal-900 dark:text-teal-300 text-center mb-3 sm:mb-5 font-mono underline">
+                {title}
+            </h1>
 
-                    <div className="flex items-center justify-between w-full mb-5 p-2 rounded-md transition-all hover:cursor-pointer ">
-                        {/* User Avatar and Username on the left */}
-                        <Tooltip text={`${ownerDetails.username}`}>
+            <div className="flex flex-col sm:flex-row items-center justify-between w-full mb-3 sm:mb-5 p-2 rounded-md transition-all hover:cursor-pointer">
+                <Tooltip text={`${ownerDetails.username}`}>
+                    <Link
+                        to={`/dashboard/${ownerDetails._id}`}
+                        className="flex items-center hover:scale-110 transition-all hover:bg-gray-500/20 dark:hover:bg-gray-50/10 rounded-md p-1 font-motserrat"
+                    >
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden mr-2 sm:mr-4">
+                            <img
+                                className="w-full h-full object-cover"
+                                src={ownerDetails.avatar}
+                                alt={ownerDetails.username}
+                            />
+                        </div>
+                        <p className="text-teal-900 dark:text-teal-300 font-semibold">
+                            {ownerDetails.username}
+                        </p>
+                    </Link>
+                </Tooltip>
 
-                            <Link to={`/dashboard/${ownerDetails._id}`} className="flex items-center hover:scale-110 transition-all hover:bg-gray-500/20 dark:hover:bg-gray-50/10 rounded-md p-1 font-motserrat">
-                                <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                                    <img className="w-full h-full object-cover" src={ownerDetails.avatar} alt={ownerDetails.username} />
-                                </div>
-                                <p className="text-teal-900 dark:text-teal-300 font-semibold">
-                                    {ownerDetails.username}
-                                </p>
-                            </Link>
-                        </Tooltip>
-
-                        {currentUserId &&
-                        <div className="flex gap-5 items-center justify-center transition-all font-motserrat">
-                            <div className='flex items-center gap-2 justify-center hover:scale-110 '>
-
-                                <Tooltip text={isLiked ? "Unlike this blog" : "Like this blog"}>
-                                    <button
-                                        onClick={() => handleLike()}
-                                        className="text-teal-600 dark:text-white transition-all transform  focus:outline-none"
-                                    >
-                                        {isLiked ? <AiFillLike size={24} /> : <AiOutlineLike size={24} />}
-                                    </button>
-                                </Tooltip>
-                                {likesLoading ? <span>Loading...</span> : <span>{blogLikeCount}</span>}
-                            </div>
-                            {currentUserId === ownerDetails._id &&
-                            <Popup trigger={
-                             <Tooltip text="Delete this blog">
-                                <button  className='text-red-500 bg-red-100/30 rounded-sm p-1  scale-125 hover:scale-150 transition-all'>
-                                    <RiDeleteBin5Fill />
+                {currentUserId && (
+                    <div className="flex gap-3 sm:gap-5 items-center justify-center transition-all font-motserrat">
+                        <div className='flex items-center gap-2 justify-center hover:scale-110'>
+                            <Tooltip text={isLiked ? "Unlike this blog" : "Like this blog"}>
+                                <button
+                                    onClick={() => handleLike()}
+                                    className="text-teal-600 dark:text-white transition-all transform focus:outline-none"
+                                >
+                                    {isLiked ? <AiFillLike size={24} /> : <AiOutlineLike size={24} />}
                                 </button>
-                            </Tooltip>}
-                            title="Delete Blog"
-                            description="Are you sure you want to delete this blog?"
-                            cancel="Cancel"
-                            action="Delete"
-                            handleDelete={handleDeleteBlog}
-                            ></Popup>}
-                        </div>}
-                    </div>
+                            </Tooltip>
+                            {likesLoading ? <span>Loading...</span> : <span>{blogLikeCount}</span>}
+                        </div>
 
-                    <img className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg mb-5" src={thumbnail} alt={title} />
-                    <p className="text-xl md:text-2xl text-slate-900 font-bold italic dark:text-teal-50 text-center mb-5">{description}</p>
-                    <div className="prose dark:prose-dark max-w-none text-gray-900 dark:text-white text-lg">
-                        {content}
+                        {currentUserId === ownerDetails._id && (
+                            <Popup
+                                trigger={
+                                    <Tooltip text="Delete this blog">
+                                        <button className='text-red-500 bg-red-100/30 rounded-sm p-1 scale-125 hover:scale-150 transition-all'>
+                                            <RiDeleteBin5Fill />
+                                        </button>
+                                    </Tooltip>
+                                }
+                                title="Delete Blog"
+                                description="Are you sure you want to delete this blog?"
+                                cancel="Cancel"
+                                action="Delete"
+                                handleDelete={handleDeleteBlog}
+                            />
+                        )}
                     </div>
-                    {/* Comment Section */}
-                    <CommentSection blogId={id} />
-                </div>
+                )}
             </div>
 
+            <img className="w-full h-48 sm:h-64 md:h-96 object-cover rounded-lg shadow-lg mb-3 sm:mb-5" src={thumbnail} alt={title} />
+            <p className="text-lg sm:text-xl md:text-2xl p-3 sm:p-5 text-slate-900 font-bold italic dark:text-teal-50 text-center mb-3 sm:mb-5">
+                {description}
+            </p>
+
+            <div className="prose dark:prose-dark max-w-none text-gray-900 dark:text-white text-sm sm:text-lg" style={{wordBreak:"break-word"}}>
+                {content.split('\n').map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                ))}
+            </div>
+
+            {/* Comment Section */}
+            <CommentSection blogId={id} />
         </div>
+    </div>
+</div>
+
     );
 };
 
